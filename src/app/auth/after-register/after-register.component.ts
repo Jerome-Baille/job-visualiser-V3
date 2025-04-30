@@ -18,24 +18,24 @@ export class AfterRegisterComponent {
   ) {}
 
   ngOnInit() {
-    this.verifyRegistration();
-  }
-
-  async verifyRegistration() {
-    this.loader.show();
-    try {
-      const response = await this.auth.verify();
-      if (response.status === 'success' && response.userId) {
-        this.toast.success('Registration successful! You can now log in.');
-        this.router.navigate(['/auth']);
-      } else {
-        throw new Error('Registration verification failed');
-      }
-    } catch (error) {
-      this.toast.error('Registration verification failed. Please try again.');
-      this.router.navigate(['/auth']);
-    } finally {
-      this.loader.hide();
-    }
+    // Wait a bit for auth state to stabilize
+    setTimeout(() => {
+      this.auth.handlePostLogin().subscribe({
+        next: (response) => {
+          if (response.auth) {
+            this.toast.success('Registration successful! You can now log in.');
+            this.router.navigate(['/auth']);
+          } else {
+            this.toast.error('Registration verification failed.');
+            this.router.navigate(['/auth']);
+          }
+        },
+        error: (error) => {
+          console.error('Registration verification failed:', error);
+          this.toast.error('Registration verification failed. Please try again.');
+          this.router.navigate(['/auth']);
+        }
+      });
+    }, 500);
   }
 }

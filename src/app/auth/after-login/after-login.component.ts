@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoaderService } from '../../services/loader.service';
 import { ToastService } from '../../services/toast.service';
@@ -6,10 +6,15 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-after-login',
-  template: '',
+  template: `
+    <div class="loading-container">
+      <h2>Authenticating...</h2>
+      <div class="spinner"></div>
+    </div>
+  `,
   styleUrls: ['./after-login.component.scss']
 })
-export class AfterLoginComponent {
+export class AfterLoginComponent implements OnInit {
   constructor(
     private router: Router,
     private loader: LoaderService,
@@ -18,26 +23,30 @@ export class AfterLoginComponent {
   ) {}
 
   ngOnInit() {
-    this.verifyAuth();
-  }
-
-  async verifyAuth() {
     this.loader.show();
-    try {
-      const response = await this.auth.verify();
-      if (response.status === 'success' && response.userId) {
-        this.auth.setAuthenticated?.(true);
-        this.toast.success('Successfully logged in!');
-        this.router.navigate(['/']);
-      } else {
-        throw new Error('Authentication verification failed');
-      }
-    } catch (error) {
-      this.auth.setAuthenticated?.(false);
-      this.toast.error('Authentication failed. Please try again.');
-      this.router.navigate(['/auth']);
-    } finally {
-      this.loader.hide();
-    }
+    setTimeout(() => {
+      this.auth.handlePostLogin().subscribe({
+        next: (response) => {
+          this.loader.hide();
+          if (response.auth) {
+            if (response.message) {
+              this.toast.success(response.message);
+            } else {
+              this.toast.success('Successfully logged in!');
+            }
+            this.router.navigate(['/']);
+          } else {
+            this.toast.error('Login failed.');
+            this.router.navigate(['/auth']);
+          }
+        },
+        error: (error) => {
+          this.loader.hide();
+          console.error('Authentication verification failed:', error);
+          this.toast.error('Authentication failed. Please try again.');
+          this.router.navigate(['/auth']);
+        }
+      });
+    }, 500);
   }
 }

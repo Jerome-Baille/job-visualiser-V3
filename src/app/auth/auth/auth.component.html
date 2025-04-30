@@ -1,13 +1,13 @@
 <div class="auth-card">
   <div class="auth-body">
-    <app-login-form *ngIf="isLogin"></app-login-form>
-    <app-register-form *ngIf="!isLogin"></app-register-form>
+    <app-login-form *ngIf="!isRegisterMode"></app-login-form>
+    <app-register-form *ngIf="isRegisterMode"></app-register-form>
   </div>
   <div class="auth-footer">
     <span>
-      {{ isLogin ? 'Need an account?' : 'Already have an account?' }}
+      {{ isRegisterMode ? 'Already have an account?' : 'Need an account?' }}
       <a href="#" (click)="toggleForm(); $event.preventDefault();">
-        {{ isLogin ? 'Register' : 'Login' }}
+        {{ isRegisterMode ? 'Login' : 'Register' }}
       </a>
     </span>
   </div>

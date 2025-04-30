@@ -1,5 +1,5 @@
-const authBaseURL = 'https://auth.jerome-baille.fr/api';
-const apiBaseURL = 'https://job-tracker.jerome-baille.fr/api';
+const authBaseURL = 'https://auth.jerome-baille.fr';
+const apiBaseURL = 'https://test.jerome-baille.fr/api';
 
 export const environment = {
     production: true,
@@ -7,6 +7,7 @@ export const environment = {
     apiBaseURL: apiBaseURL,
     userURL: `${apiBaseURL}/user`,
     authURL: `${authBaseURL}/auth`,
+    authFrontURL: authBaseURL,
     jobURL: `${apiBaseURL}/job`,
     exportURL: `${apiBaseURL}/export`,
     taskURL: `${apiBaseURL}/task`,

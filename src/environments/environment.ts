@@ -1,8 +1,10 @@
-const authBaseURL = 'https://localhost:3000/api';
-const apiBaseURL = 'https://localhost:3000/api';
+const authBaseURL = 'https://auth.jerome-baille.fr';
+const apiBaseURL = 'https://auth.jerome-baille.fr';
 
 export const environment = {
     production: false,
     authBaseURL: authBaseURL,
-    apiBaseURL: apiBaseURL
+    apiBaseURL: apiBaseURL,
+    authURL: `${authBaseURL}/auth`,
+    authFrontURL: authBaseURL
 };
