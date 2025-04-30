@@ -1,0 +1,30 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Search & Filter</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select [(value)]="typeFilter" (selectionChange)="filterJobs()">
+          <mat-option value="all">All</mat-option>
+          <mat-option value="remote">Remote</mat-option>
+          <mat-option value="hybrid">Hybrid</mat-option>
+          <mat-option value="on site">On site</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select [(value)]="decisionFilter" (selectionChange)="filterJobs()">
+          <mat-option value="all">All</mat-option>
+          <mat-option value="negative">Negative</mat-option>
+          <mat-option value="positive">Positive</mat-option>
+          <mat-option value="expired">Expired</mat-option>
+          <mat-option value="in progress">In progress</mat-option>
+          <mat-option value="unknown">Unknown</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button color="warn" (click)="handleReset()">Reset</button>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

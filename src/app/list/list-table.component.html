@@ -1,0 +1,13 @@
+<div class="list-table">
+  <app-table-filter [jobs]="jobs" (jobFilteredChange)="jobFiltered = $event"></app-table-filter>
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="jobFiltered">
+        <app-table-head [columns]="columns"></app-table-head>
+        <app-table-body [jobs]="jobFiltered" [columns]="columns"></app-table-body>
+      </table>
+      <mat-caption>{{ jobFiltered.length }} results out of {{ jobs.length }} job applications</mat-caption>
+    </mat-card-content>
+  </mat-card>
+  <app-paginator [nPages]="Math.ceil(jobFiltered.length / recordsPerPage)" [currentPage]="currentPage" (pageChange)="currentPage = $event"></app-paginator>
+</div>

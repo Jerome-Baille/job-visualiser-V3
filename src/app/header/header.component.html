@@ -1,0 +1,44 @@
+<header class="header">
+  <div class="header-container">
+    <a routerLink="/" class="logo-link" aria-label="Go to homepage">
+      <img src="assets/img/job-visualizer-logo.png" alt="Job Tracker logo" width="100" />
+    </a>
+
+    <!-- Mobile menu button -->
+    <button class="menu-btn" aria-label="Open the menu" (click)="toggleMenu()" *ngIf="!isLargerThanMD">
+      <span class="fa fa-bars"></span>
+    </button>
+
+    <!-- Mobile menu -->
+    <nav class="nav-menu mobile" *ngIf="menuOpen && !isLargerThanMD">
+      <ul>
+        <li *ngIf="isAuthenticated"><a routerLink="/dashboard" (click)="toggleMenu()"><span class="fa fa-chart-line"></span> Dashboard</a></li>
+        <li *ngIf="isAuthenticated"><a routerLink="/list" (click)="toggleMenu()"><span class="fa fa-list"></span> List of applications</a></li>
+        <li *ngIf="isAuthenticated"><a routerLink="/create" (click)="toggleMenu()"><span class="fa fa-plus-circle"></span> Add a job application</a></li>
+        <li *ngIf="isAuthenticated"><a routerLink="/job-boards" (click)="toggleMenu()"><span class="fa fa-handshake"></span> Job Boards</a></li>
+        <li><a routerLink="/how-to-use" (click)="toggleMenu()"><span class="fa fa-question-circle"></span> How does it work?</a></li>
+        <li *ngIf="isAuthenticated"><a routerLink="/profile" (click)="toggleMenu()"><span class="fa fa-user"></span> Profile</a></li>
+        <li *ngIf="isAuthenticated"><a href="#" (click)="logout(); toggleMenu()"><span class="fa fa-sign-out-alt"></span> Logout</a></li>
+        <li *ngIf="!isAuthenticated"><a routerLink="/auth" (click)="toggleMenu()"><span class="fa fa-sign-in-alt"></span> Login</a></li>
+      </ul>
+    </nav>
+
+    <!-- Desktop menu -->
+    <nav class="nav-menu desktop" *ngIf="isLargerThanMD">
+      <ul>
+        <li><a routerLink="/how-to-use"><span class="fa fa-question-circle"></span> How does it work?</a></li>
+        <ng-container *ngIf="!isAuthenticated">
+          <li><a routerLink="/auth"><span class="fa fa-sign-in-alt"></span> Login</a></li>
+        </ng-container>
+        <ng-container *ngIf="isAuthenticated">
+          <li><a routerLink="/dashboard"><span class="fa fa-chart-line"></span> Dashboard</a></li>
+          <li><a routerLink="/list"><span class="fa fa-list"></span> List of applications</a></li>
+          <li><a routerLink="/create"><span class="fa fa-plus-circle"></span> Add a job application</a></li>
+          <li><a routerLink="/job-boards"><span class="fa fa-handshake"></span> Job Boards</a></li>
+          <li><a routerLink="/profile"><span class="fa fa-user"></span> Profile</a></li>
+          <li><a href="#" (click)="logout()"><span class="fa fa-sign-out-alt"></span> Logout</a></li>
+        </ng-container>
+      </ul>
+    </nav>
+  </div>
+</header>

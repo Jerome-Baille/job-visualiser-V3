@@ -1,0 +1,14 @@
+
+<div class="job-boards-grid">
+  <a
+    *ngFor="let jobBoard of jobBoardsData"
+    [href]="jobBoard.link"
+    target="_blank"
+    rel="noreferrer"
+    class="job-board__card"
+  >
+    <div class="job-board__img-container">
+      <img [src]="jobBoard.logo" [alt]="'Logo of ' + jobBoard.name + ' job board'" />
+    </div>
+  </a>
+</div>

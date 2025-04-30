@@ -1,0 +1,73 @@
+<div *ngIf="loading" class="loading">Loading...</div>
+<div *ngIf="!loading">
+  <ng-container *ngIf="isAuthenticated; else notLoggedIn">
+    <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="job-form">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" type="text" />
+        <div class="error" *ngIf="jobForm.get('name')?.invalid && jobForm.get('name')?.touched">Name is required</div>
+      </div>
+      <div class="form-group">
+        <label for="company">Company</label>
+        <input id="company" formControlName="company" type="text" />
+        <div class="error" *ngIf="jobForm.get('company')?.invalid && jobForm.get('company')?.touched">Company is required</div>
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input id="location" formControlName="location" type="text" />
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" formControlName="type">
+          <option value="Remote">Remote</option>
+          <option value="Hybrid">Hybrid</option>
+          <option value="On site">On site</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="link">Link</label>
+        <input id="link" formControlName="link" type="text" />
+        <button *ngIf="jobForm.get('link')?.value" type="button" (click)="openLink(jobForm.get('link')?.value)">Open Link</button>
+      </div>
+      <div class="form-group">
+        <label for="applicationDate">Application Date</label>
+        <input id="applicationDate" formControlName="applicationDate" type="date" />
+        <div class="error" *ngIf="jobForm.get('applicationDate')?.invalid && jobForm.get('applicationDate')?.touched">Application date is required</div>
+      </div>
+      <div class="form-group">
+        <label for="interviewDate">Interview Date</label>
+        <input id="interviewDate" formControlName="interviewDate" type="text" />
+      </div>
+      <div class="form-group">
+        <label for="decisionDate">Decision Date</label>
+        <input id="decisionDate" formControlName="decisionDate" type="text" />
+      </div>
+      <div class="form-group">
+        <label for="decision">Decision</label>
+        <select id="decision" formControlName="decision">
+          <option value="positive">Positive</option>
+          <option value="negative">Negative</option>
+          <option value="in progress">In progress</option>
+          <option value="expired">Expired</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+        <button type="button" class="btn btn-secondary" (click)="setTodayRefusal()">Today</button>
+        <button type="submit" class="btn btn-primary" [disabled]="jobForm.invalid">Submit</button>
+      </div>
+    </form>
+
+    <div *ngIf="showDeleteConfirm" class="modal">
+      <div class="modal-content">
+        <p>Are you sure? You can't undo this action afterwards.</p>
+        <button (click)="cancelDelete()">Cancel</button>
+        <button class="btn btn-danger" (click)="deleteJob()">Delete</button>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #notLoggedIn>
+    <div class="not-logged">You must be logged in to view this page.</div>
+  </ng-template>
+</div>

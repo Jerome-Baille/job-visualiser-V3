@@ -1,0 +1,53 @@
+<form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="create-form">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" formControlName="name" type="text" class="form-control" placeholder="Name" />
+    <div class="error" *ngIf="createForm.get('name')?.touched && createForm.get('name')?.invalid">Name is required</div>
+  </div>
+  <div class="form-group">
+    <label for="company">Company</label>
+    <input id="company" formControlName="company" type="text" class="form-control" placeholder="Company" />
+    <div class="error" *ngIf="createForm.get('company')?.touched && createForm.get('company')?.invalid">Company is required</div>
+  </div>
+  <div class="form-group">
+    <label for="location">Location</label>
+    <input id="location" formControlName="location" type="text" class="form-control" placeholder="Location" />
+    <div class="error" *ngIf="createForm.get('location')?.touched && createForm.get('location')?.invalid">Location is required</div>
+  </div>
+  <div class="form-group">
+    <label for="type">Type</label>
+    <select id="type" formControlName="type" class="form-control">
+      <option value="Remote">Remote</option>
+      <option value="Hybrid">Hybrid</option>
+      <option value="On site">On site</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="link">Link</label>
+    <input id="link" formControlName="link" type="text" class="form-control" placeholder="Link" />
+    <div class="error" *ngIf="createForm.get('link')?.touched && createForm.get('link')?.invalid">Link is required</div>
+  </div>
+  <div class="form-group">
+    <label for="applicationDate">Application Date</label>
+    <input id="applicationDate" formControlName="applicationDate" type="date" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="interviewDate">Interview Date</label>
+    <input id="interviewDate" formControlName="interviewDate" type="date" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="decisionDate">Decision Date</label>
+    <input id="decisionDate" formControlName="decisionDate" type="date" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="decision">Decision</label>
+    <select id="decision" formControlName="decision" class="form-control">
+      <option value="positive">Positive</option>
+      <option value="negative">Negative</option>
+      <option value="in progress">In progress</option>
+      <option value="expired">Expired</option>
+      <option value="unknown">Unknown</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-warning" [disabled]="isSubmitting || createForm.invalid">Submit</button>
+</form>

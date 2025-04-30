@@ -1,0 +1,15 @@
+<div *ngIf="isAuthenticated; else notLogged">
+  <div class="status-grid">
+    <div class="box-status positive">Positive: <strong>{{ positiveJobs }}</strong></div>
+    <div class="box-status in-progress">In Progress: <strong>{{ inProgressJobs }}</strong></div>
+    <div class="box-status unknown">Unknown: <strong>{{ unknownJobs }}</strong></div>
+    <div class="box-status negative">Negative: <strong>{{ negativeJobs }}</strong></div>
+  </div>
+  <app-in-progress-jobs [jobs]="jobs"></app-in-progress-jobs>
+  <app-chart-container [jobs]="jobs"></app-chart-container>
+</div>
+<ng-template #notLogged>
+  <div>
+    <p>You are not logged in.</p>
+  </div>
+</ng-template>

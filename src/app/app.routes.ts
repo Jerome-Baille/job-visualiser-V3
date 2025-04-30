@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { AfterLoginComponent } from './auth/after-login/after-login.component';
 import { AfterRegisterComponent } from './auth/after-register/after-register.component';
-import { AuthComponent } from './auth/auth.component';
+import { AuthComponent } from './auth/auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LayoutComponent } from './components/layout/layout.component';
-import { Page404Component } from './components/page404/page404.component';
+import { Page404Component } from './page404/page404.component';
+import { AppComponent } from './app.component';
 
 export const routes: Routes = [
     // Auth callback routes at root level
@@ -14,7 +14,7 @@ export const routes: Routes = [
     // Main app routes under Layout
     {
         path: '',
-        component: LayoutComponent,
+        component: AppComponent,
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent },
@@ -23,7 +23,7 @@ export const routes: Routes = [
             { path: 'job-boards', loadComponent: () => import('./job-boards/job-boards.component').then(m => m.JobBoardsComponent) },
             { path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
             { path: 'how-to-use', loadComponent: () => import('./how-to-use/how-to-use.component').then(m => m.HowToUseComponent) },
-            { path: 'job/:id', loadComponent: () => import('./list/detail.component').then(m => m.DetailComponent) },
+            { path: 'job/:id', loadComponent: () => import('./list/detail/detail.component').then(m => m.DetailComponent) },
             { path: 'auth', component: AuthComponent },
             { path: '**', component: Page404Component },
         ]

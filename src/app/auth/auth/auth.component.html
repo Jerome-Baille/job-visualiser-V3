@@ -1,0 +1,14 @@
+<div class="auth-card">
+  <div class="auth-body">
+    <app-login-form *ngIf="isLogin"></app-login-form>
+    <app-register-form *ngIf="!isLogin"></app-register-form>
+  </div>
+  <div class="auth-footer">
+    <span>
+      {{ isLogin ? 'Need an account?' : 'Already have an account?' }}
+      <a href="#" (click)="toggleForm(); $event.preventDefault();">
+        {{ isLogin ? 'Register' : 'Login' }}
+      </a>
+    </span>
+  </div>
+</div>

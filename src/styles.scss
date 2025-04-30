@@ -1,1 +1,263 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #FFF0C5;
+    --secondary-color: #FCE7AA;
+
+    --link-color: #C70406;
+    --link-accent-color: #F2190A;
+    --background-color: #fff;
+
+    --error-color: #f44336;
+    --warning-color: #ff9800;
+    --info-color: #2196f3;
+    --success-color: #4caf50;
+
+    --light-border: #eee;
+    --dark-border: #333;
+
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+#root {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: var(--primary-color);
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none !important;
+    color: var(--link-color) !important;
+}
+
+a:hover {
+    color: var(--link-accent-color) !important;
+}
+
+.main-container {
+    margin: 20px auto;
+    margin-bottom: 50px;
+    padding: 0 12px;
+}
+
+.bg-positive,
+.bg-positive td {
+    background-color: #e2efda;
+    color: #375623;
+}
+
+.bg-negative,
+.bg-negative td {
+    background-color: #fce4d6;
+    color: #833c0c;
+}
+
+.bg-expired,
+.bg-expired td {
+    background-color: #d6dce4;
+    color: #161616;
+}
+
+.bg-in-progress,
+.bg-in-progress td {
+    background-color: #ddebf7;
+    color: #1f4e78;
+}
+
+.job-board__card {
+    border: rgba(0, 0, 0, 0.6) 1px solid;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    background-color: var(--background-color);
+}
+
+.job-board__card:hover {
+    position: relative;
+    z-index: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+.job-board__card:hover::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-color: #399953;
+    background-repeat: no-repeat;
+    background-size: 50% 50%, 50% 50%;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#335384, #335384);
+    animation: rotate 4s linear infinite;
+}
+
+.job-board__card:hover::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 6px;
+    top: 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    background: white;
+    border-radius: 5px;
+    opacity: 1;
+}
+
+.job-board__img-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    background-color: var(--background-color);
+}
+
+.sidebar .chakra-link.active:not(.sidebar-toggler),
+.sidebar .chakra-link:hover:not(.sidebar-toggler) {
+    background-color: var(--secondary-color) !important;
+    border-radius: 8px 0 0 8px;
+}
+
+.sidebar .chakra-link,
+.header .chakra-link {
+    display: flex;
+    column-gap: 2rem;
+    align-items: center;
+    padding: 1rem;
+    white-space: nowrap;
+}
+
+.sidebar .chakra-link .sidebar-text,
+.header .chakra-link .sidebar-text {
+    z-index: 2;
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar .chakra-link .sidebar-text.hidden,
+.header .chakra-link .sidebar-text.hidden {
+    opacity: 0;
+    z-index: -1;
+}
+
+@media screen and (min-width: 768px) {
+
+    .sidebar .chakra-link,
+    .header .chakra-link {
+        column-gap: 0.5rem;
+    }
+}
+
+.sidebar {
+    row-gap: 2rem;
+    transition: width 0.3s ease-in-out;
+    width: 270px;
+    margin-left: 8px;
+}
+
+.sidebar.closed {
+    width: 50px;
+}
+
+.sidebar .sidebar-text {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.sidebar.closed .sidebar-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.background-container {
+    background-color: var(--secondary-color);
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 126px);
+    border-radius: 8px;
+    z-index: 20;
+}
+
+.sidebar-toggler {
+    font-size: 1.5rem;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.home-tabs {
+    background-color: var(--background-color);
+    border-radius: 8px;
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+}
+
+.loader .ring-loader {
+    transform: scale(2);
+}
+
+.header {
+    max-width: 1280px;
+    margin: auto;
+}
+
+.header>div {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.logout-button {
+    color: var(--link-color) !important;
+}
+
+.logout-button:hover {
+    color: var(--link-accent-color) !important;
+    outline: none !important;
+    border-color: var(--primary-color) !important;
+}
+
+.box-status {
+    width: 150px;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: var(--background-color);
+}
+
+.header-menu {
+    z-index: 999;
+}
+
+.header .chakra-menu__menu-button:active,
+.header .chakra-menu__menu-button:focus,
+.header .chakra-menu__menu-button:hover {
+    background-color: var(--secondary-color) !important;
+}
