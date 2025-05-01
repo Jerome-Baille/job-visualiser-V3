@@ -5,10 +5,11 @@ import { AuthService } from './services/auth.service';
 import { LoaderService } from './services/loader.service';
 import { AuthComponent } from "./auth/auth/auth.component";
 import { HeaderComponent } from "./header/header.component";
+import { SidebarComponent } from "./sidebar/sidebar.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, AuthComponent, HeaderComponent],
+  imports: [RouterOutlet, CommonModule, AuthComponent, HeaderComponent, SidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

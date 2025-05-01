@@ -4,9 +4,7 @@
 
     <ng-container *ngIf="isAuthenticated; else authView">
       <div class="flex-container" style="max-width:1280px; margin:auto; display:flex;">
-        <!-- Sidebar placeholder: implement <app-sidebar> if you create a sidebar component -->
-        <div *ngIf="isLargerThanMD" class="sidebar-placeholder"
-          style="width:220px; background:#f5f5f5; min-height:100vh;">Sidebar</div>
+        <app-sidebar></app-sidebar>
         <div class="background-container" style="flex:1;">
           <main class="main-container">
             <router-outlet></router-outlet>

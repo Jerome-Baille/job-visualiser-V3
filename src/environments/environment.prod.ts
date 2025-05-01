@@ -1,4 +1,4 @@
-const authBaseURL = 'https://auth.jerome-baille.fr';
+const authBaseURL = 'https://auth.jerome-baille.fr/api';
 const apiBaseURL = 'https://test.jerome-baille.fr/api';
 
 export const environment = {
@@ -7,7 +7,7 @@ export const environment = {
     apiBaseURL: apiBaseURL,
     userURL: `${apiBaseURL}/user`,
     authURL: `${authBaseURL}/auth`,
-    authFrontURL: authBaseURL,
+    authFrontURL: 'https://auth.jerome-baille.fr',
     jobURL: `${apiBaseURL}/job`,
     exportURL: `${apiBaseURL}/export`,
     taskURL: `${apiBaseURL}/task`,
