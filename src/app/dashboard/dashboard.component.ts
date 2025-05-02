@@ -42,7 +42,7 @@ export class DashboardComponent implements OnDestroy {
       if (isAuth && !this.jobsLoaded) {
         try {
           // Get all opportunities with a large limit to ensure we get all data for the dashboard
-          const response = await this.jobService.getOpportunities(1000, 0);
+          const response = await this.jobService.getOpportunities();
           this.jobs = response.data;
           this.jobsLoaded = true;
         } catch (error: any) {

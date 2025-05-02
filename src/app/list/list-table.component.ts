@@ -40,12 +40,17 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
   ngOnInit() {
     // Listen to URL query params changes and update the component state accordingly
     this.route.queryParamMap
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
+        console.log('URL params changed:', params.keys, { 
+          page: params.get('page'), 
+          pageSize: params.get('pageSize'),
+          isNavigatingFromPaginator: this.isNavigatingFromPaginator
+        });
+        
         // Skip if this navigation was triggered by our paginator
         // to avoid creating an infinite loop
         if (this.isNavigatingFromPaginator) {
@@ -56,26 +61,34 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const pageParam = params.get('page');
         const pageSizeParam = params.get('pageSize');
         
-        // Handle page
+        // Handle page - explicitly parse as number and subtract 1 for 0-based index
         if (pageParam) {
-          // In URL we use 1-based index, in code we use 0-based index
-          const page = parseInt(pageParam, 10);
-          this.currentPage = page > 0 ? page - 1 : 0;
+          const pageNum = parseInt(pageParam, 10);
+          if (!isNaN(pageNum) && pageNum > 0) {
+            this.currentPage = pageNum - 1; // Convert from 1-based (URL) to 0-based (component)
+            console.log(`Setting currentPage to ${this.currentPage} from URL param ${pageParam}`);
+          } else {
+            this.currentPage = 0;
+            console.log('Invalid page param, defaulting to 0');
+          }
         } else {
           this.currentPage = 0;
+          console.log('No page param, defaulting to 0');
         }
 
         // Handle page size
         if (pageSizeParam) {
           const size = parseInt(pageSizeParam, 10);
-          this.pageSize = this.pageSizeOptions.includes(size) ? size : this.pageSize;
+          if (!isNaN(size) && this.pageSizeOptions.includes(size)) {
+            this.pageSize = size;
+          }
         }
 
-        // Sync paginator if it's available
-        this.syncPaginatorWithCurrentState();
-        
         // Load the data for the current page
         this.loadJobs(this.currentPage, this.pageSize);
+        
+        // Sync paginator after a small delay to ensure it's available
+        setTimeout(() => this.syncPaginatorWithCurrentState(), 0);
       });
   }
 
@@ -90,21 +103,30 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
   /**
    * Synchronizes the paginator with the current component state
    */
   private syncPaginatorWithCurrentState() {
     if (this.paginator) {
+      console.log('Syncing paginator with state:', { 
+        currentPage: this.currentPage, 
+        pageSize: this.pageSize,
+        currentPaginatorIndex: this.paginator.pageIndex
+      });
       this.paginator.pageIndex = this.currentPage;
       this.paginator.pageSize = this.pageSize;
+      // Force change detection
+      setTimeout(() => {
+        console.log('After sync:', { paginator: this.paginator.pageIndex, currentPage: this.currentPage });
+      }, 0);
     }
   }
-
   async loadJobs(page: number = 0, pageSize: number = 10) {
+    console.log('Loading jobs with params:', { page, pageSize, offset: page * pageSize });
     this.loading = true;
     try {
       const response = await this.jobService.getOpportunities(pageSize, page * pageSize);
+      console.log('API response:', response);
       this.paginationInfo = response.pagination;
       this.totalItems = response.pagination.total;
       
@@ -116,20 +138,26 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       
       this.dataSource.data = jobs;
       this.allJobs = jobs; // Store for filtering
+      
+      // Ensure paginator reflects current page
+      this.syncPaginatorWithCurrentState();
     } catch (error) {
       console.error('Failed to fetch jobs:', error);
     } finally {
       this.loading = false;
     }
   }
-
   onPageChange(event: PageEvent) {
+    console.log('Page change event:', event);
+    
     // Set flag to prevent processing the URL change
     this.isNavigatingFromPaginator = true;
     
     // Update component state
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
+    
+    console.log('Updated state:', { currentPage: this.currentPage, pageSize: this.pageSize });
     
     // Update URL query params and then load data directly
     this.router.navigate([], {

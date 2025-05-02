@@ -14,7 +14,7 @@ export class JobService {
     );
   }
 
-  async getOpportunities(limit: number = 10, offset: number = 0): Promise<PaginatedResponse<JobData>> {
+  async getOpportunities(limit?: number, offset?: number): Promise<PaginatedResponse<JobData>> {
     return firstValueFrom(
       this.http.get<PaginatedResponse<JobData>>(`${environment.jobURL}?limit=${limit}&offset=${offset}`, { withCredentials: true })
     );
