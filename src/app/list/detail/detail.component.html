@@ -62,20 +62,20 @@
                   Application date is required
                 </mat-error>
               </mat-form-field>
-            </div>
-
-            <div class="form-row">
+            </div>            <div class="form-row">
               <mat-form-field appearance="outline" class="wide-field">
-                <mat-label>Interview</mat-label>
-                <textarea matInput formControlName="interviewDate" placeholder="Enter interview details and date"
-                  rows="3"></textarea>
+                <mat-label>Interview Date</mat-label>
+                <input matInput [matDatepicker]="interviewPicker" formControlName="interviewDate">
+                <mat-datepicker-toggle matIconSuffix [for]="interviewPicker"></mat-datepicker-toggle>
+                <mat-datepicker #interviewPicker></mat-datepicker>
               </mat-form-field>
             </div>
 
-            <div class="form-row">
-              <mat-form-field appearance="outline">
+            <div class="form-row">              <mat-form-field appearance="outline">
                 <mat-label>Decision Date</mat-label>
-                <input matInput formControlName="decisionDate" placeholder="Enter decision date">
+                <input matInput [matDatepicker]="decisionPicker" formControlName="decisionDate">
+                <mat-datepicker-toggle matIconSuffix [for]="decisionPicker"></mat-datepicker-toggle>
+                <mat-datepicker #decisionPicker></mat-datepicker>
               </mat-form-field>
 
               <mat-form-field appearance="outline">

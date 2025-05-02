@@ -1,45 +1,161 @@
+@use 'sass:color';
 
-.create-form {
-  max-width: 480px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
+/* Use the variables from styles.scss without importing */
+/* The :root variables will be available globally */
+
+.job-detail-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.job-card {
+  background-color: var(--background-color);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  box-shadow: var(--elevation-z2);
+  overflow: hidden;
+  
+  mat-card-header {
+    background-color: var(--secondary-color);
+    padding: 16px 24px;
+    
+    mat-card-title {
+      font-size: 24px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    mat-card-subtitle {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+  
+  mat-card-content {
+    padding: 24px;
+  }
 }
-.form-group {
-  margin-bottom: 1.25rem;
+
+.job-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    mat-form-field {
+      flex: 1;
+      width: 100%;
+    }
+    
+    &.date-container {
+      align-items: flex-start;
+    }
+  }
+  
+  .wide-field {
+    width: 100%;
+  }
 }
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+
+mat-card-actions {
+  padding: 16px 24px;
+  
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 12px;
+      
+      button {
+        width: 100%;
+      }
+      
+      .spacer {
+        display: none;
+      }
+    }
+  }
 }
-.form-control {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  font-size: 1rem;
-  background: #fafafa;
-  margin-bottom: 0.25rem;
+
+.spacer {
+  flex: 1;
 }
-.btn.btn-warning {
-  background: #ffc107;
-  color: #222;
-  border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
+
+.button-gap {
+  width: 16px;
+  display: inline-block;
 }
-.btn.btn-warning:disabled {
-  background: #ffe082;
-  cursor: not-allowed;
+
+button {
+  mat-icon {
+    margin-right: 4px;
+  }
 }
-.error {
-  color: #e53e3e;
-  font-size: 0.95em;
-  margin-top: -0.25rem;
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;  gap: 8px;
+  height: 40px;
+  transition: background-color 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    background-color: var(--link-color);
+    filter: brightness(0.9);
+  }
+  
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.38);
+  }
+}
+
+/* Custom colors for material theme */
+::ng-deep {
+  .mat-mdc-raised-button.mat-primary {
+    background-color: var(--link-color) !important;
+    color: white !important;
+  }
+  
+  .mat-mdc-raised-button.mat-primary:hover {
+    background-color: var(--link-accent-color) !important;
+  }
+  
+  .mat-mdc-button.mat-accent {
+    color: var(--link-color) !important;
+  }
+  
+  .mat-mdc-button.mat-accent:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+  }
+  
+  .mat-calendar-body-selected {
+    background-color: var(--link-color) !important;
+    color: white !important;
+  }
+  
+  .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+    border-color: var(--link-color) !important;
+  }
+  
+  .mat-mdc-form-field-focus-overlay {
+    background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+  }
+  
+  .mat-mdc-select-arrow {
+    color: var(--link-color) !important;
+  }
 }

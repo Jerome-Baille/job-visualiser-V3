@@ -1,53 +1,117 @@
-<form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="create-form">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input id="name" formControlName="name" type="text" class="form-control" placeholder="Name" />
-    <div class="error" *ngIf="createForm.get('name')?.touched && createForm.get('name')?.invalid">Name is required</div>
-  </div>
-  <div class="form-group">
-    <label for="company">Company</label>
-    <input id="company" formControlName="company" type="text" class="form-control" placeholder="Company" />
-    <div class="error" *ngIf="createForm.get('company')?.touched && createForm.get('company')?.invalid">Company is required</div>
-  </div>
-  <div class="form-group">
-    <label for="location">Location</label>
-    <input id="location" formControlName="location" type="text" class="form-control" placeholder="Location" />
-    <div class="error" *ngIf="createForm.get('location')?.touched && createForm.get('location')?.invalid">Location is required</div>
-  </div>
-  <div class="form-group">
-    <label for="type">Type</label>
-    <select id="type" formControlName="type" class="form-control">
-      <option value="Remote">Remote</option>
-      <option value="Hybrid">Hybrid</option>
-      <option value="On site">On site</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="link">Link</label>
-    <input id="link" formControlName="link" type="text" class="form-control" placeholder="Link" />
-    <div class="error" *ngIf="createForm.get('link')?.touched && createForm.get('link')?.invalid">Link is required</div>
-  </div>
-  <div class="form-group">
-    <label for="applicationDate">Application Date</label>
-    <input id="applicationDate" formControlName="applicationDate" type="date" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="interviewDate">Interview Date</label>
-    <input id="interviewDate" formControlName="interviewDate" type="date" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="decisionDate">Decision Date</label>
-    <input id="decisionDate" formControlName="decisionDate" type="date" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="decision">Decision</label>
-    <select id="decision" formControlName="decision" class="form-control">
-      <option value="positive">Positive</option>
-      <option value="negative">Negative</option>
-      <option value="in progress">In progress</option>
-      <option value="expired">Expired</option>
-      <option value="unknown">Unknown</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-warning" [disabled]="isSubmitting || createForm.invalid">Submit</button>
-</form>
+<div class="job-detail-container">
+  <mat-card class="job-card">
+    <mat-card-header>
+      <mat-card-title>Create New Job Opportunity</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="job-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Job Title</mat-label>
+            <input matInput formControlName="name" placeholder="Enter job title">
+            <mat-icon matSuffix>work</mat-icon>
+            <mat-error *ngIf="createForm.get('name')?.invalid && createForm.get('name')?.touched">
+              Job title is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company</mat-label>
+            <input matInput formControlName="company" placeholder="Enter company name">
+            <mat-icon matSuffix>business</mat-icon>
+            <mat-error *ngIf="createForm.get('company')?.invalid && createForm.get('company')?.touched">
+              Company is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="location" placeholder="Enter location">
+            <mat-icon matSuffix>location_on</mat-icon>
+            <mat-error *ngIf="createForm.get('location')?.invalid && createForm.get('location')?.touched">
+              Location is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Job Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="Remote">Remote</mat-option>
+              <mat-option value="Hybrid">Hybrid</mat-option>
+              <mat-option value="On site">On site</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>apartment</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="wide-field">
+            <mat-label>Job Link</mat-label>
+            <input matInput formControlName="link" placeholder="Enter job posting URL">
+            <mat-icon matSuffix>link</mat-icon>
+            <mat-error *ngIf="createForm.get('link')?.invalid && createForm.get('link')?.touched">
+              Link is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="wide-field">
+            <mat-label>Application Date</mat-label>
+            <input matInput [matDatepicker]="appDatepicker" formControlName="applicationDate">
+            <mat-datepicker-toggle matIconSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #appDatepicker></mat-datepicker>
+            <mat-error *ngIf="createForm.get('applicationDate')?.invalid && createForm.get('applicationDate')?.touched">
+              Application date is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="wide-field">
+            <mat-label>Interview Date</mat-label>
+            <input matInput [matDatepicker]="interviewDatepicker" formControlName="interviewDate">
+            <mat-datepicker-toggle matIconSuffix [for]="interviewDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #interviewDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Decision Date</mat-label>
+            <input matInput [matDatepicker]="decisionDatepicker" formControlName="decisionDate">
+            <mat-datepicker-toggle matIconSuffix [for]="decisionDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #decisionDatepicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Decision</mat-label>
+            <mat-select formControlName="decision">
+              <mat-option value="positive">Positive</mat-option>
+              <mat-option value="negative">Negative</mat-option>
+              <mat-option value="in progress">In progress</mat-option>
+              <mat-option value="expired">Expired</mat-option>
+              <mat-option value="unknown">Unknown</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>fact_check</mat-icon>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <div class="action-buttons">
+        <span class="spacer"></span>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting || createForm.invalid" class="submit-button">
+          <mat-icon>save</mat-icon>
+          <span *ngIf="!isSubmitting">Create Opportunity</span>
+          <mat-spinner diameter="24" *ngIf="isSubmitting"></mat-spinner>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
