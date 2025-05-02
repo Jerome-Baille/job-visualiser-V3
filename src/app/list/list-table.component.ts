@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { JobData, PaginationInfo } from '../interfaces';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TableFilterComponent } from './table-filter.component';
 import { JobService } from '../services/job.service';
 import { Subject } from 'rxjs';
@@ -14,8 +16,19 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-list-table',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule, MatSortModule, TableFilterComponent],
-  templateUrl: './list-table.component.html'
+  imports: [
+    CommonModule, 
+    MatCardModule, 
+    MatTableModule, 
+    MatPaginatorModule, 
+    MatSortModule, 
+    MatIconModule,
+    MatProgressSpinnerModule,
+    RouterModule,
+    TableFilterComponent
+  ],
+  templateUrl: './list-table.component.html',
+  styleUrls: ['./list-table.component.scss']
 })
 export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['name', 'company', 'type', 'applicationDate', 'decision'];

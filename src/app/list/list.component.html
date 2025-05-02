@@ -1,21 +1,53 @@
-<mat-tab-group>
-  <mat-tab label="Refresh">
-    <div style="display: flex; justify-content: center; align-items: center; margin: 1em 0;">
-      <button mat-stroked-button color="primary" (click)="handleRefresh()">Refresh</button>
-    </div>
-  </mat-tab>
-  <mat-tab label="Color code">
-    <div style="margin: 1em 0;">
-      <div class="p-2 bg-negative">Red: you received a "negative" answer to your application</div>
-      <div class="p-2 bg-positive">Green: you received a "positive" answer to your application</div>
-      <div class="p-2 bg-in-progress">Blue: your application is "in progress" (you got an interview)</div>
-      <div class="p-2 bg-expired">Grey: the job offer is no longer available but you did not receive any answer</div>
-      <div class="p-2">White: the status of the job application is unknown at the moment</div>
-    </div>
-  </mat-tab>
-  <mat-tab label="Export">
-    <app-export-data></app-export-data>
-  </mat-tab>
-</mat-tab-group>
+<div class="list-container">
+  <mat-tab-group animationDuration="300ms">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-2">refresh</mat-icon>
+        <span>Refresh</span>
+      </ng-template>
+      <div class="refresh-container">
+        <button mat-raised-button color="primary" (click)="handleRefresh()">
+          <mat-icon>refresh</mat-icon>
+          Refresh Data
+        </button>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-2">palette</mat-icon>
+        <span>Color Legend</span>
+      </ng-template>
+      <div class="color-code-container">
+        <div class="status-box bg-positive">
+          <span class="color-dot"></span>
+          <span>Positive Response</span>
+        </div>
+        <div class="status-box bg-negative">
+          <span class="color-dot"></span>
+          <span>Negative Response</span>
+        </div>
+        <div class="status-box bg-in-progress">
+          <span class="color-dot"></span>
+          <span>In Progress (Interview)</span>
+        </div>
+        <div class="status-box bg-expired">
+          <span class="color-dot"></span>
+          <span>Expired (No Response)</span>
+        </div>
+        <div class="status-box bg-unknown">
+          <span class="color-dot"></span>
+          <span>Unknown Status</span>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="mr-2">download</mat-icon>
+        <span>Export</span>
+      </ng-template>
+      <app-export-data></app-export-data>
+    </mat-tab>
+  </mat-tab-group>
 
-<app-list-table></app-list-table>
+  <app-list-table></app-list-table>
+</div>

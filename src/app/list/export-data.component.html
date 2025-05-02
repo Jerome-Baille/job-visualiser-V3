@@ -1,21 +1,35 @@
-<div class="export-data">
-  <mat-form-field>
+<div class="export-data mat-elevation-z1">
+  <mat-form-field appearance="outline">
     <mat-label>Year</mat-label>
     <mat-select [(value)]="selectedYear">
       <mat-option value="">Select a year</mat-option>
       <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-      <mat-option value="0000">All</mat-option>
+      <mat-option value="0000">All Years</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field>
+  
+  <mat-form-field appearance="outline">
     <mat-label>Format</mat-label>
     <mat-select [(value)]="selectedFormat">
       <mat-option value="">Select a format</mat-option>
-      <mat-option value="excel">Excel</mat-option>
-      <mat-option value="pdf">PDF</mat-option>
+      <mat-option value="excel">
+        <span class="option-with-icon">
+          <mat-icon>table_chart</mat-icon>
+          Excel
+        </span>
+      </mat-option>
+      <mat-option value="pdf">
+        <span class="option-with-icon">
+          <mat-icon>picture_as_pdf</mat-icon>
+          PDF
+        </span>
+      </mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="handleExportClick()" [disabled]="!selectedFormat && !selectedYear">
+  
+  <button mat-raised-button color="primary" (click)="handleExportClick()" 
+          [disabled]="!selectedFormat || !selectedYear">
+    <mat-icon>download</mat-icon>
     Export
   </button>
 </div>

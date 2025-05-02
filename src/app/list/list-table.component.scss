@@ -1,0 +1,232 @@
+.list-table {
+  margin-top: 16px;
+  animation: fadeIn 0.5s ease-in-out;
+
+  mat-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  mat-card-content {
+    padding: 0;
+  }
+
+  // Loading state
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 0;
+    
+    .loading-text {
+      margin-top: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.9rem;
+    }
+  }
+
+  // Empty state
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 0;
+    color: rgba(0, 0, 0, 0.6);
+    
+    .empty-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+      margin-bottom: 16px;
+      color: rgba(0, 0, 0, 0.4);
+    }
+    
+    h3 {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  // Table styling
+  .job-table {
+    width: 100%;
+    
+    .header-cell-content {
+      display: flex;
+      align-items: center;
+      
+      .header-icon {
+        margin-right: 8px;
+        font-size: 18px;
+        height: 18px;
+        width: 18px;
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+    
+    .mat-mdc-header-row {
+      background-color: rgba(var(--primary-color-rgb), 0.15);
+      
+      .mat-mdc-header-cell {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.7);
+        letter-spacing: 0.5px;
+        padding: 16px 12px;
+      }
+    }
+    
+    // Column width adjustments
+    .mat-column-applicationDate {
+      min-width: 120px; // Wider date column
+    }
+    
+    .mat-mdc-row {
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: rgba(var(--primary-color-rgb), 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        
+        .mat-mdc-cell {
+          color: rgba(0, 0, 0, 0.87);
+        }
+      }
+      
+      .mat-mdc-cell {
+        padding: 16px 12px;
+        color: rgba(0, 0, 0, 0.75);
+      }
+    }
+    
+    // Job type tag styling
+    .job-type-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      
+      .type-icon {
+        font-size: 16px;
+        height: 16px;
+        width: 16px;
+        margin-right: 6px;
+      }
+      
+      &.type-remote {
+        background-color: rgba(103, 58, 183, 0.15);
+        color: #5e35b1;
+      }
+      
+      &.type-hybrid {
+        background-color: rgba(0, 150, 136, 0.15);
+        color: #00796b;
+      }
+      
+      &.type-on-site {
+        background-color: rgba(255, 152, 0, 0.15);
+        color: #ef6c00;
+      }
+    }
+    
+    // Decision indicator styling
+    .decision-indicator {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      
+      .decision-icon {
+        font-size: 16px;
+        height: 16px;
+        width: 16px;
+        margin-right: 6px;
+      }
+      
+      &.decision-positive {
+        background-color: rgba(76, 175, 80, 0.15);
+        color: #2e7d32;
+      }
+      
+      &.decision-negative {
+        background-color: rgba(244, 67, 54, 0.15);
+        color: #c62828;
+      }
+      
+      &.decision-in-progress {
+        background-color: rgba(33, 150, 243, 0.15);
+        color: #1565c0;
+      }
+      
+      &.decision-expired {
+        background-color: rgba(158, 158, 158, 0.15);
+        color: #616161;
+      }
+    }
+    
+    // Date cell styling
+    .date-cell {
+      padding: 4px 8px;
+      background-color: rgba(var(--primary-color-rgb), 0.06);
+      border-radius: 4px;
+      display: inline-block;
+      font-family: monospace;
+      font-weight: 500;
+    }
+  }
+  
+  // Row status colors
+  .status-positive {
+    background-color: rgba(76, 175, 80, 0.05);
+  }
+  
+  .status-negative {
+    background-color: rgba(244, 67, 54, 0.05);
+  }
+  
+  .status-in-progress {
+    background-color: rgba(33, 150, 243, 0.05);
+  }
+  
+  .status-expired {
+    background-color: rgba(158, 158, 158, 0.05);
+  }
+
+  // Paginator styling
+  mat-paginator {
+    background-color: rgba(var(--primary-color-rgb), 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  // Pagination info
+  .pagination-info {
+    padding: 8px 16px;
+    color: rgba(0, 0, 0, 0.6);
+    font-style: italic;
+    text-align: right;
+    background-color: rgba(var(--primary-color-rgb), 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -4,12 +4,21 @@ import { ToastService } from '../services/toast.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-export-data',
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, MatButtonModule],
-  templateUrl: './export-data.component.html'
+  imports: [
+    CommonModule,
+    MatFormFieldModule, 
+    MatSelectModule, 
+    MatButtonModule, 
+    MatIconModule
+  ],
+  templateUrl: './export-data.component.html',
+  styleUrls: ['./export-data.component.scss']
 })
 export class ExportDataComponent {
   selectedFormat = '';
