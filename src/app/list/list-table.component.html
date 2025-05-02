@@ -1,5 +1,5 @@
 <div class="list-table">
-  <app-table-filter [jobs]="dataSource.data" (jobFilteredChange)="applyFilter($event)"></app-table-filter>
+  <app-table-filter [jobs]="allJobs" (jobFilteredChange)="applyFilter($event)"></app-table-filter>
   <mat-card>
     <mat-card-content>
       <div *ngIf="loading" class="mat-caption">Loading...</div>
@@ -29,8 +29,16 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [pageSize]="20" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
-        <div class="mat-caption">{{ dataSource.data.length }} results</div>
+        <mat-paginator 
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions" 
+          (page)="onPageChange($event)"
+          showFirstLastButtons
+        ></mat-paginator>
+        <div class="mat-caption" *ngIf="paginationInfo">
+          Showing {{ (currentPage * pageSize) + 1 }} - {{ Math.min((currentPage + 1) * pageSize, totalItems) }} of {{ totalItems }} results
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

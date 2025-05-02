@@ -18,6 +18,18 @@ export interface OpportunitiesStats {
     responsesToInterviews: number;
   };
 }
+
+export interface PaginationInfo {
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: PaginationInfo;
+}
+
 export interface UserData {
     id?: number;
     username: string;

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, effect, EffectRef } from '@angular/core';
 import { JobService } from '../services/job.service';
-import { JobData } from '../interfaces';
+import { JobData, PaginatedResponse } from '../interfaces';
 import { LoaderService } from '../services/loader.service';
 import { ToastService } from '../services/toast.service';
 import { AuthService } from '../services/auth.service';
@@ -37,12 +37,13 @@ export class DashboardComponent implements OnDestroy {
     private toast: ToastService,
     public auth: AuthService
   ) {
-    this.loader.show();
-    this.destroyEffect = effect(async () => {
+    this.loader.show();    this.destroyEffect = effect(async () => {
       const isAuth = this.auth.isAuthenticated();
       if (isAuth && !this.jobsLoaded) {
         try {
-          this.jobs = await this.jobService.getOpportunities();
+          // Get all opportunities with a large limit to ensure we get all data for the dashboard
+          const response = await this.jobService.getOpportunities(1000, 0);
+          this.jobs = response.data;
           this.jobsLoaded = true;
         } catch (error: any) {
           this.toast.error(error?.message || 'An unknown error occurred');

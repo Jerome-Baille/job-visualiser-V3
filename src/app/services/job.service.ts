@@ -1,4 +1,4 @@
-import { OpportunitiesStats } from '../interfaces';
+import { OpportunitiesStats, PaginatedResponse } from '../interfaces';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -8,16 +8,15 @@ import { JobData } from '../interfaces';
 @Injectable({ providedIn: 'root' })
 export class JobService {
   constructor(private http: HttpClient) {}
-
   async getOpportunitiesStats(): Promise<OpportunitiesStats> {
     return firstValueFrom(
       this.http.get<OpportunitiesStats>(`${environment.jobURL}/stats`, { withCredentials: true })
     );
   }
 
-  async getOpportunities(): Promise<JobData[]> {
+  async getOpportunities(limit: number = 10, offset: number = 0): Promise<PaginatedResponse<JobData>> {
     return firstValueFrom(
-      this.http.get<JobData[]>(`${environment.jobURL}`, { withCredentials: true })
+      this.http.get<PaginatedResponse<JobData>>(`${environment.jobURL}?limit=${limit}&offset=${offset}`, { withCredentials: true })
     );
   }
 
