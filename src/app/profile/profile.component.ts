@@ -4,13 +4,28 @@ import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, 
 import { UserService } from '../services/user.service';
 import { UserData } from '../interfaces';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-profile',
-  standalone: true,
-  imports: [
+  standalone: true,  imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    MatDividerModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

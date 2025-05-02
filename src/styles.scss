@@ -104,6 +104,10 @@ a:hover {
     width: 100px;
     height: 100px;
     background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .job-board__card:hover {

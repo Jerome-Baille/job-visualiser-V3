@@ -1,53 +1,94 @@
-<div class="profile-card">
-  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" *ngIf="profileForm">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input id="username" type="text" formControlName="username" />
-      <div class="error" *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.invalid">
-        Username is required
-      </div>
-    </div>
+<div class="job-detail-container">
+  <mat-card class="job-card" *ngIf="profileForm">
+    <mat-card-header>
+      <mat-card-title>My Profile</mat-card-title>
+      <mat-card-subtitle>Update your account information</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="job-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="wide-field">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="profileForm.get('username')?.errors?.['required']">
+              Username is required
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <div class="input-group">
-        <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" />
-        <button type="button" (click)="togglePassword()">{{ showPassword ? 'Hide' : 'Show' }}</button>
-      </div>
-      <div class="error" *ngIf="profileForm.get('password')?.touched && profileForm.get('password')?.invalid">
-        <div *ngIf="profileForm.get('password')?.errors?.['required']">Password is required</div>
-        <div *ngIf="profileForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters</div>
-        <div *ngIf="profileForm.get('password')?.errors?.['maxlength']">Password must not exceed 100 characters</div>
-        <div *ngIf="profileForm.get('password')?.errors?.['pattern']">Password must have lowercase, uppercase, and a digit</div>
-      </div>
-    </div>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="wide-field">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password">
+            <button type="button" mat-icon-button matSuffix (click)="togglePassword()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+              <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="profileForm.get('password')?.errors?.['required']">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('password')?.errors?.['minlength']">
+              Password must be at least 8 characters
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('password')?.errors?.['maxlength']">
+              Password must not exceed 100 characters
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('password')?.errors?.['pattern']">
+              Password must include lowercase, uppercase, and a digit
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-    <div class="form-group">
-      <label for="confirmPassword">Confirm Password</label>
-      <div class="input-group">
-        <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" />
-        <button type="button" (click)="toggleConfirmPassword()">{{ showConfirmPassword ? 'Hide' : 'Show' }}</button>
-      </div>
-      <div class="error" *ngIf="profileForm.hasError('mismatch') && profileForm.get('confirmPassword')?.touched">
-        Passwords must match
-      </div>
-    </div>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="wide-field">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword">
+            <button type="button" mat-icon-button matSuffix (click)="toggleConfirmPassword()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showConfirmPassword">
+              <mat-icon>{{showConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="profileForm.hasError('mismatch') && profileForm.get('confirmPassword')?.touched">
+              Passwords must match
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
 
-    <div class="form-actions">
-      <button type="button" class="delete" (click)="openDeleteDialog()">Delete Account</button>
-      <button type="submit" [disabled]="isSubmitting">Submit</button>
-    </div>
-  </form>
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <div class="action-buttons">
+        <button type="button" mat-stroked-button color="warn" (click)="openDeleteDialog()">
+          <mat-icon>delete</mat-icon> Delete Account
+        </button>
+        <span class="spacer"></span>        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting || !profileForm.valid" class="submit-button">
+          <mat-icon *ngIf="!isSubmitting">save</mat-icon>
+          <mat-spinner diameter="24" *ngIf="isSubmitting"></mat-spinner>
+          <span *ngIf="!isSubmitting">Save Changes</span>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
 
   <!-- Delete confirmation dialog -->
   <div class="dialog-overlay" *ngIf="deleteDialogOpen">
-    <div class="dialog">
-      <h2>Delete Account</h2>
-      <p>Are you sure? This action cannot be undone.</p>
-      <div class="dialog-actions">
-        <button (click)="closeDeleteDialog()">Cancel</button>
-        <button class="delete" (click)="handleDelete()">Delete</button>
-      </div>
-    </div>
+    <mat-card class="dialog-card">
+      <mat-card-header>
+        <mat-card-title>Delete Account</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="dialog-message">Are you sure? This action cannot be undone.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="action-buttons">
+          <button mat-button (click)="closeDeleteDialog()">Cancel</button>
+          <span class="spacer"></span>
+          <button mat-raised-button color="warn" (click)="handleDelete()">
+            <mat-icon>delete_forever</mat-icon> Delete
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>
