@@ -53,6 +53,12 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       console.error('Error updating the decision', error);
     }
   }
+
+  goToDetail(job: JobData): void {
+    if (job && job.id) {
+      this.router.navigate(['/job', job.id]);
+    }
+  }
   displayedColumns: string[] = ['name', 'company', 'type', 'applicationDate', 'decision'];
   dataSource = new MatTableDataSource<JobData>([]);
   loading = true;
