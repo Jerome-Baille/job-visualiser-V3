@@ -1,0 +1,176 @@
+/* Use the variables from styles.scss without importing */
+/* The :root variables will be available globally */
+
+.job-detail-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 20px;
+  
+  span {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.job-card {
+  background-color: var(--background-color);
+  border-radius: 8px;
+  box-shadow: var(--elevation-z2);
+  overflow: hidden;
+  
+  mat-card-header {
+    background-color: var(--secondary-color);
+    padding: 16px 24px;
+    
+    mat-card-title {
+      font-size: 24px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    mat-card-subtitle {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+  
+  mat-card-content {
+    padding: 24px;
+  }
+}
+
+.job-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+    .form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    mat-form-field {
+      flex: 1;
+      width: 100%;
+    }
+    
+    &.date-container {
+      align-items: flex-start;
+    }
+    
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+  }
+  
+  .wide-field {
+    width: 100%;
+  }
+}
+
+mat-card-actions {
+  padding: 16px 24px;
+  
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 12px;
+      
+      button {
+        width: 100%;
+      }
+      
+      .spacer {
+        display: none;
+      }
+    }
+  }
+}
+
+.spacer {
+  flex: 1;
+}
+
+.button-gap {
+  width: 16px; /* Adjust the width to control the gap size */
+  display: inline-block;
+}
+
+button {
+  mat-icon {
+    margin-right: 4px;
+  }
+}
+
+/* Custom colors for material theme */
+::ng-deep {
+  .mat-mdc-raised-button.mat-primary {
+    background-color: var(--link-color) !important;
+    color: white !important;
+  }
+  
+  .mat-mdc-raised-button.mat-primary:hover {
+    background-color: var(--link-accent-color) !important;
+  }
+  
+  .mat-mdc-button.mat-accent {
+    color: var(--link-color) !important;
+  }
+  
+  .mat-mdc-button.mat-accent:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+  }
+  
+  .mat-calendar-body-selected {
+    background-color: var(--link-color) !important;
+    color: white !important;
+  }
+  
+  .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+    border-color: var(--link-color) !important;
+  }
+  
+  .mat-mdc-form-field-focus-overlay {
+    background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+  }
+  
+  .mat-mdc-select-arrow {
+    color: var(--link-color) !important;
+  }
+}
+
+.not-logged-card {
+  text-align: center;
+  padding: 40px;
+  
+  .warning-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: var(--link-color);
+    margin-bottom: 16px;
+  }
+  
+  p {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
