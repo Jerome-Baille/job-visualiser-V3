@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { JobData } from '../services/job.service';
+import { JobData } from '../interfaces';
 import { CommonModule } from '@angular/common';
 
 @Component({

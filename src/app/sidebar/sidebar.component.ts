@@ -1,34 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
-  isSidebarClosed = false;
-  isAuthenticated = false;
-
-  constructor(private auth: AuthService) {
-    this.isAuthenticated = this.auth.isAuthenticated();
+export class SidebarComponent implements OnInit {
+  private auth = inject(AuthService);
+  
+  isSidebarClosed = signal(false);
+  
+  ngOnInit(): void {
     this.loadSidebarState();
   }
 
-  toggleSidebar() {
-    this.isSidebarClosed = !this.isSidebarClosed;
+  isAuthenticated(): boolean {
+    return this.auth.isAuthenticated();
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarClosed.update(value => !value);
     this.saveSidebarState();
   }
 
-  loadSidebarState() {
+  loadSidebarState(): void {
     const val = localStorage.getItem('isSidebarClosed');
-    this.isSidebarClosed = val === 'true';
+    this.isSidebarClosed.set(val === 'true');
   }
 
-  saveSidebarState() {
-    localStorage.setItem('isSidebarClosed', String(this.isSidebarClosed));
+  saveSidebarState(): void {
+    localStorage.setItem('isSidebarClosed', String(this.isSidebarClosed()));
   }
 }

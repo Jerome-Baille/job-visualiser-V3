@@ -24,7 +24,7 @@ export class DetailComponent implements OnInit {
   jobForm!: FormGroup;
   jobId: string | null = null;
   loading = true;
-  isAuthenticated = false;
+  readonly isAuthenticated: () => boolean;
   showDeleteConfirm = false;
 
   constructor(
@@ -34,10 +34,11 @@ export class DetailComponent implements OnInit {
     private authService: AuthService,
     private toast: ToastService,
     private router: Router
-  ) {}
+  ) {
+    this.isAuthenticated = this.authService.isAuthenticated;
+  }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.authService.isAuthenticated();
     this.jobId = this.route.snapshot.paramMap.get('id');
     this.initForm();
     if (this.jobId) {

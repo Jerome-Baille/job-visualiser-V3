@@ -1,31 +1,43 @@
-<nav *ngIf="isAuthenticated" [class.closed]="isSidebarClosed" class="sidebar">
-  <button class="sidebar-toggler" (click)="toggleSidebar()" [attr.aria-label]="isSidebarClosed ? 'Open sidebar' : 'Close sidebar'">
-    <span *ngIf="isSidebarClosed">&#x25B6;</span>
-    <span *ngIf="!isSidebarClosed">&#x25C0;</span>
+<nav *ngIf="isAuthenticated()" [class.closed]="isSidebarClosed()" class="sidebar">
+  <button class="sidebar-toggler" (click)="toggleSidebar()" [attr.aria-label]="isSidebarClosed() ? 'Open sidebar' : 'Close sidebar'">
+    <span *ngIf="isSidebarClosed()">&#x25B6;</span>
+    <span *ngIf="!isSidebarClosed()">&#x25C0;</span>
   </button>
   <ul class="sidebar-links">
     <li>
       <a routerLink="/dashboard" routerLinkActive="active" aria-label="Dashboard">
         <span class="sidebar-icon">📊</span>
-        <span class="sidebar-text">Dashboard</span>
+        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Dashboard</span>
       </a>
     </li>
     <li>
       <a routerLink="/list" routerLinkActive="active" aria-label="List of applications">
         <span class="sidebar-icon">📋</span>
-        <span class="sidebar-text">List of applications</span>
+        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">List of applications</span>
       </a>
     </li>
     <li>
       <a routerLink="/create" routerLinkActive="active" aria-label="Add a job application">
         <span class="sidebar-icon">➕</span>
-        <span class="sidebar-text">Add a job application</span>
+        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Add a job application</span>
       </a>
     </li>
     <li>
       <a routerLink="/job-boards" routerLinkActive="active" aria-label="Job Boards">
         <span class="sidebar-icon">🤝</span>
-        <span class="sidebar-text">Job Boards</span>
+        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Job Boards</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/profile" routerLinkActive="active" aria-label="Profile">
+        <span class="sidebar-icon">👤</span>
+        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Profile</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/how-to-use" routerLinkActive="active" aria-label="How to use">
+        <span class="sidebar-icon">❓</span>
+        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">How to use</span>
       </a>
     </li>
   </ul>

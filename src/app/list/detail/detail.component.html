@@ -1,6 +1,6 @@
 <div *ngIf="loading" class="loading">Loading...</div>
 <div *ngIf="!loading">
-  <ng-container *ngIf="isAuthenticated; else notLoggedIn">
+  <ng-container *ngIf="isAuthenticated(); else notLoggedIn">
     <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="job-form">
       <div class="form-group">
         <label for="name">Name</label>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { JobService, JobData } from '../services/job.service';
+import { JobService } from '../services/job.service';
+import { JobData } from '../interfaces';
 import { LoaderService } from '../services/loader.service';
 import { ToastService } from '../services/toast.service';
 import { AuthService } from '../services/auth.service';
@@ -16,18 +17,19 @@ import { ChartContainerComponent } from "./chart-container.component";
 })
 export class DashboardComponent implements OnInit {
   jobs: JobData[] = [];
-  isAuthenticated = false;
+  readonly isAuthenticated: () => boolean;
 
   constructor(
     private jobService: JobService,
     private loader: LoaderService,
     private toast: ToastService,
     private auth: AuthService
-  ) {}
+  ) {
+    this.isAuthenticated = this.auth.isAuthenticated;
+  }
 
   async ngOnInit() {
-    this.isAuthenticated = this.auth.isAuthenticated();
-    if (this.isAuthenticated) {
+    if (this.isAuthenticated()) {
       this.loader.show();
       try {
         this.jobs = await this.jobService.getOpportunities();

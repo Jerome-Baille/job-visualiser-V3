@@ -1,9 +1,0 @@
-<div class="paginator" style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-  <button mat-button color="primary" (click)="firstPage()" [disabled]="currentPage === 1">First</button>
-  <button mat-button color="primary" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
-  <ng-container *ngFor="let page of pageNumbers">
-    <button mat-button color="accent" (click)="pageChange.emit(page)" [disabled]="currentPage === page">{{ page }}</button>
-  </ng-container>
-  <button mat-button color="primary" (click)="nextPage()" [disabled]="currentPage === nPages">Next</button>
-  <button mat-button color="primary" (click)="lastPage()" [disabled]="currentPage === nPages">Last</button>
-</div>

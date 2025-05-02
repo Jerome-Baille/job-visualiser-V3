@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { JobData } from '../services/job.service';
+import { JobData } from '../interfaces';
 
 @Component({
   selector: 'app-chart-container',

@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { JobService } from '../services/job.service';
 import { ToastService } from '../services/toast.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-export-data',
-  templateUrl: './export-data.component.html',
-  styleUrls: ['./export-data.component.scss']
+  standalone: true,
+  imports: [MatFormFieldModule, MatSelectModule, MatButtonModule],
+  templateUrl: './export-data.component.html'
 })
 export class ExportDataComponent {
   selectedFormat = '';

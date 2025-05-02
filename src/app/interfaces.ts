@@ -8,17 +8,21 @@ export interface UserData {
 
 export interface JobData {
     [key: string]: unknown;
-    id?: number;
+    _id?: string;
+    id?: string | number;
+    userId?: string;
     name?: string;
     company?: string;
     location?: string;
     type?: string;
     link?: string;
     applicationDate?: string;
-    applicationYear?: string;
+    applicationYear?: number;
+    interview?: boolean;
     interviewDate?: string;
-    decisionDate?: string;
     decision?: string;
+    decisionDate?: string;
+    favorite?: boolean;
 }
 
 interface Update {

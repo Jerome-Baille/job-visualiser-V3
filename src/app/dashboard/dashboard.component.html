@@ -1,4 +1,4 @@
-<div *ngIf="isAuthenticated; else notLogged">
+<div *ngIf="isAuthenticated(); else notLogged">
   <div class="status-grid">
     <div class="box-status positive">Positive: <strong>{{ positiveJobs }}</strong></div>
     <div class="box-status in-progress">In Progress: <strong>{{ inProgressJobs }}</strong></div>

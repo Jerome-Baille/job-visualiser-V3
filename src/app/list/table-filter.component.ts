@@ -1,10 +1,15 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { JobData } from '../interfaces';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-table-filter',
-  templateUrl: './table-filter.component.html',
-  styleUrls: ['./table-filter.component.scss']
+  standalone: true,
+  imports: [MatExpansionModule, MatFormFieldModule, MatSelectModule, MatButtonModule],
+  templateUrl: './table-filter.component.html'
 })
 export class TableFilterComponent {
   @Input() jobs: JobData[] = [];

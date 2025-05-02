@@ -1,18 +1,19 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { JobData } from '../interfaces';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
-import { TableFilterComponent } from './table-filter.component';
-import { JobService } from '../services/job.service';
+import { Router } from '@angular/router';
+import { JobService } from './services/job.service';
+import { JobData } from './interfaces';
+import { TableFilterComponent } from './list/table-filter.component';
 
 @Component({
   selector: 'app-list-table',
   standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule, MatSortModule, TableFilterComponent],
-  templateUrl: './list-table.component.html'
+  templateUrl: './list/list-table.component.html'
 })
 export class ListTableComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['name', 'company', 'type', 'applicationDate', 'decision'];
@@ -22,18 +23,13 @@ export class ListTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private jobService: JobService) {}
+  constructor(
+    private jobService: JobService,
+    private router: Router
+  ) {}
 
-  async ngOnInit() {
-    try {
-      const data = await this.jobService.getOpportunities();
-      const jobs = (data as any[]).map((job: any) => ({ ...job, id: job.id ? Number(job.id) : undefined }));
-      this.dataSource.data = jobs;
-    } catch (error) {
-      console.error('Failed to fetch jobs:', error);
-    } finally {
-      this.loading = false;
-    }
+  ngOnInit() {
+    this.loadData();
   }
 
   ngAfterViewInit() {
@@ -41,10 +37,20 @@ export class ListTableComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  loadData() {
+    this.jobService.getOpportunities().then(data => {
+      this.dataSource.data = data;
+      this.loading = false;
+    });
+  }
+
   applyFilter(filteredJobs: JobData[]) {
     this.dataSource.data = filteredJobs;
-    if (this.paginator) {
-      this.paginator.firstPage();
+  }
+
+  navigateToDetail(job: JobData) {
+    if (job.id) {
+      this.router.navigate(['/job', job.id]);
     }
   }
 }

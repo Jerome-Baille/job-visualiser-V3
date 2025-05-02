@@ -33,6 +33,7 @@ export class AfterLoginComponent implements OnInit {
               this.toast.success(response.message);
             } else {
               this.toast.success('Successfully logged in!');
+              console.log('Login successful:', response);
             }
             this.router.navigate(['/']);
           } else {
