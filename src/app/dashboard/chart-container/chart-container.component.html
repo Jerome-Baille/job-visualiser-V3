@@ -3,43 +3,51 @@
     <mat-icon inline>insert_chart</mat-icon>
     Job Application Statistics
   </h3>
-  
-  <div class="charts-grid">
-    <!-- Applications per Month -->
-    <div class="chart-card">
-      <h4>Applications per Month</h4>
-      <apx-chart
-        [series]="applicationsPerMonthSeries"
-        [chart]="applicationsPerMonthChart"
-        [xaxis]="applicationsPerMonthXAxis"
-        [colors]="applicationsPerMonthColors">
-      </apx-chart>
-    </div>
 
-    <!-- Decision Outcome Pie -->
-    <div class="chart-card">
-      <h4>Decision Outcomes</h4>
-      <apx-chart
-        [series]="decisionSeries"
-        [chart]="{ type: 'pie', height: 250 }"
-        [labels]="decisionLabels"
-        [colors]="decisionColors">
-      </apx-chart>
-    </div>
+  <ng-container *ngIf="!loading; else loadingTpl">
+    <div class="charts-grid">
+      <!-- Applications per Month -->
+      <div class="chart-card">
+        <h4>Applications per Month</h4>
+        <apx-chart
+          [series]="applicationsPerMonthSeries"
+          [chart]="applicationsPerMonthChart"
+          [xaxis]="applicationsPerMonthXAxis"
+          [colors]="applicationsPerMonthColors">
+        </apx-chart>
+      </div>
 
-    <!-- Funnel Chart (colspan 2) -->
-    <div class="chart-card funnel-colspan">
-      <h4>Funnel: Applications → Responses → Interviews</h4>
-      <apx-chart
-        [series]="funnelSeries"
-        [chart]="funnelChart"
-        [xaxis]="funnelXAxis"
-        [colors]="funnelColors">
-      </apx-chart>
-      <div class="conversion-info">
-        <span>Applications → Responses: <b>{{ conversionAppToResponse }}%</b></span><br>
-        <span>Responses → Interviews: <b>{{ conversionResponseToInterview }}%</b></span>
+      <!-- Decision Outcome Pie -->
+      <div class="chart-card">
+        <h4>Decision Outcomes</h4>
+        <apx-chart
+          [series]="decisionSeries"
+          [chart]="{ type: 'pie', height: 250 }"
+          [labels]="decisionLabels"
+          [colors]="decisionColors">
+        </apx-chart>
+      </div>
+
+      <!-- Funnel Chart (colspan 2) -->
+      <div class="chart-card funnel-colspan">
+        <h4>Funnel: Applications → Responses → Interviews</h4>
+        <apx-chart
+          [series]="funnelSeries"
+          [chart]="funnelChart"
+          [xaxis]="funnelXAxis"
+          [colors]="funnelColors">
+        </apx-chart>
+        <div class="conversion-info">
+          <span>Applications → Responses: <b>{{ conversionAppToResponse }}%</b></span><br>
+          <span>Responses → Interviews: <b>{{ conversionResponseToInterview }}%</b></span>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
+  <ng-template #loadingTpl>
+    <div class="chart-placeholder">
+      <mat-icon class="large-icon">hourglass_empty</mat-icon>
+      <p>Loading statistics...</p>
+    </div>
+  </ng-template>
 </div>

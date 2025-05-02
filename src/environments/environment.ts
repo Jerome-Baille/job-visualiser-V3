@@ -6,5 +6,9 @@ export const environment = {
     authBaseURL: authBaseURL,
     apiBaseURL: apiBaseURL,
     authURL: `${authBaseURL}/auth`,
-    authFrontURL: authBaseURL
+    authFrontURL: authBaseURL,
+    jobURL: `${apiBaseURL}/job`,
+    exportURL: `${apiBaseURL}/export`,
+    taskURL: `${apiBaseURL}/task`,
+    cookieURL: `${apiBaseURL}/cookie`
 };

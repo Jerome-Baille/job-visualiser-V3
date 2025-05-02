@@ -3,7 +3,6 @@ import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { throwError, Observable, from } from 'rxjs';
 import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 // Using signals instead of Subject for token refresh state
 let isRefreshing = false;

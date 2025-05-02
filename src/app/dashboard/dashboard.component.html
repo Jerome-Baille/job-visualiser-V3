@@ -1,5 +1,5 @@
 <div class="dashboard-wrapper">
-  <div *ngIf="isAuthenticated(); else notLogged">    
+  <div *ngIf="isAuthenticated; else notLogged">    
     <div class="status-grid">
       <div class="box-status positive">
         <span>Positive</span>
@@ -20,7 +20,7 @@
     </div>
     
     <div class="dashboard-container">
-      <app-chart-container [jobs]="jobs"></app-chart-container>
+      <app-chart-container></app-chart-container>
     </div>
     
     <div class="dashboard-container">

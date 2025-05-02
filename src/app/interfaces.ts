@@ -1,3 +1,23 @@
+// Statistics returned by /stats endpoint
+export interface OpportunitiesStats {
+  applicationsPerMonth: Record<string, number>; // { 'YYYY-MM': count, ... }
+  decisionOutcomes: {
+    positive: number;
+    negative: number;
+    'in progress': number;
+    expired: number;
+    unknown: number;
+  };
+  funnel: {
+    totalApplications: number;
+    totalResponses: number;
+    totalInterviews: number;
+  };
+  conversionRates: {
+    applicationsToResponses: number;
+    responsesToInterviews: number;
+  };
+}
 export interface UserData {
     id?: number;
     username: string;

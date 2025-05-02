@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { JobData } from '../../interfaces';
+import { Component, OnInit } from '@angular/core';
+import { OpportunitiesStats } from '../../interfaces';
+import { JobService } from '../../services/job.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -12,8 +13,9 @@ import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexTitleSub
   templateUrl: './chart-container.component.html',
   styleUrls: ['./chart-container.component.scss']
 })
-export class ChartContainerComponent implements OnChanges {
-  @Input() jobs: JobData[] = [];
+export class ChartContainerComponent implements OnInit {
+  stats: OpportunitiesStats | null = null;
+  loading = true;
 
   // Chart options
   applicationsPerMonthSeries: ApexAxisChartSeries = [];
@@ -32,58 +34,46 @@ export class ChartContainerComponent implements OnChanges {
   conversionAppToResponse: number = 0;
   conversionResponseToInterview: number = 0;
 
-  ngOnChanges() {
-    this.prepareApplicationsPerMonth();
-    this.prepareDecisionChart();
-    this.prepareFunnelChart();
+  constructor(private jobService: JobService) {}
+
+  async ngOnInit() {
+    this.loading = true;
+    try {
+      this.stats = await this.jobService.getOpportunitiesStats();
+      this.setChartsFromStats();
+    } finally {
+      this.loading = false;
+    }
   }
 
-  // Remove unused response time chart properties if present
-
-  prepareApplicationsPerMonth() {
-    const monthMap: { [key: string]: number } = {};
-    this.jobs.forEach(job => {
-      if (job.applicationDate) {
-        const month = job.applicationDate.slice(0, 7); // YYYY-MM
-        monthMap[month] = (monthMap[month] || 0) + 1;
-      }
-    });
-    const months = Object.keys(monthMap).sort();
-    this.applicationsPerMonthSeries = [{ name: 'Applications', data: months.map(m => monthMap[m]) }];
+  setChartsFromStats() {
+    if (!this.stats) return;
+    // Applications per month (convert object to sorted arrays)
+    const months = Object.keys(this.stats.applicationsPerMonth).sort();
+    const counts = months.map(m => this.stats!.applicationsPerMonth[m]);
+    this.applicationsPerMonthSeries = [{ name: 'Applications', data: counts }];
     this.applicationsPerMonthXAxis = { categories: months };
-  }
 
-  prepareDecisionChart() {
-    const counts: Record<'positive' | 'negative' | 'in progress' | 'expired' | 'unknown', number> = {
-      positive: 0,
-      negative: 0,
-      'in progress': 0,
-      expired: 0,
-      unknown: 0
-    };
-    this.jobs.forEach(job => {
-      if (job.decision) {
-        const key = job.decision.toLowerCase() as keyof typeof counts;
-        if (key in counts) counts[key]++;
-        else counts.unknown++;
-      } else {
-        counts.unknown++;
-      }
-    });
-    this.decisionSeries = [counts.positive, counts.negative, counts['in progress'], counts.expired, counts.unknown];
-  }
+    // Decision outcomes (handle 'in progress' key)
+    const d = this.stats.decisionOutcomes;
+    this.decisionSeries = [
+      d.positive || 0,
+      d.negative || 0,
+      d['in progress'] || 0,
+      d.expired || 0,
+      d.unknown || 0
+    ];
 
-  prepareFunnelChart() {
-    const total = this.jobs.length;
-    // Responses: jobs with a decision (positive, negative, in progress)
-    const responses = this.jobs.filter(j => {
-      const d = (j.decision || '').toLowerCase();
-      return d === 'positive' || d === 'negative' || d === 'in progress';
-    }).length;
-    // Interviews: jobs for which decision is 'in progress'
-    const interviews = this.jobs.filter(j => (j.decision || '').toLowerCase() === 'in progress').length;
-    this.funnelSeries = [{ name: 'Funnel', data: [total, responses, interviews] }];
-    this.conversionAppToResponse = total ? Math.round((responses / total) * 100) : 0;
-    this.conversionResponseToInterview = responses ? Math.round((interviews / responses) * 100) : 0;
+    // Funnel (map new keys)
+    this.funnelSeries = [{
+      name: 'Funnel',
+      data: [
+        this.stats.funnel.totalApplications,
+        this.stats.funnel.totalResponses,
+        this.stats.funnel.totalInterviews
+      ]
+    }];
+    this.conversionAppToResponse = this.stats.conversionRates.applicationsToResponses;
+    this.conversionResponseToInterview = this.stats.conversionRates.responsesToInterviews;
   }
 }

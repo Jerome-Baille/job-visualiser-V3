@@ -50,12 +50,10 @@ export class AuthService {
         next: (response) => {
           this.authState.set(response.status === 'success');
           this.verificationCompleted.set(true);
-          console.log('Auth state verified:', response.status === 'success');
         },
         error: () => {
           this.authState.set(false);
           this.verificationCompleted.set(true);
-          console.error('Auth state verification failed');
         }
       });
   }

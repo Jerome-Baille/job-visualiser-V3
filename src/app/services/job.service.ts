@@ -1,3 +1,4 @@
+import { OpportunitiesStats } from '../interfaces';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -8,38 +9,44 @@ import { JobData } from '../interfaces';
 export class JobService {
   constructor(private http: HttpClient) {}
 
+  async getOpportunitiesStats(): Promise<OpportunitiesStats> {
+    return firstValueFrom(
+      this.http.get<OpportunitiesStats>(`${environment.jobURL}/stats`, { withCredentials: true })
+    );
+  }
+
   async getOpportunities(): Promise<JobData[]> {
     return firstValueFrom(
-      this.http.get<JobData[]>(`${environment.apiBaseURL}/job`, { withCredentials: true })
+      this.http.get<JobData[]>(`${environment.jobURL}`, { withCredentials: true })
     );
   }
 
   async getOpportunity(id: string): Promise<JobData> {
     return firstValueFrom(
-      this.http.get<JobData>(`${environment.apiBaseURL}/job/${id}`, { withCredentials: true })
+      this.http.get<JobData>(`${environment.jobURL}/${id}`, { withCredentials: true })
     );
   }
 
   async postOpportunity(opportunity: JobData): Promise<JobData> {
     return firstValueFrom(
-      this.http.post<JobData>(`${environment.apiBaseURL}/job`, opportunity, { withCredentials: true })
+      this.http.post<JobData>(`${environment.jobURL}`, opportunity, { withCredentials: true })
     );
   }
 
   async putOpportunity(opportunity: JobData): Promise<JobData> {
     return firstValueFrom(
-      this.http.patch<JobData>(`${environment.apiBaseURL}/job/${opportunity.id}`, opportunity, { withCredentials: true })
+      this.http.patch<JobData>(`${environment.jobURL}/${opportunity.id}`, opportunity, { withCredentials: true })
     );
   }
 
   async deleteOpportunity(id: string): Promise<any> {
     return firstValueFrom(
-      this.http.delete(`${environment.apiBaseURL}/job/${id}`, { withCredentials: true })
+      this.http.delete(`${environment.jobURL}/${id}`, { withCredentials: true })
     );
   }
 
   async exportOpportunities(selectedYear: string, selectedFormat: string): Promise<void> {
-    const url = `${environment.apiBaseURL}/export/${selectedYear}/${selectedFormat}`;
+    const url = `${environment.jobURL}/export/${selectedYear}/${selectedFormat}`;
     try {
       const response: any = await firstValueFrom(
         this.http.get(url, { responseType: 'blob' as 'json' })

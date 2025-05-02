@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, effect, EffectRef } from '@angular/core';
 import { JobService } from '../services/job.service';
 import { JobData } from '../interfaces';
 import { LoaderService } from '../services/loader.service';
@@ -11,12 +11,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule, 
-    InProgressJobsComponent, 
+    CommonModule,
+    InProgressJobsComponent,
     ChartContainerComponent,
     MatIconModule,
     MatButtonModule,
@@ -25,29 +26,41 @@ import { RouterLink } from '@angular/router';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnDestroy {
   jobs: JobData[] = [];
-  readonly isAuthenticated: () => boolean;
+  private jobsLoaded = false;
+  private destroyEffect: EffectRef | null = null;
 
   constructor(
     private jobService: JobService,
     private loader: LoaderService,
     private toast: ToastService,
-    private auth: AuthService
+    public auth: AuthService
   ) {
-    this.isAuthenticated = this.auth.isAuthenticated;
+    this.loader.show();
+    this.destroyEffect = effect(async () => {
+      const isAuth = this.auth.isAuthenticated();
+      if (isAuth && !this.jobsLoaded) {
+        try {
+          this.jobs = await this.jobService.getOpportunities();
+          this.jobsLoaded = true;
+        } catch (error: any) {
+          this.toast.error(error?.message || 'An unknown error occurred');
+        } finally {
+          this.loader.hide();
+        }
+      } else if (!isAuth) {
+        this.jobs = [];
+        this.jobsLoaded = false;
+        this.loader.hide();
+        // Optionally, show login prompt here
+      }
+    });
   }
 
-  async ngOnInit() {
-    if (this.isAuthenticated()) {
-      this.loader.show();
-      try {
-        this.jobs = await this.jobService.getOpportunities();
-      } catch (error: any) {
-        this.toast.error(error?.message || 'An unknown error occurred');
-      } finally {
-        this.loader.hide();
-      }
+  ngOnDestroy() {
+    if (this.destroyEffect) {
+      this.destroyEffect.destroy();
     }
   }
 
@@ -62,5 +75,9 @@ export class DashboardComponent implements OnInit {
   }
   get negativeJobs() {
     return this.jobs.filter(job => job.decision === 'negative').length;
+  }
+
+  get isAuthenticated() {
+    return this.auth.isAuthenticated();
   }
 }
