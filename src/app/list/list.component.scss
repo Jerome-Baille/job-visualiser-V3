@@ -6,6 +6,11 @@
   width: 100%;
   max-width: 100%;
   animation: fadeIn 0.5s ease-in-out;
+  
+  // Add margin to mat-tab-group
+  mat-tab-group {
+    margin-bottom: 1rem;
+  }
 }
 
 @keyframes fadeIn {

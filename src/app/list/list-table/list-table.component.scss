@@ -1,5 +1,7 @@
+
+@use 'sass:color';
+
 .list-table {
-  margin-top: 16px;
   animation: fadeIn 0.5s ease-in-out;
 
   mat-card {
@@ -62,34 +64,79 @@
   // Table styling
   .job-table {
     width: 100%;
-    
-    .header-cell-content {
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;    .header-cell-content {
       display: flex;
       align-items: center;
-      
+      gap: 10px;
+      padding: 4px 0;
+      transition: transform 0.2s ease;
       .header-icon {
-        margin-right: 8px;
+        margin-right: 0;
         font-size: 18px;
         height: 18px;
         width: 18px;
-        color: rgba(0, 0, 0, 0.6);
+        color: var(--link-color);
       }
     }
-    
-    .mat-mdc-header-row {
-      background-color: rgba(var(--primary-color-rgb), 0.15);
-      
-      .mat-mdc-header-cell {
+
+    .header-colored-row, .header-colored {
+      background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      .mat-mdc-header-cell, th.mat-header-cell {
+        background: none;
+        color: #7c4a00;
         font-weight: 600;
-        color: rgba(0, 0, 0, 0.7);
-        letter-spacing: 0.5px;
-        padding: 16px 12px;
+        letter-spacing: 0.4px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        font-size: 1rem;
+        padding: 14px 16px;
+        transition: all 0.2s ease;
+        position: relative;
+        
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: var(--link-color);
+          transition: width 0.3s ease;
+        }
+        
+        &:hover {
+          color: color.adjust(#7c4a00, $lightness: -10%);
+          
+          &:after {
+            width: 100%;
+          }
+          
+          .header-icon {
+            transform: translateY(-2px);
+          }
+        }
+        
+        &.mat-sort-header-sorted {
+          color: var(--link-color);
+          
+          &:after {
+            width: 100%;
+          }
+        }
       }
     }
-    
+
+    .mat-mdc-header-row {
+      background: none;
+      height: 54px;
+    }
+
     // Column width adjustments
-    .mat-column-applicationDate {
-      min-width: 120px; // Wider date column
+    .mat-column-applicationDate, th.mat-header-cell.mat-column-applicationDate {
+      min-width: 0;
+      width: 1%;
+      white-space: nowrap;
+      text-align: center;
     }
     
     .mat-mdc-row {
@@ -184,11 +231,14 @@
     // Date cell styling
     .date-cell {
       padding: 4px 8px;
-      background-color: rgba(var(--primary-color-rgb), 0.06);
+      background-color: var(--secondary-color);
       border-radius: 4px;
       display: inline-block;
       font-family: monospace;
       font-weight: 500;
+      color: #7c4a00;
+      min-width: 80px;
+      text-align: center;
     }
   }
   
@@ -211,18 +261,90 @@
 
   // Paginator styling
   mat-paginator {
-    background-color: rgba(var(--primary-color-rgb), 0.05);
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: none;
+    color: #7c4a00;
+    
+    ::ng-deep {
+      .mat-mdc-paginator-container {
+        min-height: 56px;
+      }
+      
+      .mat-mdc-paginator-range-label {
+        margin: 0 24px 0 0;
+        color: #7c4a00;
+      }
+      
+      .mat-mdc-paginator-navigation-first,
+      .mat-mdc-paginator-navigation-previous,
+      .mat-mdc-paginator-navigation-next,
+      .mat-mdc-paginator-navigation-last {
+        color: var(--link-color);
+      }
+      
+      .mat-mdc-icon-button.mat-mdc-button-base {
+        width: 36px;
+        height: 36px;
+        padding: 6px;
+        
+        &:hover {
+          background-color: rgba(var(--secondary-color-rgb), 0.5);
+        }
+      }
+      
+      .mat-mdc-select-value {
+        color: #7c4a00;
+      }
+      
+      .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+    }
   }
 
-  // Pagination info
-  .pagination-info {
-    padding: 8px 16px;
-    color: rgba(0, 0, 0, 0.6);
-    font-style: italic;
-    text-align: right;
-    background-color: rgba(var(--primary-color-rgb), 0.05);
+  // Footer bar and pagination info
+  .footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 0 0 12px 12px;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 0 16px 0 0;
+    min-height: 56px;
+    margin-top: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    color: #7c4a00;
+    font-style: normal;
+    font-size: 0.9rem;
+    background: none;
+    border: none;
+    text-align: right;
+    font-weight: 500;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    
+    b {
+      font-weight: 600;
+      color: var(--link-color);
+    }
+    
+    .footer-icon {
+      color: var(--link-color);
+      font-size: 18px;
+      margin-right: 6px;
+    }
+    
+    &:hover {
+      background-color: rgba(var(--secondary-color-rgb), 0.6);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
   }
 }
 

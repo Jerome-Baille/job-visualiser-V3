@@ -7,8 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { ExportDataComponent } from './export-data.component';
-import { ListTableComponent } from './list-table.component';
+import { ListTableComponent } from './list-table/list-table.component';
+import { ExportDataComponent } from './export-table/export-data.component';
 
 @Component({
   selector: 'app-list',

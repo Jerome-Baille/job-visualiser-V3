@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { JobService } from './services/job.service';
 import { JobData, PaginationInfo } from './interfaces';
-import { TableFilterComponent } from './list/table-filter.component';
+import { TableFilterComponent } from './list/table-filter/table-filter.component';
 
 @Component({
   selector: 'app-list-table',
