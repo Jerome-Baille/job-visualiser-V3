@@ -1,0 +1,28 @@
+<div class="in-progress-jobs">
+  <h3>
+    <mat-icon inline>hourglass_empty</mat-icon>
+    Job applications in progress ({{ inProgressCount }})
+  </h3>
+  
+  <div *ngIf="inProgressCount > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Company</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let job of inProgressJobs" (click)="goToJob(job)" style="cursor:pointer">
+          <td>{{ job.name }}</td>
+          <td>{{ job.company }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div *ngIf="inProgressCount === 0" class="empty-state">
+    <mat-icon>info</mat-icon>
+    <em>No jobs in progress.</em>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.chart-card {
+  background: var(--background-color);
+  border-radius: 12px;
+  box-shadow: var(--elevation-z1);
+  padding: 1.5rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-card.funnel-colspan {
+  grid-column: span 2;
+}
+
+.chart-card h4 {
+  margin-bottom: 1rem;
+  color: var(--link-color);
+}
+
+.conversion-info {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--info-color);
+}
+.chart-container {
+  margin-top: 1rem;
+  background: var(--background-color);
+  border-radius: 8px;
+  min-height: 250px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #333;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--secondary-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    mat-icon {
+      color: var(--info-color);
+    }
+  }
+}
+
+.chart-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+  border: 2px dashed rgba(252, 231, 170, 0.5);
+  border-radius: 8px;
+  background-color: rgba(255, 240, 197, 0.1);
+  margin-top: 1rem;
+  
+  p {
+    color: #777;
+    margin-top: 0.5rem;
+  }
+  
+  .large-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: var(--secondary-color);
+    opacity: 0.8;
+  }
+}

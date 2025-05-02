@@ -1,12 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { JobData } from '../interfaces';
+import { JobData } from '../../interfaces';
 import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-in-progress-jobs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatIconModule
+  ],
   templateUrl: './in-progress-jobs.component.html',
   styleUrls: ['./in-progress-jobs.component.scss']
 })

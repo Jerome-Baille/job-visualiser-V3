@@ -1,6 +1,29 @@
+@use '@angular/material' as mat;
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+// Material Icons
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
 :root {
     --primary-color: #FFF0C5;
+    --primary-color-rgb: 255, 240, 197;
     --secondary-color: #FCE7AA;
+    --secondary-color-rgb: 252, 231, 170;
 
     --link-color: #C70406;
     --link-accent-color: #F2190A;
@@ -15,10 +38,14 @@
     --dark-border: #333;
 
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --elevation-z1: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+    --elevation-z2: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 
 body {
     background-color: var(--primary-color);
+    margin: 0;
+    box-sizing: border-box;
 }
 
 #root {
@@ -42,6 +69,8 @@ a:hover {
     margin: 20px auto;
     margin-bottom: 50px;
     padding: 0 12px;
+    width: 100%; /* Ensures it takes full width minus padding */
+    box-sizing: border-box; /* Makes sure padding is included in width calculation */
 }
 
 .bg-positive,

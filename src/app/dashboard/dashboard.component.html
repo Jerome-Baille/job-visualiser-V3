@@ -1,15 +1,38 @@
-<div *ngIf="isAuthenticated(); else notLogged">
-  <div class="status-grid">
-    <div class="box-status positive">Positive: <strong>{{ positiveJobs }}</strong></div>
-    <div class="box-status in-progress">In Progress: <strong>{{ inProgressJobs }}</strong></div>
-    <div class="box-status unknown">Unknown: <strong>{{ unknownJobs }}</strong></div>
-    <div class="box-status negative">Negative: <strong>{{ negativeJobs }}</strong></div>
+<div class="dashboard-wrapper">
+  <div *ngIf="isAuthenticated(); else notLogged">    
+    <div class="status-grid">
+      <div class="box-status positive">
+        <span>Positive</span>
+        <strong>{{ positiveJobs }}</strong>
+      </div>
+      <div class="box-status in-progress">
+        <span>In Progress</span>
+        <strong>{{ inProgressJobs }}</strong>
+      </div>
+      <div class="box-status unknown">
+        <span>Unknown</span>
+        <strong>{{ unknownJobs }}</strong>
+      </div>
+      <div class="box-status negative">
+        <span>Negative</span>
+        <strong>{{ negativeJobs }}</strong>
+      </div>
+    </div>
+    
+    <div class="dashboard-container">
+      <app-chart-container [jobs]="jobs"></app-chart-container>
+    </div>
+    
+    <div class="dashboard-container">
+      <app-in-progress-jobs [jobs]="jobs"></app-in-progress-jobs>
+    </div>
   </div>
-  <app-in-progress-jobs [jobs]="jobs"></app-in-progress-jobs>
-  <app-chart-container [jobs]="jobs"></app-chart-container>
+  
+  <ng-template #notLogged>
+    <div class="not-logged-message">
+      <mat-icon aria-hidden="false" aria-label="Warning">warning</mat-icon>
+      <p>You are not logged in. Please sign in to view your dashboard.</p>
+      <button mat-raised-button color="primary" routerLink="/auth/login">Sign In</button>
+    </div>
+  </ng-template>
 </div>
-<ng-template #notLogged>
-  <div>
-    <p>You are not logged in.</p>
-  </div>
-</ng-template>

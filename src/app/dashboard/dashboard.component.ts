@@ -5,13 +5,23 @@ import { LoaderService } from '../services/loader.service';
 import { ToastService } from '../services/toast.service';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { InProgressJobsComponent } from "./in-progress-jobs.component";
-import { ChartContainerComponent } from "./chart-container.component";
+import { InProgressJobsComponent } from "./in-progress-jobs/in-progress-jobs.component";
+import { ChartContainerComponent } from "./chart-container/chart-container.component";
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, InProgressJobsComponent, ChartContainerComponent],
+  imports: [
+    CommonModule, 
+    InProgressJobsComponent, 
+    ChartContainerComponent,
+    MatIconModule,
+    MatButtonModule,
+    RouterLink
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

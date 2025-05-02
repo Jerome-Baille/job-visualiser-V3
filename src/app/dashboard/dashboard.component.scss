@@ -1,0 +1,119 @@
+@use '@angular/material' as mat;
+
+.dashboard-wrapper {
+  padding: 8px 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.dashboard-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #333;
+  
+  mat-icon {
+    color: var(--secondary-color);
+  }
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+  width: 100%;
+  
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.box-status {
+  width: auto;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--background-color);
+  box-shadow: 0 2px 5px var(--shadow-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+  }
+  
+  strong {
+    display: block;
+    font-size: 1.8rem;
+    margin-top: 8px;
+  }
+  
+  &.positive {
+    border-left: 4px solid var(--success-color);
+  }
+  
+  &.in-progress {
+    border-left: 4px solid var(--info-color);
+  }
+  
+  &.unknown {
+    border-left: 4px solid var(--warning-color);
+  }
+  
+  &.negative {
+    border-left: 4px solid var(--error-color);
+  }
+}
+
+// Container for the dashboard components
+.dashboard-container {
+  padding: 16px;
+  background-color: var(--background-color);
+  border-radius: 12px;
+  box-shadow: 0 3px 6px var(--shadow-color);
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: var(--elevation-z2);
+  }
+}
+
+// Default not logged in message styling
+.not-logged-message {
+  padding: 24px;
+  text-align: center;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px var(--shadow-color);
+  
+  mat-icon {
+    display: block;
+    margin: 0 auto 16px;
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: var(--warning-color);
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 16px;
+  }
+  
+  button {
+    margin-top: 16px;
+  }
+}
