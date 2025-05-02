@@ -45,7 +45,19 @@
                 <span>Decision</span>
               </span>
             </th>
-            <td mat-cell *matCellDef="let job">{{ job.decision }}</td>
+            <td mat-cell *matCellDef="let job">
+              <mat-form-field appearance="fill" class="decision-select">
+                <mat-select
+                  [value]="job.decision"
+                  (selectionChange)="onDecisionChange(job, $event.value)"
+                  aria-label="Final decision on the candidacy"
+                >
+                  <mat-option *ngFor="let status of decisionStatuses" [value]="status.value">
+                    {{ status.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-colored-row"></tr>

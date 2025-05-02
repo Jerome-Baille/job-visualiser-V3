@@ -1,3 +1,5 @@
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -23,12 +25,34 @@ import { takeUntil } from 'rxjs/operators';
     MatSortModule, 
     MatProgressSpinnerModule,
     RouterModule,
-    TableFilterComponent
+    TableFilterComponent,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   templateUrl: './list-table.component.html',
   styleUrls: ['./list-table.component.scss']
 })
+
 export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
+  decisionStatuses = [
+    { label: 'Positive', value: 'positive' },
+    { label: 'Negative', value: 'negative' },
+    { label: 'Expired', value: 'expired' },
+    { label: 'In progress', value: 'in progress' },
+    { label: 'Unknown', value: 'unknown' }
+  ];
+
+  async onDecisionChange(job: JobData, newDecision: string) {
+    if (!job.id || job.decision === newDecision) return;
+    const updatedJob = { ...job, decision: newDecision };
+    try {
+      await this.jobService.putOpportunity(updatedJob);
+      job.decision = newDecision;
+    } catch (error) {
+      // Optionally show an error message
+      console.error('Error updating the decision', error);
+    }
+  }
   displayedColumns: string[] = ['name', 'company', 'type', 'applicationDate', 'decision'];
   dataSource = new MatTableDataSource<JobData>([]);
   loading = true;
