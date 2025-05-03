@@ -111,8 +111,7 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private jobService: JobService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
-  ngOnInit(): void {
+  ) {}  ngOnInit(): void {
     // Check initial screen size and set up responsive columns
     this.checkScreenSize();
     
@@ -126,6 +125,9 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('URL params changed:', params.keys, { 
           page: params.get('page'), 
           pageSize: params.get('pageSize'),
+          type: params.get('type'),
+          status: params.get('status'),
+          search: params.get('search'),
           isNavigatingFromPaginator: this.isNavigatingFromPaginator
         });
         
@@ -138,20 +140,20 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const pageParam = params.get('page');
         const pageSizeParam = params.get('pageSize');
+        const typeParam = params.get('type');
+        const statusParam = params.get('status');
+        const searchParam = params.get('search');
         
         // Handle page - explicitly parse as number and subtract 1 for 0-based index
         if (pageParam) {
           const pageNum = parseInt(pageParam, 10);
           if (!isNaN(pageNum) && pageNum > 0) {
             this.currentPage = pageNum - 1; // Convert from 1-based (URL) to 0-based (component)
-            console.log(`Setting currentPage to ${this.currentPage} from URL param ${pageParam}`);
           } else {
             this.currentPage = 0;
-            console.log('Invalid page param, defaulting to 0');
           }
         } else {
           this.currentPage = 0;
-          console.log('No page param, defaulting to 0');
         }
 
         // Handle page size
@@ -162,7 +164,12 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
 
-        // Load the data for the current page
+        // Handle filter params
+        this.filterType = typeParam || 'all';
+        this.filterStatus = statusParam || 'all';
+        this.filterSearch = searchParam || '';
+
+        // Load the data for the current page with filters
         this.loadJobs(this.currentPage, this.pageSize);
         
         // Sync paginator after a small delay to ensure it's available
@@ -216,12 +223,29 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.paginator.pageIndex = this.currentPage;
       this.paginator.pageSize = this.pageSize;
     }
-  }
+  }  // Current filter values
+  filterType: string = 'all';
+  filterStatus: string = 'all';
+  filterSearch: string = '';
+
   async loadJobs(page: number = 0, pageSize: number = 10): Promise<void> {
-    console.log('Loading jobs with params:', { page, pageSize, offset: page * pageSize });
+    console.log('Loading jobs with params:', { 
+      page, 
+      pageSize, 
+      offset: page * pageSize,
+      type: this.filterType,
+      status: this.filterStatus,
+      search: this.filterSearch
+    });
     this.loading = true;
     try {
-      const response = await this.jobService.getOpportunities(pageSize, page * pageSize);
+      const response = await this.jobService.getOpportunities(
+        pageSize, 
+        page * pageSize,
+        this.filterType,
+        this.filterStatus,
+        this.filterSearch
+      );
       console.log('API response:', response);
       this.paginationInfo = response.pagination;
       this.totalItems = response.pagination.total;
@@ -233,7 +257,7 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       }));
       
       this.dataSource.data = jobs;
-      this.allJobs = jobs; // Store for filtering
+      this.allJobs = jobs;
       
       // Ensure paginator reflects current page
       this.syncPaginatorWithCurrentState();
@@ -242,8 +266,7 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } finally {
       this.loading = false;
     }
-  }
-  onPageChange(event: PageEvent): void {
+  }  onPageChange(event: PageEvent): void {
     console.log('Page change event:', event);
     
     // Set flag to prevent processing the URL change
@@ -268,41 +291,31 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadJobs(this.currentPage, this.pageSize);
     });
   }
-
-  applyFilter(filteredJobs: JobData[]): void {
-    // When filtering, we'll use client-side data and reset server pagination
-    this.dataSource.data = filteredJobs;
-    // Reset pagination info for filtered results
-    this.totalItems = filteredJobs.length;
-    if (this.paginationInfo) {
-      this.paginationInfo = {
-        ...this.paginationInfo,
-        total: filteredJobs.length,
-        // For client-side filtering, set offset to 0 and limit to current pageSize
-        offset: 0,
-        limit: this.pageSize
-      };
-    } else {
-      this.paginationInfo = {
-        total: filteredJobs.length,
-        offset: 0,
-        limit: this.pageSize
-      };
-    }
-
+  onFilterChange(filter: { type: string; status: string; search: string }): void {
+    console.log('Filter changed:', filter);
+    this.filterType = filter.type;
+    this.filterStatus = filter.status;
+    this.filterSearch = filter.search;
+    
     // Reset to first page when filtering
     this.currentPage = 0;
     if (this.paginator) {
       this.paginator.firstPage();
     }
-
+    
     // Update URL to reflect we're on page 1
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        page: 1
+        page: 1,
+        type: filter.type !== 'all' ? filter.type : null,
+        status: filter.status !== 'all' ? filter.status : null,
+        search: filter.search ? filter.search : null
       },
       queryParamsHandling: 'merge',
+    }).then(() => {
+      // Load jobs with the new filter parameters
+      this.loadJobs(this.currentPage, this.pageSize);
     });
   }
 }

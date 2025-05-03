@@ -1,5 +1,5 @@
 <div class="list-table">
-  <app-table-filter [jobs]="allJobs" (jobFilteredChange)="applyFilter($event)"></app-table-filter>
+  <app-table-filter (filterChange)="onFilterChange($event)"></app-table-filter>
   
   <!-- Mobile view indicator - only shows on mobile -->
   <mat-card>

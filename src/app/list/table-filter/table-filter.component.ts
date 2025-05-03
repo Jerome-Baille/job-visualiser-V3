@@ -26,45 +26,27 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./table-filter.component.scss']
 })
 export class TableFilterComponent {
-  @Input() jobs: JobData[] = [];
-  @Output() jobFilteredChange = new EventEmitter<JobData[]>();
+  @Output() filterChange = new EventEmitter<{ type: string; status: string; search: string }>();
   searchValueJobs = '';
   typeFilter = 'all';
-  decisionFilter = 'all';  filterJobs() {
-    let filtered = this.jobs;
-    
-    // Filter by search text
-    if (this.searchValueJobs.trim()) {
-      const searchTerm = this.searchValueJobs.toLowerCase().trim();
-      filtered = filtered.filter(job => {
-        const nameMatch = typeof job.name === 'string' && job.name.toLowerCase().includes(searchTerm);
-        const companyMatch = typeof job.company === 'string' && job.company.toLowerCase().includes(searchTerm);
-        const descriptionMatch = typeof job['description'] === 'string' && job['description'].toLowerCase().includes(searchTerm);
-        
-        return nameMatch || companyMatch || descriptionMatch;
-      });
-    }
-    
-    // Filter by type
-    if (this.typeFilter && this.typeFilter !== 'all') {
-      filtered = filtered.filter(job => 
-        typeof job.type === 'string' && job.type.toLowerCase().includes(this.typeFilter.toLowerCase())
-      );
-    }
-      // Filter by decision/status
-    if (this.decisionFilter && this.decisionFilter !== 'all') {
-      filtered = filtered.filter(job => 
-        typeof job.decision === 'string' && job.decision.toLowerCase().includes(this.decisionFilter.toLowerCase())
-      );
-    }
-    
-    this.jobFilteredChange.emit(filtered);
+  decisionFilter = 'all';
+
+  filterJobs() {
+    this.filterChange.emit({
+      type: this.typeFilter,
+      status: this.decisionFilter,
+      search: this.searchValueJobs
+    });
   }
 
   handleReset() {
     this.typeFilter = 'all';
     this.decisionFilter = 'all';
     this.searchValueJobs = '';
-    this.jobFilteredChange.emit(this.jobs);
+    this.filterChange.emit({ 
+      type: 'all', 
+      status: 'all', 
+      search: '' 
+    });
   }
 }

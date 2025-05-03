@@ -13,10 +13,20 @@ export class JobService {
       this.http.get<OpportunitiesStats>(`${environment.jobURL}/stats`, { withCredentials: true })
     );
   }
-
-  async getOpportunities(limit?: number, offset?: number): Promise<PaginatedResponse<JobData>> {
+  async getOpportunities(limit?: number, offset?: number, type?: string, status?: string, search?: string): Promise<PaginatedResponse<JobData>> {
+    let url = `${environment.jobURL}?`;
+    const params: string[] = [];
+    
+    if (limit !== undefined) params.push(`limit=${limit}`);
+    if (offset !== undefined) params.push(`offset=${offset}`);
+    if (type && type !== 'all') params.push(`type=${encodeURIComponent(type)}`);
+    if (status && status !== 'all') params.push(`status=${encodeURIComponent(status)}`);
+    if (search && search.trim()) params.push(`search=${encodeURIComponent(search.trim())}`);
+    
+    url += params.join('&');
+    
     return firstValueFrom(
-      this.http.get<PaginatedResponse<JobData>>(`${environment.jobURL}?limit=${limit}&offset=${offset}`, { withCredentials: true })
+      this.http.get<PaginatedResponse<JobData>>(url, { withCredentials: true })
     );
   }
 
