@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { NgIf } from '@angular/common';
+import { NgIf, NgClass } from '@angular/common';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +15,9 @@ import { MatListModule } from '@angular/material/list';
   standalone: true,
   imports: [
     NgIf, 
+    NgClass,
     RouterModule, 
+    RouterLinkActive,
     MatBottomSheetModule,
     MatButtonModule,
     MatIconModule,
@@ -31,7 +33,6 @@ export class HeaderComponent {
   readonly isAuthenticated: () => boolean;
   isLargerThanMD = false;
   showProfileSheet = false;
-
   constructor(
     public auth: AuthService, 
     private router: Router,
@@ -48,6 +49,10 @@ export class HeaderComponent {
 
   checkScreenSize() {
     this.isLargerThanMD = window.innerWidth >= 768;
+  }
+  
+  isProfileActive(): boolean {
+    return this.router.url.startsWith('/profile');
   }
 
   openProfileSheet() {
