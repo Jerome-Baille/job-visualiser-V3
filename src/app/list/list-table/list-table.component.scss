@@ -483,25 +483,178 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
   }
-    // Styling for the decision select dropdown to match status colors
+    // Enhanced decision dropdown styling
   .decision-select {
-    &.positive-select .mat-mdc-select-value {
-      color: #2e7d32; // Darker green for Positive text
+    width: 100%;
+    margin-bottom: -1.25em; // Remove extra space at bottom of form field
+    font-size: 0.95rem;
+    
+    ::ng-deep {
+      // Container styling
+      .mat-mdc-form-field-flex {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+      
+      // Remove underline and form field appearance
+      .mat-mdc-form-field-underline,
+      .mat-mdc-form-field-bottom-align {
+        display: none !important;
+      }
+      
+      .mat-mdc-text-field-wrapper {
+        background: transparent !important;
+        padding: 0 !important;
+        border-radius: 20px !important;
+      }
+      
+      .mat-mdc-form-field-infix {
+        padding: 8px 0 !important;
+        min-height: 36px !important;
+      }
+      
+      // Arrow styling
+      .mat-select-arrow-wrapper {
+        transform: translateY(0);
+      }
+      
+      .mat-select-arrow {
+        color: inherit;
+        opacity: 0.7;
+      }
+      
+      // Trigger styling 
+      .mat-select-trigger {
+        height: 36px;
+        padding: 0 10px;
+        border-radius: 18px;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+      }
+      
+      // Select text styling
+      .mat-mdc-select-value {
+        padding-left: 8px !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+        
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          margin-right: 8px;
+          background: currentColor;
+          opacity: 0.7;
+        }
+      }
+      
+      // Panel styling (dropdown)
+      .mat-mdc-select-panel {
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+        
+        .mat-mdc-option {
+          height: 42px !important;
+          font-weight: 500 !important;
+          
+          &.mat-mdc-option-active {
+            background: rgba(var(--primary-color-rgb), 0.1) !important;
+          }
+        }
+      }
     }
     
-    &.negative-select .mat-mdc-select-value {
-      color: #c62828; // Darker red for Negative text
+    // Status-specific styling for the select component
+    &.positive-select {
+      ::ng-deep {
+        .mat-mdc-select-value {
+          color: #2e7d32 !important; // Darker green for Positive text
+          
+          &::before {
+            background-color: #2e7d32;
+          }
+        }
+        
+        .mat-select-trigger:hover {
+          background-color: rgba(76, 175, 80, 0.1);
+        }
+      }
     }
     
-    &.in-progress-select .mat-mdc-select-value {
-      color: #1565c0; // Darker blue for In Progress text
+    &.negative-select {
+      ::ng-deep {
+        .mat-mdc-select-value {
+          color: #c62828 !important; // Darker red for Negative text
+          
+          &::before {
+            background-color: #c62828;
+          }
+        }
+        
+        .mat-select-trigger:hover {
+          background-color: rgba(244, 67, 54, 0.1);
+        }
+      }
     }
     
-    &.expired-select .mat-mdc-select-value {
-      color: #424242; // Darker gray for Expired text
+    &.in-progress-select {
+      ::ng-deep {
+        .mat-mdc-select-value {
+          color: #1565c0 !important; // Darker blue for In Progress text
+          
+          &::before {
+            background-color: #1565c0;
+          }
+        }
+        
+        .mat-select-trigger:hover {
+          background-color: rgba(33, 150, 243, 0.1);
+        }
+      }
     }
     
-    // No styling for unknown or other statuses as per requirements
+    &.expired-select {
+      ::ng-deep {
+        .mat-mdc-select-value {
+          color: #424242 !important; // Darker gray for Expired text
+          
+          &::before {
+            background-color: #424242;
+          }
+        }
+        
+        .mat-select-trigger:hover {
+          background-color: rgba(158, 158, 158, 0.1);
+        }
+      }
+    }
+    
+    // Mobile optimizations for select
+    @media (max-width: 768px) {
+      font-size: 0.85rem;
+      
+      ::ng-deep {
+        .mat-mdc-form-field-infix {
+          min-height: 32px !important;
+        }
+        
+        .mat-select-trigger {
+          height: 32px;
+        }
+        
+        .mat-mdc-select-value::before {
+          width: 6px;
+          height: 6px;
+          margin-right: 6px;
+        }
+      }
+    }
   }
 }
 

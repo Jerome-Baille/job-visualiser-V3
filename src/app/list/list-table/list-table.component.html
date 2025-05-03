@@ -45,19 +45,22 @@
                 <svg class="header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2l4-4"/></svg>
                 <span class="header-text">Decision</span>
               </span>
-            </th>            <td mat-cell *matCellDef="let job">              <mat-form-field appearance="fill" class="decision-select"
+            </th>            <td mat-cell *matCellDef="let job">              <mat-form-field appearance="outline" class="decision-select"
                 [ngClass]="{
                   'positive-select': job.decision === 'positive',
                   'negative-select': job.decision === 'negative',
                   'in-progress-select': job.decision === 'in progress',
                   'expired-select': job.decision === 'expired'
-                }">
+                }"
+                (click)="$event.stopPropagation()">
                 <mat-select
                   [value]="job.decision"
                   (selectionChange)="onDecisionChange(job, $event.value)"
                   aria-label="Final decision on the candidacy"
-                >
-                  <mat-option *ngFor="let status of decisionStatuses" [value]="status.value">
+                  disableOptionCentering
+                  panelClass="status-select-panel"
+                  (openedChange)="$event ? $event : null"
+                >                  <mat-option *ngFor="let status of decisionStatuses" [value]="status.value" (click)="$event.stopPropagation()">
                     {{ status.label }}
                   </mat-option>
                 </mat-select>
