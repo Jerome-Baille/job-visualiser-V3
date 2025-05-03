@@ -9,6 +9,12 @@
   margin: 0 auto 24px;
 }
 
+@media screen and (max-width: 768px) {
+  .job-detail-container {
+    padding: 24px 0;
+  }
+}
+
 .job-card {
   background-color: var(--background-color);
   border-radius: 8px;

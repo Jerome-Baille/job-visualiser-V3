@@ -37,6 +37,12 @@
   margin: 0 auto 24px;
 }
 
+@media screen and (max-width: 768px) {
+  .job-detail-container {
+    padding: 24px 0;
+  }
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;
