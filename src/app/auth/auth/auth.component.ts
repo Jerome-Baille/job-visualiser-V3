@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ToastService } from '../../services/toast.service';
+import { SnackbarService } from '../../services/snackbar.service';
 import { LoaderService } from '../../services/loader.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class AuthComponent {
   constructor(
     private loader: LoaderService,
     private authService: AuthService,
-    private toast: ToastService
+    private snackbar: SnackbarService
   ) {
     this.authService.waitForAuthState().subscribe(
       (isLoggedIn: boolean) => {
@@ -46,7 +46,7 @@ export class AuthComponent {
       }
     } catch (error) {
       this.isLoading = false;
-      this.toast.error(`Failed to redirect to ${this.isRegisterMode ? 'registration' : 'authentication'} service`);
+      this.snackbar.error(`Failed to redirect to ${this.isRegisterMode ? 'registration' : 'authentication'} service`);
     }
   }
 
@@ -56,7 +56,7 @@ export class AuthComponent {
       this.authService.logout();
     } catch (error) {
       this.isLoading = false;
-      this.toast.error('Failed to redirect to logout');
+      this.snackbar.error('Failed to redirect to logout');
     }
   }
 
@@ -65,7 +65,7 @@ export class AuthComponent {
     try {
       this.authService.login();
     } catch (error) {
-      this.toast.error('Login failed.');
+      this.snackbar.error('Login failed.');
     } finally {
       this.loader.hide();
     }
@@ -76,7 +76,7 @@ export class AuthComponent {
     try {
       this.authService.register();
     } catch (error) {
-      this.toast.error('Registration failed.');
+      this.snackbar.error('Registration failed.');
     } finally {
       this.loader.hide();
     }

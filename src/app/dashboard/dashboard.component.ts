@@ -2,7 +2,7 @@ import { Component, OnDestroy, effect, EffectRef } from '@angular/core';
 import { JobService } from '../services/job.service';
 import { JobData, PaginatedResponse } from '../interfaces';
 import { LoaderService } from '../services/loader.service';
-import { ToastService } from '../services/toast.service';
+import { SnackbarService } from '../services/snackbar.service';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { InProgressJobsComponent } from "./in-progress-jobs/in-progress-jobs.component";
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnDestroy {
   constructor(
     private jobService: JobService,
     private loader: LoaderService,
-    private toast: ToastService,
+    private snackbar: SnackbarService,
     public auth: AuthService
   ) {
     this.loader.show();    this.destroyEffect = effect(async () => {
@@ -46,7 +46,7 @@ export class DashboardComponent implements OnDestroy {
           this.jobs = response.data;
           this.jobsLoaded = true;
         } catch (error: any) {
-          this.toast.error(error?.message || 'An unknown error occurred');
+          this.snackbar.error(error?.message || 'An unknown error occurred');
         } finally {
           this.loader.hide();
         }

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { JobService } from '../../services/job.service';
-import { ToastService } from '../../services/toast.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-export-data',
@@ -25,7 +25,7 @@ export class ExportDataComponent {
   selectedYear = '';
   years: string[] = [];
 
-  constructor(private jobService: JobService, private toast: ToastService) {
+  constructor(private jobService: JobService, private snackbar: SnackbarService) {
     const currentYear = new Date().getFullYear();
     for (let year = 2022; year <= currentYear; year++) {
       this.years.push(year.toString());
@@ -35,9 +35,9 @@ export class ExportDataComponent {
   async handleExportClick() {
     try {
       await this.jobService.exportOpportunities(this.selectedYear, this.selectedFormat);
-      this.toast.success('Your data has been exported successfully!');
+      this.snackbar.success('Your data has been exported successfully!');
     } catch (error) {
-      this.toast.error('An error occurred while exporting your data. Please try again later.');
+      this.snackbar.error('An error occurred while exporting your data. Please try again later.');
     }
   }
 }

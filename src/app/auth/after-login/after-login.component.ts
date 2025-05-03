@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoaderService } from '../../services/loader.service';
-import { ToastService } from '../../services/toast.service';
 import { AuthService } from '../../services/auth.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-after-login',
@@ -18,8 +18,8 @@ export class AfterLoginComponent implements OnInit {
   constructor(
     private router: Router,
     private loader: LoaderService,
-    private toast: ToastService,
-    private auth: AuthService
+    private auth: AuthService,
+    private snackbar: SnackbarService
   ) {}
 
   ngOnInit() {
@@ -30,20 +30,20 @@ export class AfterLoginComponent implements OnInit {
           this.loader.hide();
           if (response.auth) {
             if (response.message) {
-              this.toast.success(response.message);
+              this.snackbar.success(response.message);
             } else {
-              this.toast.success('Successfully logged in!');
+              this.snackbar.success('Successfully logged in!');
             }
             this.router.navigate(['/']);
           } else {
-            this.toast.error('Login failed.');
+            this.snackbar.error('Login failed.');
             this.router.navigate(['/auth']);
           }
         },
         error: (error) => {
           this.loader.hide();
           console.error('Authentication verification failed:', error);
-          this.toast.error('Authentication failed. Please try again.');
+          this.snackbar.error('Authentication failed. Please try again.');
           this.router.navigate(['/auth']);
         }
       });

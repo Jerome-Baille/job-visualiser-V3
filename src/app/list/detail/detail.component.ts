@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { JobService } from '../../services/job.service';
 import { AuthService } from '../../services/auth.service';
-import { ToastService } from '../../services/toast.service';
+import { SnackbarService } from '../../services/snackbar.service';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -88,7 +88,7 @@ export class DetailComponent implements OnInit {
     private route: ActivatedRoute,
     private jobService: JobService,
     private authService: AuthService,
-    private toast: ToastService,
+    private snackbar: SnackbarService,
     private router: Router,
     private dialog: MatDialog
   ) {
@@ -120,7 +120,7 @@ export class DetailComponent implements OnInit {
         this.jobForm.patchValue(processedJob);
         this.loading = false;
       }).catch(() => {
-        this.toast.error('Failed to load job data.');
+        this.snackbar.error('Failed to load job data.');
         this.loading = false;
       });
     } else {
@@ -196,9 +196,9 @@ export class DetailComponent implements OnInit {
     
     try {
       await this.jobService.putOpportunity({ ...formData, id: this.jobId });
-      this.toast.success('The job application has been successfully updated!');
+      this.snackbar.success('The job application has been successfully updated!');
     } catch {
-      this.toast.error('Oh no, something went wrong! Try again');
+      this.snackbar.error('Oh no, something went wrong! Try again');
     }
   }
   confirmDelete() {
@@ -219,10 +219,10 @@ export class DetailComponent implements OnInit {
     if (!this.jobId) return;
     try {
       await this.jobService.deleteOpportunity(this.jobId);
-      this.toast.success('The job application has been deleted from the database!');
+      this.snackbar.success('The job application has been deleted from the database!');
       this.router.navigate(['/list']);
     } catch {
-      this.toast.error('Oh no, something went wrong! Try again');
+      this.snackbar.error('Oh no, something went wrong! Try again');
     }
     this.showDeleteConfirm = false;
   }

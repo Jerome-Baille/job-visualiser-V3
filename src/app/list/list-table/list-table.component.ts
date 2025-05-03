@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TableFilterComponent } from '../table-filter/table-filter.component';
 import { JobService } from '../../services/job.service';
+import { SnackbarService } from '../../services/snackbar.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -48,18 +49,18 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
   
   // Flag to track current display columns based on screen size
   isMobile = false;
-
   async onDecisionChange(job: JobData, newDecision: string) {
     if (!job.id || job.decision === newDecision) return;
     const updatedJob = { ...job, decision: newDecision };
     try {
       await this.jobService.putOpportunity(updatedJob);
       job.decision = newDecision;
+      this.snackbarService.success(`Job "${job.name}" status updated to ${newDecision}`);
     } catch (error) {
-      // Optionally show an error message
       console.error('Error updating the decision', error);
+      this.snackbarService.error('Failed to update job status. Please try again.');
     }
-  }  goToDetail(job: JobData): void {
+  }goToDetail(job: JobData): void {
     if (job && job.id) {
       this.router.navigate(['/job', job.id]);
     }
@@ -106,12 +107,12 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
-
   constructor(
     private jobService: JobService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}  ngOnInit(): void {
+    private router: Router,
+    private snackbarService: SnackbarService
+  ) {}ngOnInit(): void {
     // Check initial screen size and set up responsive columns
     this.checkScreenSize();
     

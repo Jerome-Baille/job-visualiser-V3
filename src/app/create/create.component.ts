@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JobService } from '../services/job.service';
-import { ToastService } from '../services/toast.service';
+import { SnackbarService } from '../services/snackbar.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -73,7 +73,7 @@ export class CreateComponent {
   constructor(
     private fb: FormBuilder,
     private jobService: JobService,
-    private toast: ToastService,
+    private snackbar: SnackbarService,
     private router: Router
   ) {
     const today = new Date();
@@ -111,10 +111,10 @@ export class CreateComponent {
       }
       
       await this.jobService.postOpportunity(formData);
-      this.toast.success('Opportunity created!');
+      this.snackbar.success('Opportunity created!');
       this.router.navigate(['/dashboard']);
     } catch (err: any) {
-      this.toast.error(err?.error?.message || 'Error creating opportunity.');
+      this.snackbar.error(err?.error?.message || 'Error creating opportunity.');
       this.isSubmitting = false;
     }
   }
