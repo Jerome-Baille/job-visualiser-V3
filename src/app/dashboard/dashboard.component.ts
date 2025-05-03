@@ -1,10 +1,9 @@
 import { Component, OnDestroy, effect, EffectRef } from '@angular/core';
 import { JobService } from '../services/job.service';
-import { JobData, PaginatedResponse } from '../interfaces';
-import { LoaderService } from '../services/loader.service';
+import { JobData } from '../interfaces';
 import { SnackbarService } from '../services/snackbar.service';
 import { AuthService } from '../services/auth.service';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { InProgressJobsComponent } from "./in-progress-jobs/in-progress-jobs.component";
 import { ChartContainerComponent } from "./chart-container/chart-container.component";
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +15,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
     InProgressJobsComponent,
     ChartContainerComponent,
     MatIconModule,
@@ -33,11 +32,10 @@ export class DashboardComponent implements OnDestroy {
 
   constructor(
     private jobService: JobService,
-    private loader: LoaderService,
     private snackbar: SnackbarService,
     public auth: AuthService
   ) {
-    this.loader.show();    this.destroyEffect = effect(async () => {
+    this.destroyEffect = effect(async () => {
       const isAuth = this.auth.isAuthenticated();
       if (isAuth && !this.jobsLoaded) {
         try {
@@ -47,13 +45,10 @@ export class DashboardComponent implements OnDestroy {
           this.jobsLoaded = true;
         } catch (error: any) {
           this.snackbar.error(error?.message || 'An unknown error occurred');
-        } finally {
-          this.loader.hide();
         }
       } else if (!isAuth) {
         this.jobs = [];
         this.jobsLoaded = false;
-        this.loader.hide();
         // Optionally, show login prompt here
       }
     });

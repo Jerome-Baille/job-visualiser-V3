@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { JobData } from '../../interfaces';
-import { CommonModule } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -9,7 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-in-progress-jobs',
   standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
+    NgFor,
     MatTableModule,
     MatIconModule
   ],

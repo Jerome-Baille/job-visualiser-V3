@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 
 interface JobBoard {
@@ -10,7 +10,7 @@ interface JobBoard {
 @Component({
   selector: 'app-job-boards',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgFor],
   templateUrl: './job-boards.component.html',
   styleUrls: ['./job-boards.component.scss']
 })

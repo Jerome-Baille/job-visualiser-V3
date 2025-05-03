@@ -1,6 +1,6 @@
-import { Component, OnInit, signal, computed, inject, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, signal, inject, OnDestroy, Renderer2 } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
@@ -8,7 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [NgIf, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })

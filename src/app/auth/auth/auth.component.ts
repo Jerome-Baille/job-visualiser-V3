@@ -1,14 +1,13 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
   imports: [
-    CommonModule
+    NgIf
   ],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
@@ -19,7 +18,6 @@ export class AuthComponent {
   isRegisterMode = false;
 
   constructor(
-    private loader: LoaderService,
     private authService: AuthService,
     private snackbar: SnackbarService
   ) {
@@ -61,24 +59,18 @@ export class AuthComponent {
   }
 
   handleLogin() {
-    this.loader.show();
     try {
       this.authService.login();
     } catch (error) {
       this.snackbar.error('Login failed.');
-    } finally {
-      this.loader.hide();
     }
   }
 
   handleRegister() {
-    this.loader.show();
     try {
       this.authService.register();
     } catch (error) {
       this.snackbar.error('Registration failed.');
-    } finally {
-      this.loader.hide();
     }
   }
 }

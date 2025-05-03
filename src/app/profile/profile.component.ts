@@ -1,9 +1,8 @@
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { UserData } from '../interfaces';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 @Component({
   selector: 'app-profile',
   standalone: true,  imports: [
-    CommonModule,
+    NgIf,
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,

@@ -1,0 +1,60 @@
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(var(--primary-color-rgb), 0.85);
+  backdrop-filter: blur(3px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: var(--background-color);
+  box-shadow: var(--elevation-z2);
+  min-width: 180px;
+  animation: scaleIn 0.4s ease-out;
+}
+
+.loader-text {
+  margin-top: 24px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--link-color);
+  letter-spacing: 0.5px;
+}
+
+::ng-deep .loader-container .mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: var(--link-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

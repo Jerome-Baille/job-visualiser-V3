@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { JobService } from '../services/job.service';
 import { SnackbarService } from '../services/snackbar.service';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +34,7 @@ class CustomDateAdapter extends NativeDateAdapter {
   selector: 'app-create',
   standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
     ReactiveFormsModule,
     MatCardModule,
     MatInputModule,

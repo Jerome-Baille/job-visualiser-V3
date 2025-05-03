@@ -2,7 +2,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { JobData, PaginationInfo } from '../../interfaces';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -19,7 +19,9 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-list-table',
   standalone: true,
   imports: [
-    CommonModule, 
+    NgIf, 
+    NgClass,
+    NgFor,
     MatCardModule, 
     MatTableModule, 
     MatPaginatorModule, 

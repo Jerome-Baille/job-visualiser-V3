@@ -69,7 +69,8 @@
                 <span class="header-text">Decision</span>
               </span>
             </th>
-            <td mat-cell *matCellDef="let job"> <mat-form-field appearance="outline" class="decision-select" [ngClass]="{
+            <td mat-cell *matCellDef="let job">
+              <mat-form-field appearance="outline" class="decision-select" [ngClass]="{
                   'positive-select': job.decision === 'positive',
                   'negative-select': job.decision === 'negative',
                   'in-progress-select': job.decision === 'in progress',

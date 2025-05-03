@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OpportunitiesStats } from '../../interfaces';
 import { JobService } from '../../services/job.service';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexTitleSubtitle, ApexPlotOptions, ApexFill, ApexStroke, ApexYAxis, ApexLegend, ApexTooltip, ApexResponsive, ApexNonAxisChartSeries, ApexTheme } from 'ng-apexcharts';
@@ -9,7 +9,7 @@ import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexTitleSub
 @Component({
   selector: 'app-chart-container',
   standalone: true,
-  imports: [CommonModule, MatIconModule, NgApexchartsModule],
+  imports: [NgIf, MatIconModule, NgApexchartsModule],
   templateUrl: './chart-container.component.html',
   styleUrls: ['./chart-container.component.scss']
 })

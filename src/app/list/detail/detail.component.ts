@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { JobService } from '../../services/job.service';
 import { AuthService } from '../../services/auth.service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -50,7 +50,7 @@ export const MY_DATE_FORMATS = {
   selector: 'app-detail',
   standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,

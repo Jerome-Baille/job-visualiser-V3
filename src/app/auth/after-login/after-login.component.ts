@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoaderService } from '../../services/loader.service';
 import { AuthService } from '../../services/auth.service';
 import { SnackbarService } from '../../services/snackbar.service';
 
@@ -17,17 +16,14 @@ import { SnackbarService } from '../../services/snackbar.service';
 export class AfterLoginComponent implements OnInit {
   constructor(
     private router: Router,
-    private loader: LoaderService,
     private auth: AuthService,
     private snackbar: SnackbarService
   ) {}
 
   ngOnInit() {
-    this.loader.show();
     setTimeout(() => {
       this.auth.handlePostLogin().subscribe({
         next: (response) => {
-          this.loader.hide();
           if (response.auth) {
             if (response.message) {
               this.snackbar.success(response.message);
@@ -41,7 +37,6 @@ export class AfterLoginComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.loader.hide();
           console.error('Authentication verification failed:', error);
           this.snackbar.error('Authentication failed. Please try again.');
           this.router.navigate(['/auth']);

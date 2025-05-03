@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-mobile-nav',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [NgIf, RouterLink, RouterLinkActive],
   template: `
     <nav *ngIf="isAuthenticated()" class="mobile-nav">
       <ul class="mobile-nav-links">

@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +14,7 @@ import { MatListModule } from '@angular/material/list';
   selector: 'app-header',
   standalone: true,
   imports: [
-    CommonModule, 
+    NgIf, 
     RouterModule, 
     MatBottomSheetModule,
     MatButtonModule,

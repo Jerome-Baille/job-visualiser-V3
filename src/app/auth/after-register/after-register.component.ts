@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoaderService } from '../../services/loader.service';
 import { AuthService } from '../../services/auth.service';
 import { SnackbarService } from '../../services/snackbar.service';
 
@@ -12,7 +11,6 @@ import { SnackbarService } from '../../services/snackbar.service';
 export class AfterRegisterComponent {
   constructor(
     private router: Router,
-    private loader: LoaderService,
     private auth: AuthService,
     private snackbar: SnackbarService
   ) {}

@@ -3,6 +3,7 @@ import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { throwError, Observable, from } from 'rxjs';
 import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { LoaderService } from '../services/loader.service';
 
 // Using signals instead of Subject for token refresh state
 let isRefreshing = false;
@@ -40,19 +41,20 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
   }
 
   const injector = inject(EnvironmentInjector);
+  const loaderService = inject(LoaderService);
   
   // We'll use the injector inside the pipes where we need the services
   const modifiedRequest = req.clone({
     withCredentials: true
   });
 
+  loaderService.show();
   return next(modifiedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.error.shouldRefresh && refreshAttempts < 2) {
         refreshAttempts++; // Increment attempts
         if (!isRefreshing) {
           isRefreshing = true;
-          
           return runInInjectionContext(injector, () => {
             const authService = inject(AuthService);
             return authService.refreshToken().pipe(
@@ -89,7 +91,6 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
             new Promise<boolean>((resolve) => {
               // Add this request to the pending queue
               pendingRequests.push({ resolve });
-              
               // Set up a timeout to avoid hanging forever
               setTimeout(() => {
                 resolve(false);
@@ -107,6 +108,9 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
       } else {
         return throwError(() => error);
       }
+    }),
+    finalize(() => {
+      loaderService.hide();
     })
   );
 }
