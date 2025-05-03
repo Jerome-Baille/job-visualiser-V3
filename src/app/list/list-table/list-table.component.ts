@@ -121,16 +121,7 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // Listen to URL query params changes and update the component state accordingly
     this.route.queryParamMap
       .pipe(takeUntil(this.destroy$))
-      .subscribe(params => {
-        console.log('URL params changed:', params.keys, { 
-          page: params.get('page'), 
-          pageSize: params.get('pageSize'),
-          type: params.get('type'),
-          status: params.get('status'),
-          search: params.get('search'),
-          isNavigatingFromPaginator: this.isNavigatingFromPaginator
-        });
-        
+      .subscribe(params => {        
         // Skip if this navigation was triggered by our paginator
         // to avoid creating an infinite loop
         if (this.isNavigatingFromPaginator) {
@@ -229,14 +220,6 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
   filterSearch: string = '';
 
   async loadJobs(page: number = 0, pageSize: number = 10): Promise<void> {
-    console.log('Loading jobs with params:', { 
-      page, 
-      pageSize, 
-      offset: page * pageSize,
-      type: this.filterType,
-      status: this.filterStatus,
-      search: this.filterSearch
-    });
     this.loading = true;
     try {
       const response = await this.jobService.getOpportunities(
@@ -246,7 +229,6 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.filterStatus,
         this.filterSearch
       );
-      console.log('API response:', response);
       this.paginationInfo = response.pagination;
       this.totalItems = response.pagination.total;
       
@@ -267,17 +249,13 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loading = false;
     }
   }  onPageChange(event: PageEvent): void {
-    console.log('Page change event:', event);
-    
     // Set flag to prevent processing the URL change
     this.isNavigatingFromPaginator = true;
     
     // Update component state
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
-    
-    console.log('Updated state:', { currentPage: this.currentPage, pageSize: this.pageSize });
-    
+
     // Update URL query params and then load data directly
     this.router.navigate([], {
       relativeTo: this.route,
@@ -292,7 +270,6 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   onFilterChange(filter: { type: string; status: string; search: string }): void {
-    console.log('Filter changed:', filter);
     this.filterType = filter.type;
     this.filterStatus = filter.status;
     this.filterSearch = filter.search;
