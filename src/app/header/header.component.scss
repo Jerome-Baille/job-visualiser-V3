@@ -209,8 +209,6 @@
   top: 0;
   width: 100%;
   z-index: 1000;
-  background-color: var(--background-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   .container {
     max-width: 1200px;
@@ -222,7 +220,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 0;
   }
 
   @media screen and (max-width: 768px) {

@@ -22,13 +22,21 @@
   align-items: center;
 }
 
-.chart-card.funnel-colspan {
+.chart-card.applications-colspan {
   grid-column: span 2;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .chart-card h4 {
   margin-bottom: 1rem;
   color: var(--link-color);
+}
+
+.chart-card.applications-colspan apx-chart {
+  width: 100% !important;
+  min-width: 0;
+  display: block;
 }
 
 .conversion-info {

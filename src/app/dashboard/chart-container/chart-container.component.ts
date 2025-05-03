@@ -19,7 +19,7 @@ export class ChartContainerComponent implements OnInit {
 
   // Chart options
   applicationsPerMonthSeries: ApexAxisChartSeries = [];
-  applicationsPerMonthChart: ApexChart = { type: 'line', height: 250, toolbar: { show: false } };
+  applicationsPerMonthChart: ApexChart = { type: 'line', height: 250, width: '100%', toolbar: { show: false } };
   applicationsPerMonthXAxis: Partial<ApexXAxis> = { categories: [] };
   applicationsPerMonthColors = ['#FCE7AA'];
 

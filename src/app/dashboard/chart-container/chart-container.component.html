@@ -4,17 +4,20 @@
     Job Application Statistics
   </h3>
 
-  <ng-container *ngIf="!loading; else loadingTpl">
-    <div class="charts-grid">
-      <!-- Applications per Month -->
+  <ng-container *ngIf="!loading; else loadingTpl">    <div class="charts-grid">
+      <!-- Funnel Chart -->
       <div class="chart-card">
-        <h4>Applications per Month</h4>
+        <h4>Funnel: Applications → Responses → Interviews</h4>
         <apx-chart
-          [series]="applicationsPerMonthSeries"
-          [chart]="applicationsPerMonthChart"
-          [xaxis]="applicationsPerMonthXAxis"
-          [colors]="applicationsPerMonthColors">
+          [series]="funnelSeries"
+          [chart]="funnelChart"
+          [xaxis]="funnelXAxis"
+          [colors]="funnelColors">
         </apx-chart>
+        <div class="conversion-info">
+          <span>Applications → Responses: <b>{{ conversionAppToResponse }}%</b></span><br>
+          <span>Responses → Interviews: <b>{{ conversionResponseToInterview }}%</b></span>
+        </div>
       </div>
 
       <!-- Decision Outcome Pie -->
@@ -28,19 +31,15 @@
         </apx-chart>
       </div>
 
-      <!-- Funnel Chart (colspan 2) -->
-      <div class="chart-card funnel-colspan">
-        <h4>Funnel: Applications → Responses → Interviews</h4>
+      <!-- Applications per Month (colspan 2) -->
+      <div class="chart-card applications-colspan">
+        <h4>Applications per Month</h4>
         <apx-chart
-          [series]="funnelSeries"
-          [chart]="funnelChart"
-          [xaxis]="funnelXAxis"
-          [colors]="funnelColors">
+          [series]="applicationsPerMonthSeries"
+          [chart]="applicationsPerMonthChart"
+          [xaxis]="applicationsPerMonthXAxis"
+          [colors]="applicationsPerMonthColors">
         </apx-chart>
-        <div class="conversion-info">
-          <span>Applications → Responses: <b>{{ conversionAppToResponse }}%</b></span><br>
-          <span>Responses → Interviews: <b>{{ conversionResponseToInterview }}%</b></span>
-        </div>
       </div>
     </div>
   </ng-container>
