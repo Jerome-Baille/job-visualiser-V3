@@ -41,13 +41,12 @@
       }
     }
   }
-
   .filter-container {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
     align-items: baseline;
-    padding: 8px 0 16px;
+    padding: 16px 24px 24px;
     
     mat-form-field {
       flex: 1;

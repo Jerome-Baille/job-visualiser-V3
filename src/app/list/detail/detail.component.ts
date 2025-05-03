@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { JobService } from '../../services/job.service';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
@@ -58,12 +58,15 @@ export const MY_DATE_FORMATS = {
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
-    MatIconModule,
-    MatCardModule,
+    MatIconModule,    MatCardModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatDividerModule
-  ],  templateUrl: './detail.component.html',
+    MatDividerModule,
+    RouterLink
+  ,
+    RouterLink
+  ],
+  templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss'],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },

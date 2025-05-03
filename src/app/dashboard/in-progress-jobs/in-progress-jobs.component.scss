@@ -1,12 +1,12 @@
 @use '@angular/material' as mat;
 
 .in-progress-jobs {
-  margin-top: 1rem;
+  margin-top: 24px;
   
   h3 {
     font-size: 1.25rem;
     font-weight: 500;
-    margin-bottom: 1rem;
+    margin-bottom: 24px;
     color: #333;
     padding-bottom: 8px;
     border-bottom: 2px solid var(--secondary-color);
@@ -18,13 +18,12 @@
       color: var(--info-color);
     }
   }
-  
-  table {
+    table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     box-shadow: none;
-    margin-bottom: 1rem;
+    margin-bottom: 24px;
     
     th {
       color: #555;

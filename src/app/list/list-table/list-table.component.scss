@@ -29,6 +29,12 @@
     }
   }
 
+  // Add global styling for the status select panel
+  ::ng-deep .mat-mdc-select {
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
   mat-card {
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);

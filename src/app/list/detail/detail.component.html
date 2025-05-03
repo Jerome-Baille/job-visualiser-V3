@@ -1,3 +1,11 @@
+<nav aria-label="breadcrumb" *ngIf="!loading && isAuthenticated()">
+  <div class="breadcrumbs">
+    <a class="breadcrumb-link" routerLink="/list">Job List</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">{{ jobForm.get('name')?.value || 'Job Detail' }}</span>
+  </div>
+</nav>
+
 <div class="job-detail-container">
   <div *ngIf="loading" class="loading-container">
     <mat-spinner diameter="50" color="accent"></mat-spinner>

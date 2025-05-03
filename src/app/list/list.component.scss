@@ -2,14 +2,15 @@
 @use '@angular/material' as mat;
 
 .list-container {
-  padding: 16px 0;
   width: 100%;
   max-width: 100%;
   animation: fadeIn 0.5s ease-in-out;
+  padding: 24px;
+  box-sizing: border-box;
   
   // Add margin to mat-tab-group
   mat-tab-group {
-    margin-bottom: 1rem;
+    margin-bottom: 24px;
   }
 }
 
@@ -46,9 +47,8 @@
       border-width: 3px;
     }
   }
-  
-  .mat-mdc-tab-body-content {
-    padding: 0;
+    .mat-mdc-tab-body-content {
+    padding: 24px;
     background-color: var(--background-color);
     border-radius: 0 0 12px 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -65,7 +65,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px 0;
+  padding: 24px;
 
   button {
     display: flex;
@@ -108,8 +108,8 @@
 .color-code-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 12px;
-  padding: 1.5rem;
+  gap: 16px;
+  padding: 24px;
 }
 
 .status-box {

@@ -1,10 +1,40 @@
 /* Use the variables from styles.scss without importing */
 /* The :root variables will be available globally */
 
-.job-detail-container {
-  padding: 20px;
+.breadcrumbs {
   max-width: 900px;
   margin: 0 auto;
+  padding: 24px 24px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-link {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: var(--link-accent-color);
+    text-decoration: underline;
+  }
+}
+
+.breadcrumb-separator {
+  color: rgba(0, 0, 0, 0.4);
+  margin: 0 8px;
+}
+
+.breadcrumb-current {
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+.job-detail-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto 24px;
 }
 
 .loading-container {
@@ -26,10 +56,9 @@
   border-radius: 8px;
   box-shadow: var(--elevation-z2);
   overflow: hidden;
-  
-  mat-card-header {
+    mat-card-header {
     background-color: var(--secondary-color);
-    padding: 16px 24px;
+    padding: 24px;
     
     mat-card-title {
       font-size: 24px;
@@ -51,8 +80,9 @@
 .job-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-    .form-row {
+  gap: 16px;
+  
+  .form-row {
     display: flex;
     gap: 20px;
     width: 100%;
@@ -83,7 +113,7 @@
 }
 
 mat-card-actions {
-  padding: 16px 24px;
+  padding: 24px;
   
   .action-buttons {
     display: flex;

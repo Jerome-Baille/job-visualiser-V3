@@ -2,8 +2,9 @@
 .job-boards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 1rem;
+  gap: 24px;
   place-items: center;
+  padding: 24px;
 }
 
 .job-board__card {
