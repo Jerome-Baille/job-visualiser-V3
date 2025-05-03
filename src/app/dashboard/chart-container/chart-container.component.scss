@@ -5,6 +5,13 @@
   margin-top: 2rem;
 }
 
+@media screen and (max-width: 768px) {
+  .charts-grid {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .chart-card {
   background: var(--background-color);
   border-radius: 12px;

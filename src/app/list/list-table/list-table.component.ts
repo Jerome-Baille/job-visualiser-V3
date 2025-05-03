@@ -42,6 +42,13 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Unknown', value: 'unknown' }
   ];
 
+  // Column definitions
+  displayedColumns: string[] = ['name', 'company', 'type', 'applicationDate', 'decision'];
+  mobileDisplayedColumns: string[] = ['name', 'company']; // Only show these columns on mobile
+  
+  // Flag to track current display columns based on screen size
+  isMobile = false;
+
   async onDecisionChange(job: JobData, newDecision: string) {
     if (!job.id || job.decision === newDecision) return;
     const updatedJob = { ...job, decision: newDecision };
@@ -52,14 +59,11 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       // Optionally show an error message
       console.error('Error updating the decision', error);
     }
-  }
-
-  goToDetail(job: JobData): void {
+  }  goToDetail(job: JobData): void {
     if (job && job.id) {
       this.router.navigate(['/job', job.id]);
     }
   }
-  displayedColumns: string[] = ['name', 'company', 'type', 'applicationDate', 'decision'];
   dataSource = new MatTableDataSource<JobData>([]);
   loading = true;
   totalItems = 0;
@@ -109,6 +113,12 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router
   ) {}
   ngOnInit(): void {
+    // Check initial screen size and set up responsive columns
+    this.checkScreenSize();
+    
+    // Listen for window resize events
+    window.addEventListener('resize', this.onResize.bind(this));
+    
     // Listen to URL query params changes and update the component state accordingly
     this.route.queryParamMap
       .pipe(takeUntil(this.destroy$))
@@ -173,9 +183,31 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Remove resize listener when component is destroyed
+    window.removeEventListener('resize', this.onResize.bind(this));
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  /**
+   * Handle window resize events
+   */
+  private onResize(): void {
+    this.checkScreenSize();
+  }
+  /**
+   * Check current screen size and update displayed columns accordingly
+   */
+  private checkScreenSize(): void {
+    const isMobileView = window.innerWidth <= 768;
+    // Update displayed columns based on screen size
+    if (isMobileView) {
+      this.displayedColumns = ['name', 'company'];
+    } else {
+      this.displayedColumns = ['name', 'company', 'type', 'applicationDate', 'decision'];
+    }
+  }
+  
   /**
    * Synchronizes the paginator with the current component state
    */

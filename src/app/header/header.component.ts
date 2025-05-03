@@ -1,13 +1,28 @@
-
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatIconModule,
+    MatRippleModule,
+    MatDividerModule,
+    MatListModule
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -15,9 +30,13 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   readonly isAuthenticated: () => boolean;
   isLargerThanMD = false;
-  menuOpen = false;
+  showProfileSheet = false;
 
-  constructor(public auth: AuthService, private router: Router) {
+  constructor(
+    public auth: AuthService, 
+    private router: Router,
+    private bottomSheet: MatBottomSheet
+  ) {
     this.isAuthenticated = this.auth.isAuthenticated;
     this.checkScreenSize();
   }
@@ -31,13 +50,17 @@ export class HeaderComponent {
     this.isLargerThanMD = window.innerWidth >= 768;
   }
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+  openProfileSheet() {
+    this.showProfileSheet = true;
+  }
+
+  closeProfileSheet() {
+    this.showProfileSheet = false;
   }
 
   logout() {
     this.auth.logout();
-    this.menuOpen = false;
+    this.closeProfileSheet();
     this.router.navigate(['/']);
   }
 }

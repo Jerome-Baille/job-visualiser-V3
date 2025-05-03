@@ -1,8 +1,33 @@
-
 @use 'sass:color';
 
 .list-table {
   animation: fadeIn 0.5s ease-in-out;
+
+  // Mobile view indicator
+  .mobile-view-indicator {
+    display: none; // Hidden by default
+    align-items: center;
+    justify-content: center;
+    background: var(--secondary-color);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7c4a00;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    // Only show on mobile
+    @media (max-width: 768px) {
+      display: flex;
+    }
+  }
 
   mat-card {
     border-radius: 16px;
@@ -60,26 +85,86 @@
       font-size: 0.9rem;
     }
   }
-
   // Table styling
   .job-table {
     width: 100%;
     border-radius: 0 0 12px 12px;
-    overflow: hidden;    .header-cell-content {
+    overflow: hidden;    
+    
+    .header-cell-content {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 4px 0;
       transition: transform 0.2s ease;
+      
+      // Default desktop layout - horizontal
+      flex-direction: row;
+      
+      // Mobile layout - vertical stacking
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      
       .header-icon {
         margin-right: 0;
         font-size: 18px;
         height: 18px;
         width: 18px;
         color: var(--link-color);
+        
+        @media (max-width: 768px) {
+          margin-bottom: 3px;
+        }
+      }
+      
+      .header-text {
+        @media (max-width: 768px) {
+          font-size: 0.9rem;
+          line-height: 1.2;
+        }
       }
     }
 
+    // Mobile optimizations
+    @media (max-width: 768px) {
+      // Adjust column widths for mobile (when only showing name and company)
+      td.mat-column-name, th.mat-column-name {
+        width: 50%;
+        padding-right: 25px !important; // 50px gap divided between columns
+        box-sizing: border-box;
+      }
+
+      td.mat-column-company, th.mat-column-company {
+        width: 50%;
+        padding-left: 25px !important; // 50px gap divided between columns
+        box-sizing: border-box;
+      }
+      
+      // We don't need these rules anymore since columns are removed programmatically
+      // but keeping them as a fallback just in case
+      .mat-column-type,
+      .mat-column-applicationDate,
+      .mat-column-decision {
+        display: none !important;
+      }
+      
+      // Make the cells take more vertical space for better tap targets
+      .mat-mdc-cell {
+        padding: 16px 12px;
+        font-size: 1rem;
+      }
+      
+      // Increase header cell padding
+      .mat-mdc-header-cell {
+        padding: 16px 12px;
+      }
+    }
+    
     .header-colored-row, .header-colored {
       background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
       .mat-mdc-header-cell, th.mat-header-cell {
@@ -240,6 +325,37 @@
       min-width: 80px;
       text-align: center;
     }
+    
+    // Mobile responsive styles
+    @media (max-width: 768px) {
+      .mat-mdc-header-cell, th.mat-header-cell {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+      }
+      
+      .mat-mdc-row .mat-mdc-cell {
+        padding: 12px 8px;
+      }
+      
+      .mat-column-applicationDate, th.mat-header-cell.mat-column-applicationDate {
+        width: auto;
+        min-width: 80px;
+      }
+      
+      .date-cell {
+        min-width: 70px;
+        font-size: 0.9rem;
+        padding: 3px 6px;
+      }
+      
+      .decision-select {
+        width: 100%;
+        
+        ::ng-deep .mat-mdc-select {
+          font-size: 0.9rem;
+        }
+      }
+    }
   }
   
   // Row status colors
@@ -313,6 +429,22 @@
     min-height: 56px;
     margin-top: 0;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      padding: 8px;
+      
+      mat-paginator {
+        width: 100%;
+      }
+      
+      .pagination-info {
+        margin-top: 8px;
+        width: 100%;
+        justify-content: center;
+        padding: 8px 0;
+      }
+    }
   }
 
   .pagination-info {
@@ -329,6 +461,10 @@
     font-weight: 500;
     border-radius: 20px;
     transition: all 0.2s ease;
+    
+    @media (max-width: 768px) {
+      font-size: 0.85rem;
+    }
     
     b {
       font-weight: 600;

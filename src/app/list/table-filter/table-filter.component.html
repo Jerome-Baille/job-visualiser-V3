@@ -19,6 +19,17 @@
       <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
         <mat-select [(value)]="typeFilter" (selectionChange)="filterJobs()">
+          <mat-select-trigger>
+            <span class="option-with-icon" *ngIf="typeFilter !== 'all'">
+              <mat-icon *ngIf="typeFilter === 'remote'">home</mat-icon>
+              <mat-icon *ngIf="typeFilter === 'hybrid'">compare_arrows</mat-icon>
+              <mat-icon *ngIf="typeFilter === 'on site'">business</mat-icon>
+              <span>
+                {{ typeFilter === 'remote' ? 'Remote' : (typeFilter === 'hybrid' ? 'Hybrid' : (typeFilter === 'on site' ? 'On site' : 'All Types')) }}
+              </span>
+            </span>
+            <span *ngIf="typeFilter === 'all'">All Types</span>
+          </mat-select-trigger>
           <mat-option value="all">All Types</mat-option>
           <mat-option value="remote">
             <span class="option-with-icon">
@@ -44,6 +55,18 @@
       <mat-form-field appearance="outline">
         <mat-label>Status</mat-label>
         <mat-select [(value)]="decisionFilter" (selectionChange)="filterJobs()">
+          <mat-select-trigger>
+            <span class="option-with-icon" *ngIf="decisionFilter !== 'all'">
+              <mat-icon *ngIf="decisionFilter === 'positive'" class="success-icon">check_circle</mat-icon>
+              <mat-icon *ngIf="decisionFilter === 'negative'" class="error-icon">cancel</mat-icon>
+              <mat-icon *ngIf="decisionFilter === 'in progress'" class="info-icon">hourglass_empty</mat-icon>
+              <mat-icon *ngIf="decisionFilter === 'expired'" class="warning-icon">watch_later</mat-icon>
+              <span>
+                {{ decisionFilter === 'positive' ? 'Positive' : (decisionFilter === 'negative' ? 'Negative' : (decisionFilter === 'in progress' ? 'In Progress' : (decisionFilter === 'expired' ? 'Expired' : 'All Statuses'))) }}
+              </span>
+            </span>
+            <span *ngIf="decisionFilter === 'all'">All Statuses</span>
+          </mat-select-trigger>
           <mat-option value="all">All Statuses</mat-option>
           <mat-option value="positive" class="positive-option">
             <span class="option-with-icon">
