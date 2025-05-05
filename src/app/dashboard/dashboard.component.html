@@ -1,19 +1,16 @@
-<div class="dashboard-wrapper">
-  <div *ngIf="isAuthenticated; else notLogged">    
+<div class="dashboard-wrapper">  <div *ngIf="isAuthenticated; else notLogged">    
     <div class="status-grid">
-      <div class="box-status positive">
+      <div class="box-status positive" (click)="navigateToList('positive')" style="cursor: pointer;">
         <span>Positive</span>
         <strong>{{ positiveJobs }}</strong>
-      </div>
-      <div class="box-status in-progress">
+      </div>      <div class="box-status in-progress" (click)="navigateToList('in progress')" style="cursor: pointer;">
         <span>In Progress</span>
         <strong>{{ inProgressJobs }}</strong>
-      </div>
-      <div class="box-status unknown">
+      </div>      <div class="box-status unknown" (click)="navigateToListWithExpired()" style="cursor: pointer;">
         <span>Unknown</span>
         <strong>{{ unknownJobs }}</strong>
       </div>
-      <div class="box-status negative">
+      <div class="box-status negative" (click)="navigateToList('negative')" style="cursor: pointer;">
         <span>Negative</span>
         <strong>{{ negativeJobs }}</strong>
       </div>

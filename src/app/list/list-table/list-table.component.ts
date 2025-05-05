@@ -9,6 +9,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { TableFilterComponent } from '../table-filter/table-filter.component';
 import { JobService } from '../../services/job.service';
 import { SnackbarService } from '../../services/snackbar.service';
@@ -24,10 +25,10 @@ import { takeUntil } from 'rxjs/operators';
     NgClass,
     NgFor,
     MatCardModule, 
-    MatTableModule, 
-    MatPaginatorModule, 
+    MatTableModule,    MatPaginatorModule, 
     MatSortModule, 
     MatProgressSpinnerModule,
+    MatIconModule,
     RouterModule,
     TableFilterComponent,
     MatFormFieldModule,
@@ -142,13 +143,12 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isNavigatingFromPaginator) {
           this.isNavigatingFromPaginator = false;
           return;
-        }
-
-        const pageParam = params.get('page');
+        }        const pageParam = params.get('page');
         const pageSizeParam = params.get('pageSize');
         const typeParam = params.get('type');
         const statusParam = params.get('status');
         const searchParam = params.get('search');
+        const includeExpiredParam = params.get('includeExpired');
         
         // Handle page - explicitly parse as number and subtract 1 for 0-based index
         if (pageParam) {
@@ -168,12 +168,11 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
           if (!isNaN(size) && this.pageSizeOptions.includes(size)) {
             this.pageSize = size;
           }
-        }
-
-        // Handle filter params
+        }        // Handle filter params
         this.filterType = typeParam || 'all';
         this.filterStatus = statusParam || 'all';
         this.filterSearch = searchParam || '';
+        this.includeExpired = includeExpiredParam === 'true';
 
         // Load the data for the current page with filters
         this.loadJobs(this.currentPage, this.pageSize);
@@ -233,24 +232,54 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
   filterType: string = 'all';
   filterStatus: string = 'all';
   filterSearch: string = '';
+  includeExpired: boolean = false;
+
   async loadJobs(page: number = 0, pageSize: number = 10): Promise<void> {
     this.loading = true;
     try {
+      let status = this.filterStatus;
+
+      // Special case for status - if we're filtering for unknown AND includeExpired is true
       const response = await this.jobService.getOpportunities(
         pageSize, 
         page * pageSize,
         this.filterType,
-        this.filterStatus,
+        status,
         this.filterSearch
       );
       this.paginationInfo = response.pagination;
       this.totalItems = response.pagination.total;
       
       // Process the job data
-      const jobs = response.data.map(job => ({ 
+      let jobs = response.data.map(job => ({ 
         ...job, 
         id: job.id ? Number(job.id) : undefined 
       }));
+
+      // If including expired and we're filtering by unknown, we need to add a client-side filter
+      // for expired jobs too
+      if (this.includeExpired && this.filterStatus === 'unknown') {
+        // Make another request to get expired jobs
+        const expiredResponse = await this.jobService.getOpportunities(
+          pageSize, 
+          page * pageSize,
+          this.filterType,
+          'expired',
+          this.filterSearch
+        );
+        
+        // Add the expired jobs to our dataset
+        const expiredJobs = expiredResponse.data.map(job => ({ 
+          ...job, 
+          id: job.id ? Number(job.id) : undefined 
+        }));
+        
+        // Combine the unknown and expired jobs
+        jobs = [...jobs, ...expiredJobs];
+        
+        // Update the total count to reflect both sets
+        this.totalItems += expiredResponse.pagination.total;
+      }
       
       this.dataSource.data = jobs;
       this.allJobs = jobs;
@@ -294,15 +323,15 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.paginator) {
       this.paginator.firstPage();
     }
-    
-    // Update URL to reflect we're on page 1
+      // Update URL to reflect we're on page 1
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         page: 1,
         type: filter.type !== 'all' ? filter.type : null,
         status: filter.status !== 'all' ? filter.status : null,
-        search: filter.search ? filter.search : null
+        search: filter.search ? filter.search : null,
+        includeExpired: this.includeExpired ? 'true' : null
       },
       queryParamsHandling: 'merge',
     }).then(() => {

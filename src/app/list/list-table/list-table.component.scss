@@ -3,6 +3,29 @@
 .list-table {
   animation: fadeIn 0.5s ease-in-out;
 
+  // Status notification for unknown/expired combined filter
+  .status-notification {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(var(--warning-color-rgb), 0.15);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7c4a00;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    mat-icon {
+      color: #f57c00;
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
   // Mobile view indicator
   .mobile-view-indicator {
     display: none; // Hidden by default
@@ -34,12 +57,12 @@
     padding: 0 10px;
     box-sizing: border-box;
   }
-
   mat-card {
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     overflow: hidden;
     transition: all 0.3s ease;
+    padding: 0;
     
     &:hover {
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
@@ -47,7 +70,7 @@
   }
 
   mat-card-content {
-    padding: 0;
+    padding: 0 !important;
   }
 
   // Loading state
@@ -94,7 +117,6 @@
   // Table styling
   .job-table {
     width: 100%;
-    border-radius: 0 0 12px 12px;
     overflow: hidden;    
     
     .header-cell-content {

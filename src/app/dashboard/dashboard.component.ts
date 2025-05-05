@@ -8,7 +8,7 @@ import { InProgressJobsComponent } from "./in-progress-jobs/in-progress-jobs.com
 import { ChartContainerComponent } from "./chart-container/chart-container.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 
 @Component({
@@ -29,10 +29,10 @@ export class DashboardComponent implements OnDestroy {
   jobs: JobData[] = [];
   private jobsLoaded = false;
   private destroyEffect: EffectRef | null = null;
-
   constructor(
     private jobService: JobService,
     private snackbar: SnackbarService,
+    private router: Router,
     public auth: AuthService
   ) {
     this.destroyEffect = effect(async () => {
@@ -71,9 +71,26 @@ export class DashboardComponent implements OnDestroy {
   }
   get negativeJobs() {
     return this.jobs.filter(job => job.decision === 'negative').length;
+  }  get isAuthenticated() {
+    return this.auth.isAuthenticated();
+  }  
+
+  navigateToList(status: string) {
+    this.router.navigate(['/list'], { 
+      queryParams: { 
+        status: status,
+        page: 1
+      } 
+    });
   }
 
-  get isAuthenticated() {
-    return this.auth.isAuthenticated();
+  navigateToListWithExpired() {
+    this.router.navigate(['/list'], { 
+      queryParams: { 
+        status: 'unknown',
+        includeExpired: 'true',
+        page: 1
+      } 
+    });
   }
 }

@@ -1,7 +1,12 @@
 <div class="list-table">
   <app-table-filter (filterChange)="onFilterChange($event)"></app-table-filter>
 
-  <!-- Mobile view indicator - only shows on mobile -->
+  <!-- Status notification message when filtering both unknown and expired -->
+  <div *ngIf="includeExpired && filterStatus === 'unknown'" class="status-notification">
+    <mat-icon>info</mat-icon>
+    <span>Showing both Unknown and Expired status jobs</span>
+  </div>
+
   <mat-card>
     <mat-card-content>
       <div *ngIf="loading" class="mat-caption">Loading...</div>
