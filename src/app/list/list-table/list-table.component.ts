@@ -1,6 +1,6 @@
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, effect } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { JobData, PaginationInfo } from '../../interfaces';
@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TableFilterComponent } from '../table-filter/table-filter.component';
 import { JobService } from '../../services/job.service';
 import { SnackbarService } from '../../services/snackbar.service';
+import { tokenRefreshCounter } from '../../interceptors/http.interceptor';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -108,13 +109,24 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private isNavigatingFromPaginator = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatSort) sort: MatSort | undefined;
-  constructor(
+  @ViewChild(MatSort) sort: MatSort | undefined;  constructor(
     private jobService: JobService,
     private route: ActivatedRoute,
     private router: Router,
     private snackbarService: SnackbarService
-  ) {}ngOnInit(): void {
+  ) {
+    // Use effect to react to token refresh counter changes
+    effect(() => {
+      // Get the current value of the refresh counter signal
+      const refreshCount = tokenRefreshCounter();
+      
+      // Skip the initial effect execution when the component is created
+      if (refreshCount > 0) {
+        console.log('Token refreshed, reloading data...');
+        this.loadJobs(this.currentPage, this.pageSize);
+      }
+    });
+  }ngOnInit(): void {
     // Check initial screen size and set up responsive columns
     this.checkScreenSize();
     
@@ -221,7 +233,6 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
   filterType: string = 'all';
   filterStatus: string = 'all';
   filterSearch: string = '';
-
   async loadJobs(page: number = 0, pageSize: number = 10): Promise<void> {
     this.loading = true;
     try {
@@ -248,10 +259,11 @@ export class ListTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.syncPaginatorWithCurrentState();
     } catch (error) {
       console.error('Failed to fetch jobs:', error);
+      this.snackbarService.error('Failed to load jobs. Please try again.');
     } finally {
       this.loading = false;
     }
-  }  onPageChange(event: PageEvent): void {
+  }onPageChange(event: PageEvent): void {
     // Set flag to prevent processing the URL change
     this.isNavigatingFromPaginator = true;
     

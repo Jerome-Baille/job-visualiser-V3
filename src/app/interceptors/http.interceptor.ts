@@ -7,7 +7,8 @@ import { LoaderService } from '../services/loader.service';
 
 // Using signals instead of Subject for token refresh state
 let isRefreshing = false;
-const refreshTokenSignal = signal<boolean>(false);
+// Create a signal for token refresh events - increments on each refresh
+export const tokenRefreshCounter = signal<number>(0);
 let refreshAttempts = 0; // Add counter for refresh attempts
 
 // A queue to store pending requests during refresh
@@ -17,8 +18,8 @@ const pendingRequests: Array<{
 
 // Function to notify waiting requests
 function notifyRefreshComplete() {
-  // Update signal to notify components
-  refreshTokenSignal.set(true);
+  // Update counter signal to notify components of a token refresh
+  tokenRefreshCounter.update(count => count + 1);
   
   // Process any pending requests
   pendingRequests.forEach(request => {
@@ -27,11 +28,6 @@ function notifyRefreshComplete() {
   
   // Clear the queue
   pendingRequests.length = 0;
-  
-  // Reset signal state after a short delay
-  setTimeout(() => {
-    refreshTokenSignal.set(false);
-  }, 100);
 }
 
 export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
