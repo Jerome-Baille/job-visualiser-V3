@@ -15,7 +15,7 @@
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    margin: 1.25rem 1rem 1.5rem 0.5rem; // Increased bottom margin to create better separation
+    margin: 1.25rem 1rem 1.5rem 0.5rem;
     align-self: flex-end;
     width: 100%;
     justify-content: flex-end;
@@ -41,13 +41,13 @@
     list-style: none;
     padding: 0;
     margin: 0;    li {
-      margin: 0.25rem 0; // More consistent spacing between items
+      margin: 0.25rem 0;
     }    a {
       display: flex;
       align-items: center;
       text-decoration: none;
-      color: var(--link-color);
-      padding: 0.875rem 1.25rem; // Slightly increased padding for better touch targets
+      color: #0009;
+      padding: 0.875rem 1.25rem;
       border-radius: 8px 0 0 8px;
       transition: background 0.2s, color 0.2s, opacity 0.2s;
       opacity: 0.5;
@@ -73,11 +73,10 @@
         .sidebar-icon mat-icon {
           color: var(--link-accent-color);
         }
-      }
-
-      &:hover:not(.active) {
+      }      &:hover:not(.active) {
         background-color: var(--secondary-color);
         opacity: 1;
+        color: var(--link-accent-color);
 
         .sidebar-icon mat-icon {
           color: var(--link-accent-color);
@@ -87,17 +86,15 @@
   }
   .sidebar-icon {
     font-size: 1.2rem;
-    margin-right: 1rem; // Increased spacing between icon and text
-    min-width: 24px; // Ensures consistent width for icon container
+    margin-right: 1rem; 
+    min-width: 24px; 
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    mat-icon {
+    justify-content: center;    mat-icon {
       font-size: 22px;
       height: 22px;
       width: 22px;
-      color: var(--link-color);
+      color: #0009;
       transition: color 0.2s;
     }
   }
