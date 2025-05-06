@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
-import { JobService } from '../../services/job.service';
 import { TaskService } from '../../services/task.service';
 import { TaskData } from '../../interfaces';
 import { KanbanDialogComponent } from '../kanban-dialog/kanban-dialog.component';
@@ -114,6 +113,8 @@ export class KanbanComponent implements OnInit {
   }
 
   addNewTask() {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
     const dialogRef = this.dialog.open(KanbanDialogComponent, {
       width: '500px',
       data: { task: null }
@@ -133,6 +134,8 @@ export class KanbanComponent implements OnInit {
   }
   
   editTask(task: KanbanTask) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
     const dialogRef = this.dialog.open(KanbanDialogComponent, {
       width: '500px',
       data: { task: task }
