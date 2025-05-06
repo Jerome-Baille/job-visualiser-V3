@@ -233,8 +233,16 @@ export class ListTableComponent {
       this.dataSource.data = jobs;
       this.syncPaginatorWithCurrentState();
     } catch (error) {
-      console.error('Failed to fetch jobs:', error);
-      this.snackbarService.error('Failed to load jobs. Please try again.');
+      // Only show snackbar if not a token refresh error (type-safe)
+      const isTokenRefreshError =
+        typeof error === 'object' && error !== null &&
+        'error' in error &&
+        (error as any).error &&
+        (error as any).error.shouldRefresh;
+      if (!isTokenRefreshError) {
+        console.error('Failed to fetch jobs:', error);
+        this.snackbarService.error('Failed to load jobs. Please try again.');
+      }
     } finally {
       this.loading.set(false);
     }
