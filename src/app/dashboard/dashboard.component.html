@@ -1,12 +1,15 @@
-<div class="dashboard-wrapper">  <div *ngIf="isAuthenticated; else notLogged">    
+<div class="dashboard-wrapper">
+  <div *ngIf="isAuthenticated; else notLogged">
     <div class="status-grid">
       <div class="box-status positive" (click)="navigateToList('positive')" style="cursor: pointer;">
         <span>Positive</span>
         <strong>{{ positiveJobs }}</strong>
-      </div>      <div class="box-status in-progress" (click)="navigateToList('in progress')" style="cursor: pointer;">
+      </div>
+      <div class="box-status in-progress" (click)="navigateToList('in progress')" style="cursor: pointer;">
         <span>In Progress</span>
         <strong>{{ inProgressJobs }}</strong>
-      </div>      <div class="box-status unknown" (click)="navigateToListWithExpired()" style="cursor: pointer;">
+      </div>
+      <div class="box-status unknown" (click)="navigateToListWithExpired()" style="cursor: pointer;">
         <span>Unknown</span>
         <strong>{{ unknownJobs }}</strong>
       </div>
@@ -15,16 +18,16 @@
         <strong>{{ negativeJobs }}</strong>
       </div>
     </div>
-    
+
     <div class="dashboard-container">
       <app-chart-container></app-chart-container>
     </div>
-    
+
     <div class="dashboard-container">
-      <app-in-progress-jobs [jobs]="jobs"></app-in-progress-jobs>
+      <app-kanban [jobs]="jobs"></app-kanban>
     </div>
   </div>
-  
+
   <ng-template #notLogged>
     <div class="not-logged-message">
       <mat-icon aria-hidden="false" aria-label="Warning">warning</mat-icon>

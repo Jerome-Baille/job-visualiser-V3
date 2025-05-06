@@ -1,0 +1,119 @@
+<div class="kanban-board">
+    <div class="kanban-header">
+        <h2>Job Search Tasks</h2>
+        <button mat-raised-button color="primary" (click)="addNewTask()" class="add-task-btn">
+            <mat-icon>add</mat-icon> Add Task
+        </button>
+    </div>
+
+    <div class="board-container">
+        <!-- To Do Column -->
+        <div class="kanban-column">
+            <div class="column-header todo">
+                <h3>To Do</h3>
+                <span class="task-count">{{todoTasks.length}}</span>
+            </div>
+            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todoTasks"
+                [cdkDropListConnectedTo]="[inProgressList, doneList]" class="task-list" id="todo-list"
+                (cdkDropListDropped)="drop($event)">
+                <div class="task-card" *ngFor="let task of todoTasks" cdkDrag>
+                    <mat-card>
+                        <div class="priority-indicator" [style.background-color]="getTaskColor(task.priority)"></div>
+                        <mat-card-header>
+                            <mat-card-title>{{task.description}}</mat-card-title>
+                            <!-- <mat-card-subtitle *ngIf="task.relatedJob">{{task.relatedJob.company}}</mat-card-subtitle> -->
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>{{task.description}}</p>
+                            <div class="due-date" *ngIf="task.dueDate">
+                                <mat-icon>event</mat-icon>
+                                <span>{{task.dueDate | date:'dd/MM/yyyy'}}</span>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-icon-button matTooltip="Edit task" (click)="editTask(task)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Delete task" (click)="deleteTask(task, todoTasks)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+        <!-- In Progress Column -->
+        <div class="kanban-column">
+            <div class="column-header in-progress">
+                <h3>In Progress</h3>
+                <span class="task-count">{{inProgressTasks.length}}</span>
+            </div>
+            <div cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="inProgressTasks"
+                [cdkDropListConnectedTo]="[todoList, doneList]" class="task-list" id="in-progress-list"
+                (cdkDropListDropped)="drop($event)">
+                <div class="task-card" *ngFor="let task of inProgressTasks" cdkDrag>
+                    <mat-card>
+                        <div class="priority-indicator" [style.background-color]="getTaskColor(task.priority)"></div>
+                        <mat-card-header>
+                            <mat-card-title>{{task.description}}</mat-card-title>
+                            <!-- <mat-card-subtitle *ngIf="task.relatedJob">{{task.relatedJob.company}}</mat-card-subtitle> -->
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>{{task.description}}</p>
+                            <div class="due-date" *ngIf="task.dueDate">
+                                <mat-icon>event</mat-icon>
+                                <span>{{task.dueDate | date:'dd/MM/yyyy'}}</span>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-icon-button matTooltip="Edit task" (click)="editTask(task)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Delete task"
+                                (click)="deleteTask(task, inProgressTasks)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+        <!-- Done Column -->
+        <div class="kanban-column">
+            <div class="column-header done">
+                <h3>Done</h3>
+                <span class="task-count">{{doneTasks.length}}</span>
+            </div>
+            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="doneTasks"
+                [cdkDropListConnectedTo]="[todoList, inProgressList]" class="task-list" id="done-list"
+                (cdkDropListDropped)="drop($event)">
+                <div class="task-card" *ngFor="let task of doneTasks" cdkDrag>
+                    <mat-card>
+                        <div class="priority-indicator" [style.background-color]="getTaskColor(task.priority)"></div>
+                        <mat-card-header>
+                            <mat-card-title>{{task.description}}</mat-card-title>
+                            <!-- <mat-card-subtitle *ngIf="task.relatedJob">{{task.relatedJob.company}}</mat-card-subtitle> -->
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>{{task.description}}</p>
+                            <div class="due-date" *ngIf="task.dueDate">
+                                <mat-icon>event</mat-icon>
+                                <span>{{task.dueDate | date:'dd/MM/yyyy'}}</span>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-icon-button matTooltip="Edit task" (click)="editTask(task)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Delete task" (click)="deleteTask(task, doneTasks)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

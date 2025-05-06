@@ -4,11 +4,11 @@ import { JobData } from '../interfaces';
 import { SnackbarService } from '../services/snackbar.service';
 import { AuthService } from '../services/auth.service';
 import { NgIf } from '@angular/common';
-import { InProgressJobsComponent } from "./in-progress-jobs/in-progress-jobs.component";
 import { ChartContainerComponent } from "./chart-container/chart-container.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
+import { KanbanComponent } from "./kanban/kanban.component";
 
 
 @Component({
@@ -16,12 +16,12 @@ import { Router, RouterLink } from '@angular/router';
   standalone: true,
   imports: [
     NgIf,
-    InProgressJobsComponent,
     ChartContainerComponent,
     MatIconModule,
     MatButtonModule,
-    RouterLink
-  ],
+    RouterLink,
+    KanbanComponent
+],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

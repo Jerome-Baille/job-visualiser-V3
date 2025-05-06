@@ -1,0 +1,185 @@
+.kanban-board {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+
+    .kanban-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+
+        h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .add-task-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+
+    .board-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        height: calc(100% - 60px);
+
+        @media (max-width: 767px) {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+    }
+
+    .kanban-column {
+        display: flex;
+        flex-direction: column;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        height: 100%;
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px 8px 0 0;
+
+            h3 {
+                margin: 0;
+                font-weight: 500;
+            }
+
+            .task-count {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                background-color: rgba(0, 0, 0, 0.1);
+                border-radius: 50%;
+                font-size: 0.8rem;
+            }
+
+            &.todo {
+                background-color: var(--warning-color);
+                color: #333;
+            }
+
+            &.in-progress {
+                background-color: var(--info-color);
+                color: #333;
+            }
+
+            &.done {
+                background-color: var(--success-color);
+                color: #333;
+            }
+        }
+
+        .task-list {
+            flex-grow: 1;
+            min-height: 60px;
+            padding: 12px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            border-radius: 0 0 8px 8px;
+        }
+    }
+
+    .task-card {
+        margin-bottom: 12px;
+        cursor: move;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        mat-card {
+            position: relative;
+            padding: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+
+            &:hover {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .priority-indicator {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 4px;
+                border-radius: 4px 0 0 4px;
+            }
+
+            mat-card-header {
+                padding: 16px 16px 0 20px;
+
+                mat-card-title {
+                    font-size: 1rem;
+                    margin-bottom: 4px;
+                }
+
+                mat-card-subtitle {
+                    font-size: 0.8rem;
+                    margin-bottom: 0;
+                }
+            }
+
+            mat-card-content {
+                padding: 8px 16px;
+
+                p {
+                    margin: 0 0 8px;
+                    font-size: 0.9rem;
+                    color: #666;
+                }
+
+                .due-date {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    font-size: 0.8rem;
+                    color: #888;
+
+                    mat-icon {
+                        font-size: 14px;
+                        width: 14px;
+                        height: 14px;
+                    }
+                }
+            }
+
+            mat-card-actions {
+                margin: 0;
+                padding: 0 8px 8px;
+            }
+        }
+    }
+}
+
+// CDK Drag & Drop Styles
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0.8;
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.task-list.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

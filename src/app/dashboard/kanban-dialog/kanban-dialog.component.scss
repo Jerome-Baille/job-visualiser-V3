@@ -1,0 +1,114 @@
+@use 'sass:color';
+
+/* Override dialog container style */
+::ng-deep .mat-mdc-dialog-container {
+  padding: 0 !important;
+}
+
+.task-dialog-container {
+  padding: 0 !important;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.task-card {
+  background-color: var(--background-color);
+  border-radius: 8px;
+  box-shadow: var(--elevation-z2);
+  overflow: hidden;
+  
+  mat-card-header {
+    background-color: var(--secondary-color);
+    padding: 24px;
+    
+    mat-card-title {
+      font-size: 24px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+  }
+  
+  mat-card-content {
+    padding: 24px;
+  }
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    mat-form-field {
+      flex: 1;
+      width: 100%;
+    }
+  }
+  
+  .wide-field {
+    width: 100%;
+  }
+}
+
+mat-card-actions {
+  padding: 16px 24px;
+  
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 12px;
+      
+      button {
+        width: 100%;
+      }
+      
+      .spacer {
+        display: none;
+      }
+    }
+  }
+}
+
+.spacer {
+  flex: 1;
+}
+
+button {
+  mat-icon {
+    margin-right: 4px;
+  }
+}
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  gap: 8px;
+  height: 40px;
+  transition: background-color 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    background-color: var(--link-color);
+    filter: brightness(0.9);
+  }
+  
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.38);
+  }
+}
