@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { TaskData } from '../../interfaces';
@@ -27,10 +27,22 @@ export const MY_DATE_FORMATS = {
   },
 };
 
+// Custom date adapter that ensures leading zeros for DD/MM/YYYY
+class CustomDateAdapter extends NativeDateAdapter {
+  override format(date: Date, displayFormat: Object): string {
+    if (!this.isValid(date)) {
+      return '';
+    }
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+}
+
 @Component({
   selector: 'app-kanban-dialog',
-  standalone: true,
-  imports: [
+  standalone: true,  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
@@ -42,13 +54,14 @@ export const MY_DATE_FORMATS = {
     MatNativeDateModule,
     MatCardModule,
     MatDividerModule,
-    MatIconModule,
-    DateMaskDirective
+    MatIconModule
   ],
   templateUrl: './kanban-dialog.component.html',
   styleUrl: './kanban-dialog.component.scss',
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: DateAdapter, useClass: CustomDateAdapter }
   ]
 })
 export class KanbanDialogComponent implements OnInit {
@@ -64,13 +77,11 @@ export class KanbanDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { task?: TaskData }
   ) {
     this.isEditMode = !!data.task;
-    this.dialogTitle = this.isEditMode ? 'Edit Task' : 'Create New Task';
-
-    this.taskForm = this.fb.group({
+    this.dialogTitle = this.isEditMode ? 'Edit Task' : 'Create New Task';    this.taskForm = this.fb.group({
       description: ['', Validators.required],
       status: ['Backlog', Validators.required],
       priority: ['Medium', Validators.required],
-      dueDate: ['', [Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/)]],
+      dueDate: [''], // Empty string to support both date picker and manual entry
       // If we want to add job IDs in the future, can add here
       // jobId: [[]] 
     });
@@ -78,14 +89,10 @@ export class KanbanDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isEditMode && this.data.task) {
-      // Convert ISO string date to DD/MM/YYYY string if it exists
-      let dueDate = '';
+      // Convert ISO string date to Date object if it exists
+      let dueDate = null;
       if (this.data.task.dueDate) {
-        const d = new Date(this.data.task.dueDate);
-        const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = d.getFullYear();
-        dueDate = `${day}/${month}/${year}`;
+        dueDate = new Date(this.data.task.dueDate);
       }
 
       this.taskForm.patchValue({
@@ -98,19 +105,29 @@ export class KanbanDialogComponent implements OnInit {
       });
     }
   }
-
   onSubmit(): void {
     if (this.taskForm.invalid) {
       return;
     }
 
-    const taskData = this.taskForm.value;
+    const taskData = { ...this.taskForm.value };
 
-    // Convert DD/MM/YYYY to ISO string (YYYY-MM-DD) for backend
+    // Handle date conversion to ISO format (YYYY-MM-DD) for backend
     if (taskData.dueDate) {
-      const [day, month, year] = taskData.dueDate.split('/');
-      if (day && month && year) {
-        taskData.dueDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      if (taskData.dueDate instanceof Date) {
+        // If it's a Date object (from datepicker)
+        const d = taskData.dueDate;
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        taskData.dueDate = `${year}-${month}-${day}`;
+      } else if (typeof taskData.dueDate === 'string' && taskData.dueDate.includes('/')) {
+        // If it's a manually entered string in DD/MM/YYYY format
+        const [day, month, year] = taskData.dueDate.split('/');
+        if (day && month && year) {
+          // Ensure correct order for backend: YYYY-MM-DD
+          taskData.dueDate = `${year}-${month}-${day}`;
+        }
       }
     }
 

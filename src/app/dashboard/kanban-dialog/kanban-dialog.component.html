@@ -41,13 +41,11 @@
 
         <div class="form-row">
           <mat-form-field appearance="outline" class="wide-field">
-            <mat-label>Due Date (DD/MM/YYYY)</mat-label>
-            <input matInput formControlName="dueDate" placeholder="DD/MM/YYYY" appDateMask maxlength="10">
-            <mat-icon matSuffix>event</mat-icon>
-            <mat-hint>Format: DD/MM/YYYY (e.g. 06/05/2025)</mat-hint>
-            <mat-error *ngIf="taskForm.get('dueDate')?.hasError('pattern')">
-              Please enter a valid date in DD/MM/YYYY format
-            </mat-error>
+            <mat-label>Due Date</mat-label>
+            <input matInput formControlName="dueDate" [matDatepicker]="picker" placeholder="Select a date">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-hint>Click calendar icon to select a date</mat-hint>
           </mat-form-field>
         </div>
 
