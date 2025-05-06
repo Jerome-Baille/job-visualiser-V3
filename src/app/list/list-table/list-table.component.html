@@ -2,15 +2,14 @@
   <app-table-filter (filterChange)="onFilterChange($event)"></app-table-filter>
 
   <!-- Status notification message when filtering both unknown and expired -->
-  <div *ngIf="includeExpired && filterStatus === 'unknown'" class="status-notification">
+  <div *ngIf="includeExpired() && filterStatus() === 'unknown'" class="status-notification">
     <mat-icon>info</mat-icon>
     <span>Showing both Unknown and Expired status jobs</span>
   </div>
 
   <mat-card>
     <mat-card-content>
-      <div *ngIf="loading" class="mat-caption">Loading...</div>
-      <div *ngIf="!loading">
+      <div>
         <table mat-table [dataSource]="dataSource" matSort class="job-table"> <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-colored">
               <span class="header-cell-content">
@@ -91,8 +90,8 @@
               </mat-form-field>
             </td>
           </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-colored-row"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()" class="header-colored-row"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns();" [ngClass]="{
                 'status-positive': row.decision === 'positive',
                 'status-negative': row.decision === 'negative',
                 'status-in-progress': row.decision === 'in progress',
@@ -100,13 +99,13 @@
               }" (click)="goToDetail(row)" style="cursor:pointer"></tr>
         </table>
         <div class="footer-bar">
-          <mat-paginator [length]="totalItems" [pageIndex]="currentPage" [pageSize]="pageSize"
+          <mat-paginator [length]="totalItems()" [pageIndex]="currentPage()" [pageSize]="pageSize()"
             [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)" showFirstLastButtons
             aria-label="Select page of jobs"></mat-paginator>
-          <div class="pagination-info" *ngIf="paginationInfo">
+          <div class="pagination-info" *ngIf="paginationInfo()">
             <span>
-              Showing <b>{{ (currentPage * pageSize) + 1 }}</b> - <b>{{ Math.min((currentPage + 1) * pageSize,
-                totalItems) }}</b> of <b>{{ totalItems }}</b> results
+              Showing <b>{{ (currentPage() * pageSize()) + 1 }}</b> - <b>{{ Math.min((currentPage() + 1) * pageSize(),
+                totalItems()) }}</b> of <b>{{ totalItems() }}</b> results
             </span>
           </div>
         </div>

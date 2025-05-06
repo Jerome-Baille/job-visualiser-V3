@@ -1,28 +1,24 @@
-<div class="export-data mat-elevation-z1">
-  <mat-form-field appearance="outline">
+<div class="export-data mat-elevation-z1">  <mat-form-field appearance="outline">
     <mat-label>Year</mat-label>
     <mat-select [(value)]="selectedYear">
       <mat-option value="">Select a year</mat-option>
-      <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-      <mat-option value="0000">All Years</mat-option>
+      <mat-option *ngFor="let year of years" [value]="year === 'All Years' ? '0000' : year">{{ year }}</mat-option>
     </mat-select>
-  </mat-form-field>
-  
-  <mat-form-field appearance="outline">
+  </mat-form-field>  <mat-form-field appearance="outline">
     <mat-label>Format</mat-label>
     <mat-select [(value)]="selectedFormat">
+      <mat-select-trigger *ngIf="selectedFormat">
+        <div class="option-with-icon">
+          <mat-icon>{{selectedFormatOption?.icon}}</mat-icon>
+          <span>{{selectedFormatOption?.label}}</span>
+        </div>
+      </mat-select-trigger>
       <mat-option value="">Select a format</mat-option>
-      <mat-option value="excel">
-        <span class="option-with-icon">
-          <mat-icon>table_chart</mat-icon>
-          Excel
-        </span>
-      </mat-option>
-      <mat-option value="pdf">
-        <span class="option-with-icon">
-          <mat-icon>picture_as_pdf</mat-icon>
-          PDF
-        </span>
+      <mat-option *ngFor="let option of formatOptions" [value]="option.value">
+        <div class="option-with-icon">
+          <mat-icon>{{option.icon}}</mat-icon>
+          <span>{{option.label}}</span>
+        </div>
       </mat-option>
     </mat-select>
   </mat-form-field>

@@ -58,3 +58,43 @@
     }
   }
 }
+
+/* Target Angular Material's internal components */
+::ng-deep {
+  .option-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    mat-icon {
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+  }
+  
+  /* Target Material's option elements directly */
+  .mat-mdc-option .mdc-list-item__primary-text {
+    display: flex;
+    align-items: center;
+    
+    .option-with-icon {
+      width: 100%;
+    }
+    
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+  
+  /* Style the select trigger too */
+  .mat-mdc-select-trigger {
+    .option-with-icon {
+      display: flex;
+      align-items: center;
+      
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}

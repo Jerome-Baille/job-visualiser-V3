@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +11,8 @@ import { SnackbarService } from '../../services/snackbar.service';
   selector: 'app-export-data',
   standalone: true,
   imports: [
+    NgFor,
+    NgIf,
     MatFormFieldModule, 
     MatSelectModule, 
     MatButtonModule, 
@@ -20,10 +23,22 @@ import { SnackbarService } from '../../services/snackbar.service';
 })
 export class ExportDataComponent {
   selectedFormat = '';
-  selectedYear = '';
+  selectedYear = '';  
   years: string[] = [];
+  
+  formatOptions = [
+    { value: 'excel', icon: 'table_chart', label: 'Excel' },
+    { value: 'pdf', icon: 'picture_as_pdf', label: 'PDF' }
+  ];
+  
+  get selectedFormatOption() {
+    return this.formatOptions.find(option => option.value === this.selectedFormat);
+  }
 
   constructor(private jobService: JobService, private snackbar: SnackbarService) {
+    // Add "All Years" option first
+    this.years.push('All Years');
+    
     const currentYear = new Date().getFullYear();
     for (let year = 2022; year <= currentYear; year++) {
       this.years.push(year.toString());
