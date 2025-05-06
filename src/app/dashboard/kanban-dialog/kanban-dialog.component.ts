@@ -38,6 +38,15 @@ class CustomDateAdapter extends NativeDateAdapter {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+
+  override parse(value: any): Date | null {
+    if (typeof value === 'string' && value.includes('/')) {
+      const [day, month, year] = value.split('/');
+      // Create date assuming day/month/year format (European)
+      return new Date(Number(year), Number(month) - 1, Number(day));
+    }
+    return super.parse(value);
+  }
 }
 
 @Component({
