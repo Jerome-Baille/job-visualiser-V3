@@ -42,7 +42,7 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="wide-field">
             <mat-label>Due Date</mat-label>
-            <input matInput formControlName="dueDate" [matDatepicker]="picker" placeholder="Select a date">
+            <input matInput formControlName="dueDate" [matDatepicker]="picker" placeholder="dd/mm/yyyy" (dateChange)="onDateChange($event)" appDateMask>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-hint>Click calendar icon to select a date</mat-hint>

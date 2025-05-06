@@ -51,7 +51,8 @@ class CustomDateAdapter extends NativeDateAdapter {
 
 @Component({
   selector: 'app-kanban-dialog',
-  standalone: true,  imports: [
+  standalone: true,
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
@@ -63,7 +64,8 @@ class CustomDateAdapter extends NativeDateAdapter {
     MatNativeDateModule,
     MatCardModule,
     MatDividerModule,
-    MatIconModule
+    MatIconModule,
+    DateMaskDirective
   ],
   templateUrl: './kanban-dialog.component.html',
   styleUrl: './kanban-dialog.component.scss',
@@ -77,7 +79,13 @@ export class KanbanDialogComponent implements OnInit {
   taskForm: FormGroup;
   dialogTitle: string;
   priorities: string[] = ['Low', 'Medium', 'High'];
-  statuses: string[] = ['Backlog', 'In Progress', 'Done'];
+  statuses: string[] = ['To Do', 'In Progress', 'Done'];
+  statusMap: { [key: string]: string } = {
+    'To Do': 'Backlog',
+    'Backlog': 'To Do',
+    'In Progress': 'In Progress',
+    'Done': 'Done'
+  };
   isEditMode: boolean;
 
   constructor(
@@ -85,15 +93,19 @@ export class KanbanDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<KanbanDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { task?: TaskData }
   ) {
-    this.isEditMode = !!data.task;
-    this.dialogTitle = this.isEditMode ? 'Edit Task' : 'Create New Task';    this.taskForm = this.fb.group({
+    this.isEditMode = !!data.task;    this.dialogTitle = this.isEditMode ? 'Edit Task' : 'Create New Task';    this.taskForm = this.fb.group({
       description: ['', Validators.required],
-      status: ['Backlog', Validators.required],
+      status: ['To Do', Validators.required],
       priority: ['Medium', Validators.required],
       dueDate: [''], // Empty string to support both date picker and manual entry
       // If we want to add job IDs in the future, can add here
       // jobId: [[]] 
     });
+  }
+  // Handle date picker selection events
+  onDateChange(event: any): void {
+    // When datepicker changes, make sure we update the form
+    this.taskForm.get('dueDate')?.setValue(event.value);
   }
 
   ngOnInit(): void {
@@ -104,22 +116,29 @@ export class KanbanDialogComponent implements OnInit {
         dueDate = new Date(this.data.task.dueDate);
       }
 
+      // Convert backend status to display status
+      const displayStatus = this.data.task.status === 'Backlog' ? 'To Do' : this.data.task.status;
+      
       this.taskForm.patchValue({
         description: this.data.task.description,
-        status: this.data.task.status,
+        status: displayStatus,
         priority: this.data.task.priority,
         dueDate: dueDate
         // If we add jobId support:
         // jobId: this.data.task.jobId || []
       });
     }
-  }
-  onSubmit(): void {
+  }  onSubmit(): void {
     if (this.taskForm.invalid) {
       return;
     }
 
     const taskData = { ...this.taskForm.value };
+
+    // Convert display status to backend status
+    if (taskData.status === 'To Do') {
+      taskData.status = 'Backlog';
+    }
 
     // Handle date conversion to ISO format (YYYY-MM-DD) for backend
     if (taskData.dueDate) {

@@ -1,52 +1,72 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
-import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[appDateMask]',
   standalone: true
 })
 export class DateMaskDirective {
-  constructor(private el: ElementRef, private control: NgControl) {}
+  constructor(private el: ElementRef<HTMLInputElement>) {}
 
   @HostListener('input', ['$event'])
   onInput(event: InputEvent): void {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, ''); // Remove non-digits
+    const input = this.el.nativeElement;
     
-    if (value.length > 8) { // Limit to 8 digits (DDMMYYYY)
-      value = value.substring(0, 8); 
+    // If there's already a date object from the datepicker, don't interfere
+    if (input.value.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+      return;
     }
     
-    // Add the slashes
-    if (value.length > 4) {
-      // Format as DD/MM/YYYY
-      value = value.substring(0, 2) + '/' + value.substring(2, 4) + '/' + value.substring(4); 
-    } else if (value.length > 2) {
-      // Format as DD/MM
-      value = value.substring(0, 2) + '/' + value.substring(2); 
+    // Get current cursor position
+    const currentCursorPos = input.selectionStart || 0;
+    
+    // Remove non-digits
+    let value = input.value.replace(/\D/g, '');
+    
+    // Limit to 8 digits (ddmmyyyy)
+    if (value.length > 8) {
+      value = value.substring(0, 8);
     }
     
-    // Update both the input value and the form control value
-    input.value = value;
-    this.control.control?.setValue(value, { emitEvent: false });
-
-    // Position cursor appropriately after automatic slash insertion
-    const cursorPosition = input.selectionStart || 0;
-    if ((value.length === 3 && (input.selectionStart || 0) === 2) || 
-        (value.length === 6 && (input.selectionStart || 0) === 5)) {
-      setTimeout(() => {
-        input.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
-      }, 0);
+    // Format with slashes
+    let formattedValue = '';
+    if (value.length > 0) {
+      formattedValue = value.substring(0, Math.min(2, value.length));
+      
+      if (value.length > 2) {
+        formattedValue += '/' + value.substring(2, Math.min(4, value.length));
+        
+        if (value.length > 4) {
+          formattedValue += '/' + value.substring(4, Math.min(8, value.length));
+        }
+      }
+    }
+    
+    // Only update the value if it's changed to avoid infinite loops
+    if (input.value !== formattedValue) {
+      // Store cursor position + any added slashes to determine new position
+      let addedChars = 0;
+      if (value.length >= 3 && currentCursorPos >= 2 && input.value.charAt(2) !== '/') {
+        addedChars++;
+      }
+      if (value.length >= 5 && currentCursorPos >= 5 && input.value.charAt(5) !== '/') {
+        addedChars++;
+      }
+      
+      input.value = formattedValue;
+      
+      // Restore cursor position accounting for added slashes
+      if (currentCursorPos !== null) {
+        const newPosition = currentCursorPos + addedChars;
+        input.setSelectionRange(newPosition, newPosition);
+      }
     }
   }
 
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
-    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
-    const input = this.el.nativeElement as HTMLInputElement;
-    
-    // Allow navigation keys and digits only
-    if (!allowedKeys.includes(event.key) && !/^\d$/.test(event.key)) {
+    // Allow navigation and editing keys
+    const allowed = ['Backspace', 'Delete', 'Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+    if (!allowed.includes(event.key) && !/^\d$/.test(event.key)) {
       event.preventDefault();
     }
   }
