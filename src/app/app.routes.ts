@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AfterLoginComponent } from './auth/after-login/after-login.component';
 import { AfterRegisterComponent } from './auth/after-register/after-register.component';
 import { AuthComponent } from './auth/auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -8,7 +7,7 @@ import { LayoutComponent } from './layout/layout.component';
 
 export const routes: Routes = [
   // Auth callback routes at root level
-  { path: 'auth/after-login', component: AfterLoginComponent },
+  { path: 'auth/after-login', loadComponent: () => import('./auth/after-login/after-login.component').then(m => m.AfterLoginComponent) },
   { path: 'auth/after-register', component: AfterRegisterComponent },
 
   // Main app routes under Layout
