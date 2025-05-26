@@ -83,6 +83,11 @@ export class DetailComponent implements OnInit {
   loading = true;
   readonly isAuthenticated: () => boolean;
   showDeleteConfirm = false;
+
+  // Define the valid options for case insensitive matching
+  private readonly jobTypeOptions = ['Remote', 'Hybrid', 'On Site'];
+  private readonly decisionOptions = ['positive', 'negative', 'in progress', 'expired', 'unknown'];
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -93,7 +98,33 @@ export class DetailComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.isAuthenticated = this.authService.isAuthenticated;
-  }  ngOnInit(): void {
+  }  
+
+  // Helper method to normalize job type values (case insensitive)
+  private normalizeJobType(value: string): string {
+    if (!value) return 'Remote'; // default value
+    
+    const normalizedValue = value.trim();
+    const foundOption = this.jobTypeOptions.find(option => 
+      option.toLowerCase() === normalizedValue.toLowerCase()
+    );
+    
+    return foundOption || 'Remote'; // fallback to default
+  }
+
+  // Helper method to normalize decision values (case insensitive)
+  private normalizeDecision(value: string): string {
+    if (!value) return 'unknown'; // default value
+    
+    const normalizedValue = value.trim();
+    const foundOption = this.decisionOptions.find(option => 
+      option.toLowerCase() === normalizedValue.toLowerCase()
+    );
+    
+    return foundOption || 'unknown'; // fallback to default
+  }
+
+  ngOnInit(): void {
     this.jobId = this.route.snapshot.paramMap.get('id');
     this.initForm();
     if (this.jobId) {
@@ -110,10 +141,17 @@ export class DetailComponent implements OnInit {
         if (job.interviewDate && typeof job.interviewDate === 'string') {
           processedJob.interviewDate = this.parseStringToDate(job.interviewDate);
         }
-        
-        // Process decision date
+          // Process decision date
         if (job.decisionDate && typeof job.decisionDate === 'string') {
           processedJob.decisionDate = this.parseStringToDate(job.decisionDate);
+        }
+        
+        // Normalize job type and decision values (case insensitive)
+        if (job.type) {
+          processedJob.type = this.normalizeJobType(job.type);
+        }
+        if (job.decision) {
+          processedJob.decision = this.normalizeDecision(job.decision);
         }
         
         // Update the form
