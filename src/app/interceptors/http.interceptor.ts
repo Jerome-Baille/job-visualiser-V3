@@ -20,12 +20,12 @@ const pendingRequests: Array<{
 function notifyRefreshComplete() {
   // Update counter signal to notify components of a token refresh
   tokenRefreshCounter.update(count => count + 1);
-  
+
   // Process any pending requests
   pendingRequests.forEach(request => {
     request.resolve(true);
   });
-  
+
   // Clear the queue
   pendingRequests.length = 0;
 }
@@ -38,73 +38,77 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
 
   const injector = inject(EnvironmentInjector);
   const loaderService = inject(LoaderService);
-  
+
   // We'll use the injector inside the pipes where we need the services
   const modifiedRequest = req.clone({
     withCredentials: true
   });
 
-  loaderService.show();
-  return next(modifiedRequest).pipe(
+  loaderService.show();  return next(modifiedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
+      // Only attempt refresh if we have the shouldRefresh flag and haven't exceeded attempts
       if (error.error.shouldRefresh && refreshAttempts < 2) {
         refreshAttempts++; // Increment attempts
-        if (!isRefreshing) {
-          isRefreshing = true;
-          return runInInjectionContext(injector, () => {
-            const authService = inject(AuthService);
-            return authService.refreshToken().pipe(
-              switchMap(() => {
-                isRefreshing = false;
-                refreshAttempts = 0;
-                notifyRefreshComplete();
-                const retryRequest = req.clone({
-                  withCredentials: true
-                });
-                return next(retryRequest);
-              }),
-              catchError(refreshError => {
-                isRefreshing = false;
-                if (refreshAttempts >= 2) {
-                  refreshAttempts = 0;
-                  // Use logout() as observable and subscribe to it
-                  authService.logout().subscribe({
-                    complete: () => {
-                      window.location.href = '/auth';
-                    }
-                  });
-                }
-                return throwError(() => refreshError);
-              }),
-              finalize(() => {
-                isRefreshing = false;
-              })
-            );
-          });
-        } else {
-          // Wait for the refresh to complete using a promise
-          return from(
-            new Promise<boolean>((resolve) => {
-              // Add this request to the pending queue
-              pendingRequests.push({ resolve });
-              // Set up a timeout to avoid hanging forever
-              setTimeout(() => {
-                resolve(false);
-              }, 10000); // 10 second timeout
-            })
-          ).pipe(
-            switchMap(() => {
+      if (!isRefreshing) {
+        isRefreshing = true;
+        return runInInjectionContext(injector, () => {
+          const authService = inject(AuthService);
+          return authService.refreshToken().pipe(            switchMap(() => {
+              isRefreshing = false;
+              refreshAttempts = 0;
+              notifyRefreshComplete();
               const retryRequest = req.clone({
                 withCredentials: true
               });
               return next(retryRequest);
+            }), catchError(refreshError => {
+              isRefreshing = false;
+              if (refreshAttempts >= 2) {
+                refreshAttempts = 0;
+                // Use logout() as observable and subscribe to it
+                authService.logout().subscribe({
+                  complete: () => {
+                    window.location.href = '/auth';
+                  }
+                });
+              }
+              // Return the original error after refresh fails, not the refresh error
+              return throwError(() => error);
+            }),
+            finalize(() => {
+              isRefreshing = false;
             })
           );
-        }
+        });
       } else {
-        return throwError(() => error);
+        // Wait for the refresh to complete using a promise
+        return from(
+          new Promise<boolean>((resolve) => {
+            // Add this request to the pending queue
+            pendingRequests.push({ resolve });
+            // Set up a timeout to avoid hanging forever
+            setTimeout(() => {
+              resolve(false);
+            }, 10000); // 10 second timeout
+          })
+        ).pipe(switchMap((refreshSuccess) => {
+          if (refreshSuccess) {
+            const retryRequest = req.clone({
+              withCredentials: true
+            });
+            return next(retryRequest);
+          } else {
+            // Timeout occurred, return the original error
+            return throwError(() => error);
+          }
+        })
+        );
       }
-    }),
+    } else {
+      // No refresh needed or max attempts exceeded, return the error
+      return throwError(() => error);
+    }
+  }),
     finalize(() => {
       loaderService.hide();
     })
