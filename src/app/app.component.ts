@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoaderComponent } from "./loader/loader.component";
-import { LoaderService } from "./services/loader.service";
-import { NgIf } from '@angular/common';
+import { HeaderComponent } from './core/header/header.component';
+import { SidebarComponent } from './core/sidebar/sidebar.component';
+import { LoaderComponent } from './core/loader/loader.component';
+import { LoaderService } from './core/services/loader.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoaderComponent, NgIf],
+  imports: [RouterOutlet, LoaderComponent, HeaderComponent, SidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'job-visualiser-V3';
 
-  constructor(private loaderService: LoaderService) {}
+  private loaderService = inject(LoaderService);
 
   loaderVisible() {
     return this.loaderService.visible();

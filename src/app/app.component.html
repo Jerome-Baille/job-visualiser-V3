@@ -1,2 +1,18 @@
-<router-outlet></router-outlet>
-<app-loader *ngIf="loaderVisible()"></app-loader>
+<div class="app">
+  <div class="page">
+    <app-header></app-header>
+
+    <div class="flex-container">
+      <app-sidebar class="app-sidebar"></app-sidebar>
+      <div class="background-container">
+        <main class="main-container">
+          <router-outlet></router-outlet>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (loaderVisible()){
+<app-loader></app-loader>
+}
