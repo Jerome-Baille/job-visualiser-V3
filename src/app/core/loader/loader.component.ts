@@ -1,19 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Signal, inject } from '@angular/core';
 import { LoaderService } from '../services/loader.service';
-import { NgIf } from '@angular/common';
+
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-loader',
   standalone: true,
-  imports: [NgIf, MatProgressSpinnerModule],
+  imports: [MatProgressSpinnerModule],
   templateUrl: './loader.component.html',
   styleUrl: './loader.component.scss'
 })
 export class LoaderComponent {
-  visible$;
+  private loaderService = inject(LoaderService);
 
-  constructor(private loaderService: LoaderService) {
-    this.visible$ = this.loaderService.visible;
-  }
+  readonly visible: Signal<boolean> = this.loaderService.visible;
 }

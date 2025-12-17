@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { KanbanDialogComponent } from '../kanban-dialog/kanban-dialog.component'
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { TaskService } from '../../../core/services/task.service';
 import { TaskData } from '../../../interfaces';
+import { JobData } from '../../../interfaces';
 
 interface KanbanTask {
   id: number;
@@ -37,7 +38,11 @@ interface KanbanTask {
   styleUrl: './kanban.component.scss'
 })
 export class KanbanComponent implements OnInit {
-  @Input() jobs: any[] = [];
+  private dialog = inject(MatDialog);
+  private snackbar = inject(SnackbarService);
+  private taskService = inject(TaskService);
+
+  @Input() jobs: JobData[] = [];
 
   // Sample tasks - in a real app these would come from a service
 
@@ -45,13 +50,6 @@ export class KanbanComponent implements OnInit {
   inProgressTasks: KanbanTask[] = [];
   doneTasks: KanbanTask[] = [];
   loading = false;
-
-
-  constructor(
-    private dialog: MatDialog,
-    private snackbar: SnackbarService,
-    private taskService: TaskService
-  ) { }
 
 
   ngOnInit() {
@@ -63,7 +61,7 @@ export class KanbanComponent implements OnInit {
     try {
       const tasks = await this.taskService.getTasks();
       this.categorizeTasks(tasks);
-    } catch (error) {
+    } catch {
       this.snackbar.error('Failed to load tasks');
     } finally {
       this.loading = false;
@@ -126,7 +124,7 @@ export class KanbanComponent implements OnInit {
           await this.taskService.createTask(result);
           this.snackbar.success('Task created successfully');
           this.fetchTasks();
-        } catch (error) {
+        } catch {
           this.snackbar.error('Failed to create task');
         }
       }
@@ -147,14 +145,14 @@ export class KanbanComponent implements OnInit {
           await this.taskService.updateTask(task.id, result);
           this.snackbar.success('Task updated successfully');
           this.fetchTasks();
-        } catch (error) {
+        } catch {
           this.snackbar.error('Failed to update task');
         }
       }
     });
   }
 
-  async deleteTask(task: KanbanTask, list: KanbanTask[]) {
+  async deleteTask(task: KanbanTask) {
     try {
       await this.taskService.deleteTask(task.id);
       this.snackbar.success('Task deleted');

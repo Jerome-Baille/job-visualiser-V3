@@ -1,30 +1,36 @@
-<nav *ngIf="isAuthenticated()" [class.closed]="isSidebarClosed()" class="sidebar">  <button class="sidebar-toggler" (click)="toggleSidebar()" [attr.aria-label]="isSidebarClosed() ? 'Open sidebar' : 'Close sidebar'">
-    <mat-icon *ngIf="isSidebarClosed()">chevron_right</mat-icon>
-    <mat-icon *ngIf="!isSidebarClosed()">chevron_left</mat-icon>
+@if (isAuthenticated()) {
+  <nav [class.closed]="isSidebarClosed()" class="sidebar">  <button class="sidebar-toggler" (click)="toggleSidebar()" [attr.aria-label]="isSidebarClosed() ? 'Open sidebar' : 'Close sidebar'">
+    @if (isSidebarClosed()) {
+      <mat-icon>chevron_right</mat-icon>
+    }
+    @if (!isSidebarClosed()) {
+      <mat-icon>chevron_left</mat-icon>
+    }
   </button>
   <ul class="sidebar-links">    <li>
-      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="Dashboard">
-        <span class="sidebar-icon"><mat-icon>dashboard</mat-icon></span>
-        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Dashboard</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/list" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="List of applications">
-        <span class="sidebar-icon"><mat-icon>list_alt</mat-icon></span>
-        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">List of applications</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/create" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="Add a job application">
-        <span class="sidebar-icon"><mat-icon>add_circle</mat-icon></span>
-        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Add a job application</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/job-boards" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="Job Boards">
-        <span class="sidebar-icon"><mat-icon>business_center</mat-icon></span>
-        <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Job Boards</span>
-      </a>
-    </li>
-  </ul>
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="Dashboard">
+      <span class="sidebar-icon"><mat-icon>dashboard</mat-icon></span>
+      <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Dashboard</span>
+    </a>
+  </li>
+  <li>
+    <a routerLink="/list" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="List of applications">
+      <span class="sidebar-icon"><mat-icon>list_alt</mat-icon></span>
+      <span class="sidebar-text" [class.hidden]="isSidebarClosed()">List of applications</span>
+    </a>
+  </li>
+  <li>
+    <a routerLink="/create" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="Add a job application">
+      <span class="sidebar-icon"><mat-icon>add_circle</mat-icon></span>
+      <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Add a job application</span>
+    </a>
+  </li>
+  <li>
+    <a routerLink="/job-boards" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" aria-label="Job Boards">
+      <span class="sidebar-icon"><mat-icon>business_center</mat-icon></span>
+      <span class="sidebar-text" [class.hidden]="isSidebarClosed()">Job Boards</span>
+    </a>
+  </li>
+</ul>
 </nav>
+}

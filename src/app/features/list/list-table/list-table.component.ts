@@ -5,11 +5,10 @@ import {
   ViewChild,
   effect,
   signal,
-  DestroyRef,
-  inject,
+  inject, OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
   MatPaginator,
@@ -29,9 +28,7 @@ import { tokenRefreshCounter } from '../../../core/interceptors/http.interceptor
   selector: 'app-list-table',
   standalone: true,
   imports: [
-    NgIf,
     NgClass,
-    NgFor,
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
@@ -40,12 +37,12 @@ import { tokenRefreshCounter } from '../../../core/interceptors/http.interceptor
     RouterModule,
     TableFilterComponent,
     MatFormFieldModule,
-    MatSelectModule,
-  ],
+    MatSelectModule
+],
   templateUrl: './list-table.component.html',
   styleUrls: ['./list-table.component.scss'],
 })
-export class ListTableComponent {
+export class ListTableComponent implements OnDestroy {
   private jobService = inject(JobService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -220,10 +217,10 @@ export class ListTableComponent {
     }
   }
 
-  async loadJobs(page: number = 0, pageSize: number = 10): Promise<void> {
+  async loadJobs(page = 0, pageSize = 10): Promise<void> {
     this.loading.set(true);
     try {
-      let status = this.filterStatus();
+      const status = this.filterStatus();
       const response = await this.jobService.getOpportunities(
         pageSize,
         page * pageSize,
@@ -234,9 +231,9 @@ export class ListTableComponent {
       this.paginationInfo.set(response.pagination);
       this.totalItems.set(response.pagination.total);
 
-      let jobs = response.data.map((job: any) => ({
+      let jobs = response.data.map((job: JobData) => ({
         ...job,
-        id: job.id ? Number(job.id) : undefined,
+        id: job.id != null ? Number(job.id) : undefined,
       }));
 
       if (this.includeExpired() && this.filterStatus() === 'unknown') {
@@ -247,9 +244,9 @@ export class ListTableComponent {
           'expired',
           this.filterSearch()
         );
-        const expiredJobs = expiredResponse.data.map((job: any) => ({
+        const expiredJobs = expiredResponse.data.map((job: JobData) => ({
           ...job,
-          id: job.id ? Number(job.id) : undefined,
+          id: job.id != null ? Number(job.id) : undefined,
         }));
         jobs = [...jobs, ...expiredJobs];
         this.totalItems.set(

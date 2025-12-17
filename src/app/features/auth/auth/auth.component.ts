@@ -1,26 +1,24 @@
-import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [
-    NgIf
-  ],
+  imports: [],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
+  private authService = inject(AuthService);
+  private snackbar = inject(SnackbarService);
+
   isLoggedIn = false;
   isLoading = false;
   isRegisterMode = false;
 
-  constructor(
-    private authService: AuthService,
-    private snackbar: SnackbarService
-  ) {
+  constructor() {
     this.authService.waitForAuthState().subscribe(
       (isLoggedIn: boolean) => {
         this.isLoggedIn = isLoggedIn;
@@ -44,6 +42,7 @@ export class AuthComponent {
       }
     } catch (error) {
       this.isLoading = false;
+      console.error(error);
       this.snackbar.error(`Failed to redirect to ${this.isRegisterMode ? 'registration' : 'authentication'} service`);
     }
   }
@@ -54,6 +53,7 @@ export class AuthComponent {
       this.authService.logout();
     } catch (error) {
       this.isLoading = false;
+      console.error(error);
       this.snackbar.error('Failed to redirect to logout');
     }
   }
@@ -62,6 +62,7 @@ export class AuthComponent {
     try {
       this.authService.login();
     } catch (error) {
+      console.error(error);
       this.snackbar.error('Login failed.');
     }
   }
@@ -70,6 +71,7 @@ export class AuthComponent {
     try {
       this.authService.register();
     } catch (error) {
+      console.error(error);
       this.snackbar.error('Registration failed.');
     }
   }

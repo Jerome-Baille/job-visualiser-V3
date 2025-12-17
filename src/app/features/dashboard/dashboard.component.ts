@@ -1,5 +1,5 @@
-import { Component, OnDestroy, effect, EffectRef } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { Component, OnDestroy, effect, EffectRef, inject } from '@angular/core';
+
 import { ChartContainerComponent } from "./chart-container/chart-container.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +15,6 @@ import { AuthService } from '../../core/services/auth.service';
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    NgIf,
     ChartContainerComponent,
     MatIconModule,
     MatButtonModule,
@@ -26,15 +25,15 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnDestroy {
+  private jobService = inject(JobService);
+  private snackbar = inject(SnackbarService);
+  private router = inject(Router);
+  auth = inject(AuthService);
+
   jobs: JobData[] = [];
   private jobsLoaded = false;
   private destroyEffect: EffectRef | null = null;
-  constructor(
-    private jobService: JobService,
-    private snackbar: SnackbarService,
-    private router: Router,
-    public auth: AuthService
-  ) {
+  constructor() {
     this.destroyEffect = effect(async () => {
       const isAuth = this.auth.isAuthenticated();
       if (isAuth && !this.jobsLoaded) {
@@ -43,8 +42,9 @@ export class DashboardComponent implements OnDestroy {
           const response = await this.jobService.getOpportunities();
           this.jobs = response.data;
           this.jobsLoaded = true;
-        } catch (error: any) {
-          this.snackbar.error(error?.message || 'An unknown error occurred');
+        } catch (error: unknown) {
+          const message = error instanceof Error ? error.message : undefined;
+          this.snackbar.error(message || 'An unknown error occurred');
         }
       } else if (!isAuth) {
         this.jobs = [];

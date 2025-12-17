@@ -10,18 +10,22 @@
             <mat-label>Job Title</mat-label>
             <input matInput formControlName="name" placeholder="Enter job title">
             <mat-icon matSuffix>work</mat-icon>
-            <mat-error *ngIf="createForm.get('name')?.invalid && createForm.get('name')?.touched">
-              Job title is required
-            </mat-error>
+            @if (createForm.get('name')?.invalid && createForm.get('name')?.touched) {
+              <mat-error>
+                Job title is required
+              </mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Company</mat-label>
             <input matInput formControlName="company" placeholder="Enter company name">
             <mat-icon matSuffix>business</mat-icon>
-            <mat-error *ngIf="createForm.get('company')?.invalid && createForm.get('company')?.touched">
-              Company is required
-            </mat-error>
+            @if (createForm.get('company')?.invalid && createForm.get('company')?.touched) {
+              <mat-error>
+                Company is required
+              </mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -30,9 +34,11 @@
             <mat-label>Location</mat-label>
             <input matInput formControlName="location" placeholder="Enter location">
             <mat-icon matSuffix>location_on</mat-icon>
-            <mat-error *ngIf="createForm.get('location')?.invalid && createForm.get('location')?.touched">
-              Location is required
-            </mat-error>
+            @if (createForm.get('location')?.invalid && createForm.get('location')?.touched) {
+              <mat-error>
+                Location is required
+              </mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -51,9 +57,11 @@
             <mat-label>Job Link</mat-label>
             <input matInput formControlName="link" placeholder="Enter job posting URL">
             <mat-icon matSuffix>link</mat-icon>
-            <mat-error *ngIf="createForm.get('link')?.invalid && createForm.get('link')?.touched">
-              Link is required
-            </mat-error>
+            @if (createForm.get('link')?.invalid && createForm.get('link')?.touched) {
+              <mat-error>
+                Link is required
+              </mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -63,9 +71,11 @@
             <input matInput [matDatepicker]="appDatepicker" formControlName="applicationDate">
             <mat-datepicker-toggle matIconSuffix [for]="appDatepicker"></mat-datepicker-toggle>
             <mat-datepicker #appDatepicker></mat-datepicker>
-            <mat-error *ngIf="createForm.get('applicationDate')?.invalid && createForm.get('applicationDate')?.touched">
-              Application date is required
-            </mat-error>
+            @if (createForm.get('applicationDate')?.invalid && createForm.get('applicationDate')?.touched) {
+              <mat-error>
+                Application date is required
+              </mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -108,8 +118,12 @@
         <span class="spacer"></span>
         <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting || createForm.invalid" class="submit-button">
           <mat-icon>save</mat-icon>
-          <span *ngIf="!isSubmitting">Create Opportunity</span>
-          <mat-spinner diameter="24" *ngIf="isSubmitting"></mat-spinner>
+          @if (!isSubmitting) {
+            <span>Create Opportunity</span>
+          }
+          @if (isSubmitting) {
+            <mat-spinner diameter="24"></mat-spinner>
+          }
         </button>
       </div>
     </mat-card-actions>

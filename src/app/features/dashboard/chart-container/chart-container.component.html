@@ -4,7 +4,8 @@
     Job Application Statistics
   </h3>
 
-  <ng-container *ngIf="!loading; else loadingTpl">    <div class="charts-grid">
+  @if (!loading) {
+    <div class="charts-grid">
       <!-- Funnel Chart -->
       <div class="chart-card">
         <h4>Funnel: Applications → Responses → Interviews</h4>
@@ -19,7 +20,6 @@
           <span>Responses → Interviews: <b>{{ conversionResponseToInterview }}%</b></span>
         </div>
       </div>
-
       <!-- Decision Outcome Pie -->
       <div class="chart-card">
         <h4>Decision Outcomes</h4>
@@ -30,7 +30,6 @@
           [colors]="decisionColors">
         </apx-chart>
       </div>
-
       <!-- Applications per Month (colspan 2) -->
       <div class="chart-card applications-colspan">
         <h4>Applications per Month</h4>
@@ -42,11 +41,10 @@
         </apx-chart>
       </div>
     </div>
-  </ng-container>
-  <ng-template #loadingTpl>
+  } @else {
     <div class="chart-placeholder">
       <mat-icon class="large-icon">hourglass_empty</mat-icon>
       <p>Loading statistics...</p>
     </div>
-  </ng-template>
+  }
 </div>

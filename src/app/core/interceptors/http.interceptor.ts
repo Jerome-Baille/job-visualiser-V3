@@ -12,9 +12,9 @@ export const tokenRefreshCounter = signal<number>(0);
 let refreshAttempts = 0; // Add counter for refresh attempts
 
 // A queue to store pending requests during refresh
-const pendingRequests: Array<{
+const pendingRequests: {
   resolve: (value: boolean) => void;
-}> = [];
+}[] = [];
 
 // Function to notify waiting requests
 function notifyRefreshComplete() {
@@ -61,7 +61,7 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
                 withCredentials: true
               });
               return next(retryRequest);
-            }), catchError(refreshError => {
+            }), catchError(() => {
               isRefreshing = false;
               if (refreshAttempts >= 2) {
                 refreshAttempts = 0;

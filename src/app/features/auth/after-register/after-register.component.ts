@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
@@ -8,12 +8,11 @@ import { SnackbarService } from '../../../core/services/snackbar.service';
   template: '',
   styleUrls: ['./after-register.component.scss']
 })
-export class AfterRegisterComponent {
-  constructor(
-    private router: Router,
-    private auth: AuthService,
-    private snackbar: SnackbarService
-  ) {}
+export class AfterRegisterComponent implements OnInit {
+  private router = inject(Router);
+  private auth = inject(AuthService);
+  private snackbar = inject(SnackbarService);
+
 
   ngOnInit() {
     // Wait a bit for auth state to stabilize

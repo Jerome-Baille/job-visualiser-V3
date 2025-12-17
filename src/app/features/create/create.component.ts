@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgIf } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,10 +14,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { JobService } from '../../core/services/job.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
+import { JobData } from '../../interfaces';
 
 // Custom date adapter that ensures leading zeros
 class CustomDateAdapter extends NativeDateAdapter {
-  override format(date: Date, displayFormat: Object): string {
+  override format(date: Date, displayFormat: object): string {
+    void displayFormat;
     if (!this.isValid(date)) {
       return '';
     }
@@ -34,7 +36,6 @@ class CustomDateAdapter extends NativeDateAdapter {
   selector: 'app-create',
   standalone: true,
   imports: [
-    NgIf,
     ReactiveFormsModule,
     MatCardModule,
     MatInputModule,
@@ -46,7 +47,7 @@ class CustomDateAdapter extends NativeDateAdapter {
     MatIconModule,
     MatProgressSpinnerModule,
     MatDividerModule
-  ],  providers: [
+],  providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },  // Use British English (day/month/year format)
     { provide: DateAdapter, useClass: CustomDateAdapter },
     {
@@ -68,14 +69,14 @@ class CustomDateAdapter extends NativeDateAdapter {
   styleUrl: './create.component.scss'
 })
 export class CreateComponent {
+  private fb = inject(FormBuilder);
+  private jobService = inject(JobService);
+  private snackbar = inject(SnackbarService);
+  private router = inject(Router);
+
   createForm: FormGroup;
   isSubmitting = false;
-  constructor(
-    private fb: FormBuilder,
-    private jobService: JobService,
-    private snackbar: SnackbarService,
-    private router: Router
-  ) {
+  constructor() {
     const today = new Date();
     this.createForm = this.fb.group({
       name: ['', Validators.required],
@@ -95,26 +96,52 @@ export class CreateComponent {
     
     try {
       // Create a copy of the form value to format dates
-      const formData = { ...this.createForm.value };
-      
-      // Format dates to ISO string for API
-      if (formData.applicationDate) {
-        formData.applicationDate = this.formatDateForApi(formData.applicationDate);
-      }
-      
-      if (formData.interviewDate) {
-        formData.interviewDate = this.formatDateForApi(formData.interviewDate);
-      }
-      
-      if (formData.decisionDate) {
-        formData.decisionDate = this.formatDateForApi(formData.decisionDate);
-      }
+      const rawFormValue = this.createForm.value as {
+        applicationDate?: Date | string | null;
+        interviewDate?: Date | string | null;
+        decisionDate?: Date | string | null;
+        [key: string]: unknown;
+      };
+
+      // Normalize date fields to strings for the API (no Date/null in payload)
+      const applicationDate = rawFormValue.applicationDate;
+      const applicationDateString =
+        applicationDate instanceof Date
+          ? this.formatDateForApi(applicationDate)
+          : typeof applicationDate === 'string'
+            ? applicationDate
+            : undefined;
+
+      const interviewDate = rawFormValue.interviewDate;
+      const interviewDateString =
+        interviewDate instanceof Date
+          ? this.formatDateForApi(interviewDate)
+          : typeof interviewDate === 'string'
+            ? interviewDate
+            : undefined;
+
+      const decisionDate = rawFormValue.decisionDate;
+      const decisionDateString =
+        decisionDate instanceof Date
+          ? this.formatDateForApi(decisionDate)
+          : typeof decisionDate === 'string'
+            ? decisionDate
+            : undefined;
+
+      const formData: JobData = {
+        ...(rawFormValue as Record<string, unknown>),
+        applicationDate: applicationDateString,
+        interviewDate: interviewDateString,
+        decisionDate: decisionDateString,
+      };
       
       await this.jobService.postOpportunity(formData);
       this.snackbar.success('Opportunity created!');
       this.router.navigate(['/dashboard']);
-    } catch (err: any) {
-      this.snackbar.error(err?.error?.message || 'Error creating opportunity.');
+    } catch (err: unknown) {
+      const backendMessage = (err as { error?: { message?: string } })?.error?.message;
+      const message = backendMessage || (err instanceof Error ? err.message : undefined);
+      this.snackbar.error(message || 'Error creating opportunity.');
       this.isSubmitting = false;
     }
   }

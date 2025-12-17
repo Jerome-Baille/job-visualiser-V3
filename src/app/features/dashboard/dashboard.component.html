@@ -1,38 +1,37 @@
 <div class="dashboard-wrapper">
-  <div *ngIf="isAuthenticated; else notLogged">
-    <div class="status-grid">
-      <div class="box-status positive" (click)="navigateToList('positive')" style="cursor: pointer;">
-        <span>Positive</span>
-        <strong>{{ positiveJobs }}</strong>
+  @if (isAuthenticated) {
+    <div>
+      <div class="status-grid">
+        <button type="button" class="box-status positive" (click)="navigateToList('positive')" style="cursor: pointer;">
+          <span>Positive</span>
+          <strong>{{ positiveJobs }}</strong>
+        </button>
+        <button type="button" class="box-status in-progress" (click)="navigateToList('in progress')" style="cursor: pointer;">
+          <span>In Progress</span>
+          <strong>{{ inProgressJobs }}</strong>
+        </button>
+        <button type="button" class="box-status unknown" (click)="navigateToListWithExpired()" style="cursor: pointer;">
+          <span>Unknown</span>
+          <strong>{{ unknownJobs }}</strong>
+        </button>
+        <button type="button" class="box-status negative" (click)="navigateToList('negative')" style="cursor: pointer;">
+          <span>Negative</span>
+          <strong>{{ negativeJobs }}</strong>
+        </button>
       </div>
-      <div class="box-status in-progress" (click)="navigateToList('in progress')" style="cursor: pointer;">
-        <span>In Progress</span>
-        <strong>{{ inProgressJobs }}</strong>
+      <div class="dashboard-container">
+        <app-chart-container></app-chart-container>
       </div>
-      <div class="box-status unknown" (click)="navigateToListWithExpired()" style="cursor: pointer;">
-        <span>Unknown</span>
-        <strong>{{ unknownJobs }}</strong>
-      </div>
-      <div class="box-status negative" (click)="navigateToList('negative')" style="cursor: pointer;">
-        <span>Negative</span>
-        <strong>{{ negativeJobs }}</strong>
+      <div class="dashboard-container">
+        <app-kanban [jobs]="jobs"></app-kanban>
       </div>
     </div>
-
-    <div class="dashboard-container">
-      <app-chart-container></app-chart-container>
-    </div>
-
-    <div class="dashboard-container">
-      <app-kanban [jobs]="jobs"></app-kanban>
-    </div>
-  </div>
-
-  <ng-template #notLogged>
+  } @else {
     <div class="not-logged-message">
       <mat-icon aria-hidden="false" aria-label="Warning">warning</mat-icon>
       <p>You are not logged in. Please sign in to view your dashboard.</p>
       <button mat-raised-button color="primary" routerLink="/auth">Sign In</button>
     </div>
-  </ng-template>
+  }
+
 </div>

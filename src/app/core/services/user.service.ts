@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -9,9 +9,9 @@ import { UserData } from '../../interfaces';
   providedIn: 'root'
 })
 export class UserService {
-  private authBaseURL = `${environment.authBaseURL}/user`;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private authBaseURL = `${environment.authBaseURL}/user`;
 
   async getProfile(): Promise<UserData> {
     return firstValueFrom(
@@ -25,15 +25,15 @@ export class UserService {
     );
   }
 
-  async patchUser(userId: number, profile: Partial<UserData>): Promise<any> {
+  async patchUser(userId: number, profile: Partial<UserData>): Promise<unknown> {
     return firstValueFrom(
-      this.http.patch(`${this.authBaseURL}/${userId}`, profile, { withCredentials: true })
+      this.http.patch<unknown>(`${this.authBaseURL}/${userId}`, profile, { withCredentials: true })
     );
   }
 
-  async deleteAccount(userId: number): Promise<any> {
+  async deleteAccount(userId: number): Promise<unknown> {
     return firstValueFrom(
-      this.http.delete(`${this.authBaseURL}/${userId}`, { withCredentials: true })
+      this.http.delete<unknown>(`${this.authBaseURL}/${userId}`, { withCredentials: true })
     );
   }
 }

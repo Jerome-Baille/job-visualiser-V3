@@ -2,85 +2,156 @@
   <div class="container">
     <div class="header-content">
       <a routerLink="/" aria-label="Go to homepage" class="logo-link">
-        <img src="assets/img/job-visualizer-logo.png" alt="Job Tracker logo" width="100">
-      </a>      <!-- Mobile Bottom Navbar -->
-      <nav class="mobile-bottom-navbar mat-elevation-z4" *ngIf="!isLargerThanMD">
-        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-item" aria-label="Dashboard" mat-ripple>
+        <img
+          src="assets/img/job-visualizer-logo.png"
+          alt="Job Tracker logo"
+          width="100"
+        />
+      </a>
+      <!-- Mobile Bottom Navbar -->
+      @if (!isLargerThanMD){
+      <nav class="mobile-bottom-navbar mat-elevation-z4">
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-item"
+          aria-label="Dashboard"
+          mat-ripple
+        >
           <mat-icon>dashboard</mat-icon>
           <span>Dashboard</span>
         </a>
-        <a routerLink="/list" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-item" aria-label="Jobs" mat-ripple>
+        <a
+          routerLink="/list"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-item"
+          aria-label="Jobs"
+          mat-ripple
+        >
           <mat-icon>list_alt</mat-icon>
           <span>Jobs</span>
-        </a>        <a routerLink="/create" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-item" aria-label="Add" mat-ripple>
+        </a>
+        <a
+          routerLink="/create"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-item"
+          aria-label="Add"
+          mat-ripple
+        >
           <mat-icon>add_circle</mat-icon>
           <span>Add</span>
         </a>
-        <button [ngClass]="{'active': isProfileActive()}" class="nav-item" aria-label="Profile" (click)="openProfileSheet()" mat-ripple>
+        <button
+          [ngClass]="{ active: isProfileActive() }"
+          class="nav-item"
+          aria-label="Profile"
+          (click)="openProfileSheet()"
+          mat-ripple
+        >
           <mat-icon>person</mat-icon>
           <span>Profile</span>
         </button>
       </nav>
+      }
 
       <!-- Profile Bottom Sheet -->
-      <div class="profile-bottom-sheet" *ngIf="showProfileSheet">
-        <div class="sheet-backdrop" (click)="closeProfileSheet()"></div>
+      @if(showProfileSheet){
+      <div class="profile-bottom-sheet">
+        <button
+          type="button"
+          class="sheet-backdrop"
+          aria-label="Close profile options"
+          (click)="closeProfileSheet()"
+        ></button>
         <div class="sheet-content mat-elevation-z8">
           <div class="sheet-header">
             <h2 class="sheet-title">Profile Options</h2>
-            <button mat-icon-button (click)="closeProfileSheet()" aria-label="Close">
+            <button
+              mat-icon-button
+              (click)="closeProfileSheet()"
+              aria-label="Close"
+            >
               <mat-icon>close</mat-icon>
             </button>
           </div>
-          <mat-divider></mat-divider>          <mat-nav-list class="sheet-links">
-            <a mat-list-item routerLink="/profile" (click)="closeProfileSheet()">
+          <mat-divider></mat-divider>
+          <mat-nav-list class="sheet-links">
+            <a
+              mat-list-item
+              routerLink="/profile"
+              (click)="closeProfileSheet()"
+            >
               <div class="list-item-content">
                 <mat-icon>account_circle</mat-icon>
                 <span>Profile</span>
               </div>
             </a>
             <mat-divider></mat-divider>
-            <a mat-list-item routerLink="/auth" (click)="closeProfileSheet()" *ngIf="!isAuthenticated()">
+            @if(!isAuthenticated()){
+            <a mat-list-item routerLink="/auth" (click)="closeProfileSheet()">
               <div class="list-item-content">
                 <mat-icon>login</mat-icon>
                 <span>Login</span>
               </div>
             </a>
-            <button mat-list-item *ngIf="isAuthenticated()" (click)="logout()">
+            } @if(isAuthenticated()){
+            <button mat-list-item (click)="logout()">
               <div class="list-item-content">
                 <mat-icon>logout</mat-icon>
                 <span>Logout</span>
               </div>
             </button>
+            }
           </mat-nav-list>
         </div>
-      </div>      <!-- Desktop Menu -->
-      <div class="desktop-menu" *ngIf="isLargerThanMD">
+      </div>
+      }
+      <!-- Desktop Menu -->
+      @if(isLargerThanMD){
+      <div class="desktop-menu">
         <div class="menu-items">
-          <a routerLink="/how-to-use" class="menu-item" aria-label="Learn how to use the app.">
+          <a
+            routerLink="/how-to-use"
+            class="menu-item"
+            aria-label="Learn how to use the app."
+          >
             <mat-icon>help_outline</mat-icon>
             <span>How does it work?</span>
           </a>
 
-          <ng-container *ngIf="!isAuthenticated()">
-            <a routerLink="/auth" class="menu-item" aria-label="Log into your account">
-              <mat-icon>login</mat-icon>
-              <span>Login</span>
-            </a>
-          </ng-container>
-
-          <ng-container *ngIf="isAuthenticated()">
-            <a routerLink="/profile" class="menu-item" aria-label="See and update your profile.">
-              <mat-icon>person</mat-icon>
-              <span>Profile</span>
-            </a>
-            <button (click)="logout()" class="menu-item logout-button" aria-label="Log out of your account">
-              <mat-icon>logout</mat-icon>
-              <span>Logout</span>
-            </button>
-          </ng-container>
+          @if(!isAuthenticated()){
+          <a
+            routerLink="/auth"
+            class="menu-item"
+            aria-label="Log into your account"
+          >
+            <mat-icon>login</mat-icon>
+            <span>Login</span>
+          </a>
+          } @if(isAuthenticated()){
+          <a
+            routerLink="/profile"
+            class="menu-item"
+            aria-label="See and update your profile."
+          >
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </a>
+          <button
+            (click)="logout()"
+            class="menu-item logout-button"
+            aria-label="Log out of your account"
+          >
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+          }
         </div>
       </div>
+      }
     </div>
   </div>
 </header>

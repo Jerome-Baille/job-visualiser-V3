@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { LoaderService } from '../../../core/services/loader.service';
@@ -8,17 +8,16 @@ import { LoaderService } from '../../../core/services/loader.service';
 @Component({
   selector: 'app-after-login',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './after-login.component.html',
   styleUrls: ['./after-login.component.scss']
 })
 export class AfterLoginComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private auth: AuthService,
-    private snackbar: SnackbarService,
-    private loaderService: LoaderService
-  ) {}
+  private router = inject(Router);
+  private auth = inject(AuthService);
+  private snackbar = inject(SnackbarService);
+  private loaderService = inject(LoaderService);
+
   ngOnInit() {
     this.loaderService.show();
     setTimeout(() => {

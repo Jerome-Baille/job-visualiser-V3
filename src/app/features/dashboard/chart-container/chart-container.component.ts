@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+
 import { MatIconModule } from '@angular/material/icon';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexNonAxisChartSeries } from 'ng-apexcharts';
@@ -9,11 +9,13 @@ import { JobService } from '../../../core/services/job.service';
 @Component({
   selector: 'app-chart-container',
   standalone: true,
-  imports: [NgIf, MatIconModule, NgApexchartsModule],
+  imports: [MatIconModule, NgApexchartsModule],
   templateUrl: './chart-container.component.html',
   styleUrls: ['./chart-container.component.scss']
 })
 export class ChartContainerComponent implements OnInit {
+  private jobService = inject(JobService);
+
   stats: OpportunitiesStats | null = null;
   loading = true;
 
@@ -31,10 +33,8 @@ export class ChartContainerComponent implements OnInit {
   funnelChart: ApexChart = { type: 'bar', height: 250, toolbar: { show: false } };
   funnelXAxis: Partial<ApexXAxis> = { categories: ['Applications', 'Responses', 'Interviews'] };
   funnelColors = ['#FFF0C5', '#2196f3', '#4caf50'];
-  conversionAppToResponse: number = 0;
-  conversionResponseToInterview: number = 0;
-
-  constructor(private jobService: JobService) {}
+  conversionAppToResponse = 0;
+  conversionResponseToInterview = 0;
 
   async ngOnInit() {
     this.loading = true;

@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>{{ dialogTitle }}</mat-card-title>
     </mat-card-header>
-    
+
     <mat-card-content>
       <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
         <div class="form-row">
@@ -11,9 +11,11 @@
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description" rows="3" placeholder="Enter task description" required></textarea>
             <mat-icon matSuffix>notes</mat-icon>
-            <mat-error *ngIf="taskForm.get('description')?.hasError('required')">
-              Description is required
-            </mat-error>
+            @if (taskForm.get('description')?.hasError('required')) {
+              <mat-error>
+                Description is required
+              </mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -21,9 +23,11 @@
           <mat-form-field appearance="outline">
             <mat-label>Status</mat-label>
             <mat-select formControlName="status" required>
-              <mat-option *ngFor="let status of statuses" [value]="status">
-                {{ status }}
-              </mat-option>
+              @for (status of statuses; track status) {
+                <mat-option [value]="status">
+                  {{ status }}
+                </mat-option>
+              }
             </mat-select>
             <mat-icon matSuffix>list_alt</mat-icon>
           </mat-form-field>
@@ -31,9 +35,11 @@
           <mat-form-field appearance="outline">
             <mat-label>Priority</mat-label>
             <mat-select formControlName="priority" required>
-              <mat-option *ngFor="let priority of priorities" [value]="priority">
-                {{ priority }}
-              </mat-option>
+              @for (priority of priorities; track priority) {
+                <mat-option [value]="priority">
+                  {{ priority }}
+                </mat-option>
+              }
             </mat-select>
             <mat-icon matSuffix>priority_high</mat-icon>
           </mat-form-field>
@@ -51,30 +57,30 @@
 
         <!-- Future enhancement: Job selection field -->
         <!-- <div class="form-row">
-          <mat-form-field appearance="outline" class="wide-field">
-            <mat-label>Associated Job</mat-label>
-            <mat-select formControlName="jobId" multiple>
-              <mat-option *ngFor="let job of jobs" [value]="job.id">
-                {{ job.company }} - {{ job.name }}
-              </mat-option>
-            </mat-select>
-            <mat-icon matSuffix>work</mat-icon>
-          </mat-form-field>
-        </div> -->
-      </form>
-    </mat-card-content>
+        <mat-form-field appearance="outline" class="wide-field">
+          <mat-label>Associated Job</mat-label>
+          <mat-select formControlName="jobId" multiple>
+            <mat-option *ngFor="let job of jobs" [value]="job.id">
+              {{ job.company }} - {{ job.name }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>work</mat-icon>
+        </mat-form-field>
+      </div> -->
+    </form>
+  </mat-card-content>
 
-    <mat-divider></mat-divider>
-    
-    <mat-card-actions>
-      <div class="action-buttons">
-        <button mat-button type="button" (click)="onCancel()">Cancel</button>
-        <span class="spacer"></span>
-        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="taskForm.invalid" class="submit-button">
-          <mat-icon>save</mat-icon>
-          {{ isEditMode ? 'Update Task' : 'Create Task' }}
-        </button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+  <mat-divider></mat-divider>
+
+  <mat-card-actions>
+    <div class="action-buttons">
+      <button mat-button type="button" (click)="onCancel()">Cancel</button>
+      <span class="spacer"></span>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="taskForm.invalid" class="submit-button">
+        <mat-icon>save</mat-icon>
+        {{ isEditMode ? 'Update Task' : 'Create Task' }}
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>
 </div>

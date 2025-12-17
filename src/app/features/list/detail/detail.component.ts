@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -20,7 +20,8 @@ import { SnackbarService } from '../../../core/services/snackbar.service';
 
 // Custom date adapter that ensures leading zeros
 class CustomDateAdapter extends NativeDateAdapter {
-  override format(date: Date, displayFormat: Object): string {
+  override format(date: Date, displayFormat: object): string {
+    void displayFormat;
     if (!this.isValid(date)) {
       return '';
     }
@@ -50,7 +51,6 @@ export const MY_DATE_FORMATS = {
   selector: 'app-detail',
   standalone: true,
   imports: [
-    NgIf,
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
@@ -58,14 +58,14 @@ export const MY_DATE_FORMATS = {
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
-    MatIconModule,    MatCardModule,
+    MatIconModule,
+    MatCardModule,
     MatProgressSpinnerModule,
     MatDialogModule,
     MatDividerModule,
+    RouterLink,
     RouterLink
-  ,
-    RouterLink
-  ],
+],
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss'],
   providers: [
@@ -75,6 +75,14 @@ export const MY_DATE_FORMATS = {
   ]
 })
 export class DetailComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private jobService = inject(JobService);
+  private authService = inject(AuthService);
+  private snackbar = inject(SnackbarService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+
   openLink(url: string) {
     window.open(url, '_blank');
   }
@@ -88,15 +96,7 @@ export class DetailComponent implements OnInit {
   private readonly jobTypeOptions = ['Remote', 'Hybrid', 'On Site'];
   private readonly decisionOptions = ['positive', 'negative', 'in progress', 'expired', 'unknown'];
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private jobService: JobService,
-    private authService: AuthService,
-    private snackbar: SnackbarService,
-    private router: Router,
-    private dialog: MatDialog
-  ) {
+  constructor() {
     this.isAuthenticated = this.authService.isAuthenticated;
   }  
 
@@ -130,28 +130,28 @@ export class DetailComponent implements OnInit {
     if (this.jobId) {
       this.jobService.getOpportunity(this.jobId).then(job => {
         // Create a copy of job to avoid modifying original
-        const processedJob: any = { ...job };
+        const processedJob: Record<string, unknown> = { ...job };
         
         // Process application date
-        if (job.applicationDate && typeof job.applicationDate === 'string') {
-          processedJob.applicationDate = this.parseStringToDate(job.applicationDate);
+        if (job['applicationDate'] && typeof job['applicationDate'] === 'string') {
+          processedJob['applicationDate'] = this.parseStringToDate(job['applicationDate']);
         }
         
         // Process interview date
-        if (job.interviewDate && typeof job.interviewDate === 'string') {
-          processedJob.interviewDate = this.parseStringToDate(job.interviewDate);
+        if (job['interviewDate'] && typeof job['interviewDate'] === 'string') {
+          processedJob['interviewDate'] = this.parseStringToDate(job['interviewDate']);
         }
           // Process decision date
-        if (job.decisionDate && typeof job.decisionDate === 'string') {
-          processedJob.decisionDate = this.parseStringToDate(job.decisionDate);
+        if (job['decisionDate'] && typeof job['decisionDate'] === 'string') {
+          processedJob['decisionDate'] = this.parseStringToDate(job['decisionDate']);
         }
         
         // Normalize job type and decision values (case insensitive)
-        if (job.type) {
-          processedJob.type = this.normalizeJobType(job.type);
+        if (job['type']) {
+          processedJob['type'] = this.normalizeJobType(String(job['type']));
         }
-        if (job.decision) {
-          processedJob.decision = this.normalizeDecision(job.decision);
+        if (job['decision']) {
+          processedJob['decision'] = this.normalizeDecision(String(job['decision']));
         }
         
         // Update the form

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,17 +11,18 @@ import { SnackbarService } from '../../../core/services/snackbar.service';
   selector: 'app-export-data',
   standalone: true,
   imports: [
-    NgFor,
-    NgIf,
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatButtonModule, 
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
     MatIconModule
-  ],
+],
   templateUrl: './export-data.component.html',
   styleUrls: ['./export-data.component.scss']
 })
 export class ExportDataComponent {
+  private jobService = inject(JobService);
+  private snackbar = inject(SnackbarService);
+
   selectedFormat = '';
   selectedYear = '';  
   years: string[] = [];
@@ -35,7 +36,7 @@ export class ExportDataComponent {
     return this.formatOptions.find(option => option.value === this.selectedFormat);
   }
 
-  constructor(private jobService: JobService, private snackbar: SnackbarService) {
+  constructor() {
     // Add "All Years" option first
     this.years.push('All Years');
     
@@ -49,7 +50,7 @@ export class ExportDataComponent {
     try {
       await this.jobService.exportOpportunities(this.selectedYear, this.selectedFormat);
       this.snackbar.success('Your data has been exported successfully!');
-    } catch (error) {
+    } catch {
       this.snackbar.error('An error occurred while exporting your data. Please try again later.');
     }
   }

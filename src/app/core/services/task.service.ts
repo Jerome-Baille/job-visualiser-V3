@@ -1,5 +1,5 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -9,9 +9,9 @@ import { TaskData } from '../../interfaces';
   providedIn: 'root'
 })
 export class TaskService {
-  private baseUrl = environment.taskURL;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private baseUrl = environment.taskURL;
 
   async getTasks(): Promise<TaskData[]> {
     return firstValueFrom(
@@ -31,9 +31,9 @@ export class TaskService {
     );
   }
 
-  async deleteTask(taskId: number): Promise<any> {
+  async deleteTask(taskId: number): Promise<void> {
     return firstValueFrom(
-      this.http.delete(`${this.baseUrl}/${taskId}`, { withCredentials: true })
+      this.http.delete<void>(`${this.baseUrl}/${taskId}`, { withCredentials: true })
     );
   }
 

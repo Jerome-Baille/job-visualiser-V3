@@ -1,14 +1,14 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 
 @Directive({
   selector: '[appDateMask]',
   standalone: true
 })
 export class DateMaskDirective {
-  constructor(private el: ElementRef<HTMLInputElement>) {}
+  private el = inject(ElementRef<HTMLInputElement>);
 
-  @HostListener('input', ['$event'])
-  onInput(event: InputEvent): void {
+  @HostListener('input')
+  onInput(): void {
     const input = this.el.nativeElement;
     
     // If there's already a date object from the datepicker, don't interfere

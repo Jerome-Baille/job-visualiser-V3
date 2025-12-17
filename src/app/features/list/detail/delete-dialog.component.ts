@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -23,6 +23,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     }
   `]
 })
-export class DeleteConfirmDialogComponent {
-  constructor(public dialogRef: MatDialogRef<DeleteConfirmDialogComponent>) {}
+export class DeleteConfirmDialogComponent {  dialogRef = inject<MatDialogRef<DeleteConfirmDialogComponent>>(MatDialogRef);
+
 }

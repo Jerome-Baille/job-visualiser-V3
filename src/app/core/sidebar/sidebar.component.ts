@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, inject, OnDestroy, Renderer2 } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { NgIf } from '@angular/common';
+
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [NgIf, RouterLink, RouterLinkActive, MatIconModule],
+  imports: [RouterLink, RouterLinkActive, MatIconModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })

@@ -1,14 +1,14 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnackbarService {
-  private defaultDuration = 3000;
+  private snackBar = inject(MatSnackBar);
 
-  constructor(private snackBar: MatSnackBar) {}
+  private defaultDuration = 3000;
 
   success(message: string, duration: number = this.defaultDuration) {
     this.open(message, 'snackbar-success', duration);

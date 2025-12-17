@@ -6,21 +6,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+
 
 @Component({
   selector: 'app-table-filter',
   standalone: true,
   imports: [
-    NgIf,
     MatExpansionModule,
     MatFormFieldModule,
-    MatSelectModule, 
+    MatSelectModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,
     FormsModule
-  ],
+],
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss']
 })

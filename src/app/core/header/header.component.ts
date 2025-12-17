@@ -1,9 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Router, RouterModule, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { NgIf, NgClass } from '@angular/common';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { NgClass } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
@@ -14,30 +12,27 @@ import { MatListModule } from '@angular/material/list';
   selector: 'app-header',
   standalone: true,
   imports: [
-    NgIf, 
     NgClass,
-    RouterModule, 
+    RouterModule,
     RouterLinkActive,
-    MatBottomSheetModule,
     MatButtonModule,
     MatIconModule,
     MatRippleModule,
     MatDividerModule,
     MatListModule
-  ],
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 
 export class HeaderComponent {
+  auth = inject(AuthService);
+  private router = inject(Router);
+
   readonly isAuthenticated: () => boolean;
   isLargerThanMD = false;
   showProfileSheet = false;
-  constructor(
-    public auth: AuthService, 
-    private router: Router,
-    private bottomSheet: MatBottomSheet
-  ) {
+  constructor() {
     this.isAuthenticated = this.auth.isAuthenticated;
     this.checkScreenSize();
   }

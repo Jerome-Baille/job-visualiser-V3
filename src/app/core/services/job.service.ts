@@ -1,5 +1,5 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { JobData, OpportunitiesStats, PaginatedResponse } from '../../interfaces';
@@ -7,7 +7,8 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class JobService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
   async getOpportunitiesStats(): Promise<OpportunitiesStats> {
     return firstValueFrom(
       this.http.get<OpportunitiesStats>(`${environment.jobURL}/stats`, { withCredentials: true })
@@ -48,19 +49,19 @@ export class JobService {
     );
   }
 
-  async deleteOpportunity(id: string): Promise<any> {
+  async deleteOpportunity(id: string): Promise<void> {
     return firstValueFrom(
-      this.http.delete(`${environment.jobURL}/${id}`, { withCredentials: true })
+      this.http.delete<void>(`${environment.jobURL}/${id}`, { withCredentials: true })
     );
   }
 
   async exportOpportunities(selectedYear: string, selectedFormat: string): Promise<void> {
     const url = `${environment.jobURL}/export/${selectedYear}/${selectedFormat}`;
     try {
-      const response: any = await firstValueFrom(
-        this.http.get(url, { responseType: 'blob' as 'json' })
+      const responseBlob = await firstValueFrom(
+        this.http.get(url, { responseType: 'blob', withCredentials: true })
       );
-      const file = new Blob([response], { type: response.type });
+      const file = new Blob([responseBlob], { type: responseBlob.type });
       let filename;
       if (selectedFormat === 'excel') {
         filename = `Jerome_BAILLE_-_Tableau_de_bord_des_candidature_-_${Date.now()}.xlsx`;
@@ -76,13 +77,12 @@ export class JobService {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(link.href);
       }, 0);
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error);
         throw new Error(`Failed to export opportunities: ${error.message}`);
-      } else {
-        throw error;
       }
+      throw error;
     }
   }
 }

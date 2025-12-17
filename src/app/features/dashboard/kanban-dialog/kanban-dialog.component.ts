@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +29,8 @@ export const MY_DATE_FORMATS = {
 
 // Custom date adapter that ensures leading zeros for DD/MM/YYYY
 class CustomDateAdapter extends NativeDateAdapter {
-  override format(date: Date, displayFormat: Object): string {
+  override format(date: Date, displayFormat: object): string {
+    void displayFormat;
     if (!this.isValid(date)) {
       return '';
     }
@@ -39,7 +40,7 @@ class CustomDateAdapter extends NativeDateAdapter {
     return `${day}/${month}/${year}`;
   }
 
-  override parse(value: any): Date | null {
+  override parse(value: unknown): Date | null {
     if (typeof value === 'string' && value.includes('/')) {
       const [day, month, year] = value.split('/');
       // Create date assuming day/month/year format (European)
@@ -53,7 +54,6 @@ class CustomDateAdapter extends NativeDateAdapter {
   selector: 'app-kanban-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
@@ -66,7 +66,7 @@ class CustomDateAdapter extends NativeDateAdapter {
     MatDividerModule,
     MatIconModule,
     DateMaskDirective
-  ],
+],
   templateUrl: './kanban-dialog.component.html',
   styleUrl: './kanban-dialog.component.scss',
   providers: [
@@ -76,11 +76,17 @@ class CustomDateAdapter extends NativeDateAdapter {
   ]
 })
 export class KanbanDialogComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<KanbanDialogComponent>>(MatDialogRef);
+  data = inject<{
+    task?: TaskData;
+}>(MAT_DIALOG_DATA);
+
   taskForm: FormGroup;
   dialogTitle: string;
   priorities: string[] = ['Low', 'Medium', 'High'];
   statuses: string[] = ['To Do', 'In Progress', 'Done'];
-  statusMap: { [key: string]: string } = {
+  statusMap: Record<string, string> = {
     'To Do': 'Backlog',
     'Backlog': 'To Do',
     'In Progress': 'In Progress',
@@ -88,11 +94,9 @@ export class KanbanDialogComponent implements OnInit {
   };
   isEditMode: boolean;
 
-  constructor(
-    private fb: FormBuilder,
-    public dialogRef: MatDialogRef<KanbanDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { task?: TaskData }
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.isEditMode = !!data.task;    this.dialogTitle = this.isEditMode ? 'Edit Task' : 'Create New Task';    this.taskForm = this.fb.group({
       description: ['', Validators.required],
       status: ['To Do', Validators.required],
@@ -103,7 +107,7 @@ export class KanbanDialogComponent implements OnInit {
     });
   }
   // Handle date picker selection events
-  onDateChange(event: any): void {
+  onDateChange(event: { value: Date | null }): void {
     // When datepicker changes, make sure we update the form
     this.taskForm.get('dueDate')?.setValue(event.value);
   }

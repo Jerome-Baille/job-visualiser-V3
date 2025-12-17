@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl, ReactiveFormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +15,6 @@ import { UserService } from '../../core/services/user.service';
 @Component({
   selector: 'app-profile',
   standalone: true,  imports: [
-    NgIf,
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -25,19 +24,20 @@ import { UserService } from '../../core/services/user.service';
     MatDialogModule,
     MatProgressSpinnerModule,
     MatDividerModule
-  ],
+],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private userService = inject(UserService);
+
   profileForm!: FormGroup;
   profile: UserData | null = null;
   showPassword = false;
   showConfirmPassword = false;
   isSubmitting = false;
   deleteDialogOpen = false;
-
-  constructor(private fb: FormBuilder, private userService: UserService) {}
 
   ngOnInit() {
     this.userService.getProfile().then(data => {
@@ -74,11 +74,14 @@ export class ProfileComponent implements OnInit {
   onSubmit() {
     if (!this.profileForm.valid || !this.profile) return;
     this.isSubmitting = true;
-    const { confirmPassword, ...values } = this.profileForm.value;
-    const changes: any = {};
-    Object.keys(values).forEach(key => {
-      if (values[key] !== (this.profile as any)[key]) {
-        changes[key] = values[key];
+    const values = { ...this.profileForm.value } as Record<string, unknown>;
+    delete values['confirmPassword'];
+
+    const changes: Partial<UserData> = {};
+    const currentProfile = this.profile as unknown as Record<string, unknown>;
+    Object.keys(values).forEach((key) => {
+      if (values[key] !== currentProfile[key]) {
+        (changes as unknown as Record<string, unknown>)[key] = values[key];
       }
     });
     this.userService.patchUser(this.profile.id!, changes).then(() => {

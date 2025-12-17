@@ -1,15 +1,19 @@
 <div class="auth-card">
   <div class="auth-body">
-    <div class="login-form" *ngIf="!isRegisterMode">
-      <button (click)="handleLogin()" class="auth-service-btn">
-        Login with Auth Service
-      </button>
-    </div>
-    <div class="register-form" *ngIf="isRegisterMode">
-      <button (click)="handleRegister()" class="btn btn-warning">
-        Register with Auth Service
-      </button>
-    </div>
+    @if (!isRegisterMode) {
+      <div class="login-form">
+        <button (click)="handleLogin()" class="auth-service-btn">
+          Login with Auth Service
+        </button>
+      </div>
+    }
+    @if (isRegisterMode) {
+      <div class="register-form">
+        <button (click)="handleRegister()" class="btn btn-warning">
+          Register with Auth Service
+        </button>
+      </div>
+    }
   </div>
   <div class="auth-footer">
     <span>
