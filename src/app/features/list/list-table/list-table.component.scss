@@ -118,6 +118,46 @@
   .job-table {
     width: 100%;
     overflow: hidden;    
+
+    // A real <a> that stretches across the whole row so
+    // Ctrl+Click / middle-click / context menu work.
+    .row-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+
+      &:focus-visible {
+        outline: 2px solid rgba(var(--primary-color-rgb), 0.6);
+        outline-offset: -2px;
+      }
+    }
+
+    // Keep visible text above the overlay, but let clicks fall through to the overlay.
+    .cell-content {
+      position: relative;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .job-link {
+      color: inherit;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: 2px solid rgba(var(--primary-color-rgb), 0.6);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+    }
     
     .header-cell-content {
       display: flex;
@@ -223,10 +263,6 @@
           &:after {
             width: 100%;
           }
-          
-          .header-icon {
-            transform: translateY(-2px);
-          }
         }
         
         &.mat-sort-header-sorted {
@@ -253,6 +289,7 @@
     }
     
     .mat-mdc-row {
+      position: relative;
       transition: all 0.2s ease;
       
       &:hover {
@@ -514,6 +551,8 @@
     // Enhanced decision dropdown styling
   .decision-select {
     width: 100%;
+    position: relative;
+    z-index: 3;
     margin-bottom: -1.25em; // Remove extra space at bottom of form field
     font-size: 0.95rem;
     

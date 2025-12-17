@@ -211,11 +211,7 @@ export class ListTableComponent implements OnDestroy {
     }
   }
 
-  goToDetail(job: JobData): void {
-    if (job && job.id) {
-      this.router.navigate(['/job', job.id]);
-    }
-  }
+
 
   async loadJobs(page = 0, pageSize = 10): Promise<void> {
     this.loading.set(true);

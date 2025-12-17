@@ -3,119 +3,159 @@
 
   <!-- Status notification message when filtering both unknown and expired -->
   @if (includeExpired() && filterStatus() === 'unknown') {
-    <div class="status-notification">
-      <mat-icon>info</mat-icon>
-      <span>Showing both Unknown and Expired status jobs</span>
-    </div>
+  <div class="status-notification">
+    <mat-icon>info</mat-icon>
+    <span>Showing both Unknown and Expired status jobs</span>
+  </div>
   }
 
   <mat-card>
     <mat-card-content>
       <div>
-        <table mat-table [dataSource]="dataSource" matSort class="job-table"> <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-colored">
-            <span class="header-cell-content">
-              <svg class="header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="7" width="20" height="14" rx="2" />
-                <path d="M16 3h-8v4h8V3z" />
-              </svg>
-              <span class="header-text">Job position</span>
-            </span>
-          </th>
-          <td mat-cell *matCellDef="let job">{{ job.name }}</td>
-        </ng-container> <ng-container matColumnDef="company">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-colored">
-          <span class="header-cell-content">
-            <svg class="header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="10" rx="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            <span class="header-text">Company</span>
-          </span>
-        </th>
-        <td mat-cell *matCellDef="let job">{{ job.company }}</td>
-      </ng-container> <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef class="header-colored">
-        <span class="header-cell-content">
-          <svg class="header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-          </svg>
-          <span class="header-text">Type</span>
-        </span>
-      </th>
-      <td mat-cell *matCellDef="let job">{{ job.type }}</td>
-    </ng-container> <ng-container matColumnDef="applicationDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-colored mat-column-applicationDate">
-      <span class="header-cell-content">
-        <svg class="header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" />
-          <path d="M16 2v4M8 2v4M3 10h18" />
-        </svg>
-        <span class="header-text">Date</span>
-      </span>
-    </th>
-    <td mat-cell *matCellDef="let job">
-      <span class="date-cell">{{ formatDateDDMMYYYY(job.applicationDate) }}</span>
-    </td>
-  </ng-container> <ng-container matColumnDef="decision">
-  <th mat-header-cell *matHeaderCellDef class="header-colored">
-    <span class="header-cell-content">
-      <svg class="header-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M9 12l2 2l4-4" />
-      </svg>
-      <span class="header-text">Decision</span>
-    </span>
-  </th>
-  <td mat-cell *matCellDef="let job">
-              <mat-form-field appearance="outline" class="decision-select" [ngClass]="{
+        <table mat-table [dataSource]="dataSource" matSort class="job-table">
+          <ng-container matColumnDef="name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="header-colored"
+            >
+              <span class="header-cell-content">
+                <mat-icon class="header-icon">work_outline</mat-icon>
+                <span class="header-text">Job position</span>
+              </span>
+            </th>
+            <td mat-cell *matCellDef="let job">
+              <a
+                class="row-overlay"
+                [routerLink]="['/job', job.id]"
+                aria-label="Open job details"
+              ></a>
+              <span class="cell-content">{{ job.name }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="company">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="header-colored"
+            >
+              <span class="header-cell-content">
+                <mat-icon class="header-icon">apartment</mat-icon>
+                <span class="header-text">Company</span>
+              </span>
+            </th>
+            <td mat-cell *matCellDef="let job">
+              <span class="cell-content">{{ job.company }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef class="header-colored">
+              <span class="header-cell-content">
+                <mat-icon class="header-icon">category</mat-icon>
+                <span class="header-text">Type</span>
+              </span>
+            </th>
+            <td mat-cell *matCellDef="let job">{{ job.type }}</td>
+          </ng-container>
+          <ng-container matColumnDef="applicationDate">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="header-colored mat-column-applicationDate"
+            >
+              <span class="header-cell-content">
+                <mat-icon class="header-icon">event</mat-icon>
+                <span class="header-text">Date</span>
+              </span>
+            </th>
+            <td mat-cell *matCellDef="let job">
+              <span class="date-cell">{{
+                formatDateDDMMYYYY(job.applicationDate)
+              }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="decision">
+            <th mat-header-cell *matHeaderCellDef class="header-colored">
+              <span class="header-cell-content">
+                <mat-icon class="header-icon">task_alt</mat-icon>
+                <span class="header-text">Decision</span>
+              </span>
+            </th>
+            <td mat-cell *matCellDef="let job">
+              <mat-form-field
+                appearance="outline"
+                class="decision-select"
+                [ngClass]="{
                   'positive-select': job.decision === 'positive',
                   'negative-select': job.decision === 'negative',
                   'in-progress-select': job.decision === 'in progress',
                   'expired-select': job.decision === 'expired'
-                }" (click)="$event.stopPropagation()">
-      <mat-select [value]="job.decision" (selectionChange)="onDecisionChange(job, $event.value)"
-        aria-label="Final decision on the candidacy" disableOptionCentering panelClass="status-select-panel"
-        (openedChange)="$event ? $event : null"> @for (status of decisionStatuses; track status) {
-        <mat-option
-          [value]="status.value" (click)="$event.stopPropagation()">
-          {{ status.label }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-</td>
-</ng-container>
-<tr mat-header-row *matHeaderRowDef="displayedColumns()" class="header-colored-row"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns();" [ngClass]="{
-                'status-positive': row.decision === 'positive',
-                'status-negative': row.decision === 'negative',
-                'status-in-progress': row.decision === 'in progress',
-                'status-expired': row.decision === 'expired'
-              }" (click)="goToDetail(row)" style="cursor:pointer"></tr>
-</table>
-<div class="footer-bar">
-  <mat-paginator [length]="totalItems()" [pageIndex]="currentPage()" [pageSize]="pageSize()"
-    [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)" showFirstLastButtons
-  aria-label="Select page of jobs"></mat-paginator>
-  @if (paginationInfo()) {
-    <div class="pagination-info">
-      <span>
-        Showing <b>{{ (currentPage() * pageSize()) + 1 }}</b> - <b>{{ Math.min((currentPage() + 1) * pageSize(),
-        totalItems()) }}</b> of <b>{{ totalItems() }}</b> results
-      </span>
-    </div>
-  }
-</div>
-</div>
-</mat-card-content>
-</mat-card>
+                }"
+                (click)="$event.stopPropagation()"
+              >
+                <mat-select
+                  [value]="job.decision"
+                  (selectionChange)="onDecisionChange(job, $event.value)"
+                  aria-label="Final decision on the candidacy"
+                  disableOptionCentering
+                  panelClass="status-select-panel"
+                  (openedChange)="($event ? $event : null)"
+                >
+                  @for (status of decisionStatuses; track status) {
+                  <mat-option
+                    [value]="status.value"
+                    (click)="$event.stopPropagation()"
+                  >
+                    {{ status.label }}
+                  </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns()"
+            class="header-colored-row"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns()"
+            [ngClass]="{
+              'status-positive': row.decision === 'positive',
+              'status-negative': row.decision === 'negative',
+              'status-in-progress': row.decision === 'in progress',
+              'status-expired': row.decision === 'expired'
+            }"
+            style="cursor: pointer"
+          ></tr>
+        </table>
+        <div class="footer-bar">
+          <mat-paginator
+            [length]="totalItems()"
+            [pageIndex]="currentPage()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
+            showFirstLastButtons
+            aria-label="Select page of jobs"
+          ></mat-paginator>
+          @if (paginationInfo()) {
+          <div class="pagination-info">
+            <span>
+              Showing <b>{{ currentPage() * pageSize() + 1 }}</b> -
+              <b>{{
+                Math.min((currentPage() + 1) * pageSize(), totalItems())
+              }}</b>
+              of <b>{{ totalItems() }}</b> results
+            </span>
+          </div>
+          }
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
