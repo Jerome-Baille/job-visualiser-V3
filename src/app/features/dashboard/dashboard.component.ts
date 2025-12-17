@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { KanbanComponent } from "./kanban/kanban.component";
-import { JobData } from '../../interfaces';
+import { JobData } from '../../shared/interfaces';
 import { JobService } from '../../core/services/job.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import { AuthService } from '../../core/services/auth.service';

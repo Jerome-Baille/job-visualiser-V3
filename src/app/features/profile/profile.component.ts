@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
-import { UserData } from '../../interfaces';
+import { UserData } from '../../shared/interfaces';
 import { UserService } from '../../core/services/user.service';
 
 @Component({

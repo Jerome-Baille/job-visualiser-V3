@@ -9,8 +9,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { KanbanDialogComponent } from '../kanban-dialog/kanban-dialog.component';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { TaskService } from '../../../core/services/task.service';
-import { TaskData } from '../../../interfaces';
-import { JobData } from '../../../interfaces';
+import { TaskData } from '../../../shared/interfaces';
+import { JobData } from '../../../shared/interfaces';
 
 interface KanbanTask {
   id: number;

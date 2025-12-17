@@ -14,7 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { JobService } from '../../core/services/job.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
-import { JobData } from '../../interfaces';
+import { JobData } from '../../shared/interfaces';
 
 // Custom date adapter that ensures leading zeros
 class CustomDateAdapter extends NativeDateAdapter {

@@ -3,7 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexNonAxisChartSeries } from 'ng-apexcharts';
-import { OpportunitiesStats } from '../../../interfaces';
+import { OpportunitiesStats } from '../../../shared/interfaces';
 import { JobService } from '../../../core/services/job.service';
 
 @Component({

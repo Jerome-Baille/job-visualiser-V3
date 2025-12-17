@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { DateMaskDirective } from './date-mask.directive';
-import { TaskData } from '../../../interfaces';
+import { TaskData } from '../../../shared/interfaces';
 
 // Custom date adapter for dd/MM/yyyy format
 export const MY_DATE_FORMATS = {

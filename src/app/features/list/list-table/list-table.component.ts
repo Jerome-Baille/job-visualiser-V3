@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TableFilterComponent } from '../table-filter/table-filter.component';
 import { JobService } from '../../../core/services/job.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
-import { JobData, PaginationInfo } from '../../../interfaces';
+import { JobData, PaginationInfo } from '../../../shared/interfaces';
 import { tokenRefreshCounter } from '../../../core/interceptors/http.interceptor';
 
 @Component({

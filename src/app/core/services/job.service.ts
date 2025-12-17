@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { JobData, OpportunitiesStats, PaginatedResponse } from '../../interfaces';
+import { JobData, OpportunitiesStats, PaginatedResponse } from '../../shared/interfaces';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
