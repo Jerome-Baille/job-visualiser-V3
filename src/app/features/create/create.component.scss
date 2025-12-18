@@ -40,36 +40,6 @@
   }
 }
 
-.job-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  
-  .form-row {
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 0;
-    }
-    
-    mat-form-field {
-      flex: 1;
-      width: 100%;
-    }
-    
-    &.date-container {
-      align-items: flex-start;
-    }
-  }
-  
-  .wide-field {
-    width: 100%;
-  }
-}
-
 mat-card-actions {
   padding: 24px;
   

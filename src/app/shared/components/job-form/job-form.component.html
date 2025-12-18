@@ -1,0 +1,113 @@
+<form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="job-form">
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Job Title</mat-label>
+      <input matInput formControlName="name" placeholder="Enter job title">
+      @if (showIcons) {
+        <mat-icon matSuffix>work</mat-icon>
+      }
+      @if (jobForm.get('name')?.invalid && jobForm.get('name')?.touched) {
+        <mat-error>
+          Job title is required
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Company</mat-label>
+      <input matInput formControlName="company" placeholder="Enter company name">
+      @if (showIcons) {
+        <mat-icon matSuffix>business</mat-icon>
+      }
+      @if (jobForm.get('company')?.invalid && jobForm.get('company')?.touched) {
+        <mat-error>
+          Company is required
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location" placeholder="Enter location">
+      @if (showIcons) {
+        <mat-icon matSuffix>location_on</mat-icon>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Job Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="Remote">Remote</mat-option>
+        <mat-option value="Hybrid">Hybrid</mat-option>
+        <mat-option value="On Site">On Site</mat-option>
+      </mat-select>
+      @if (showIcons) {
+        <mat-icon matSuffix>apartment</mat-icon>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="wide-field">
+      <mat-label>Job Link</mat-label>
+      <input matInput formControlName="link" placeholder="Enter job posting URL">
+      @if (showIcons) {
+        <mat-icon matSuffix>link</mat-icon>
+      }
+      @if (!showIcons && jobForm.get('link')?.value) {
+        <button mat-icon-button matSuffix
+          (click)="onLinkClick(jobForm.get('link')?.value)" type="button" aria-label="Open link">
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="wide-field">
+      <mat-label>Application Date</mat-label>
+      <input matInput [matDatepicker]="applicationPicker" formControlName="applicationDate">
+      <mat-datepicker-toggle matIconSuffix [for]="applicationPicker"></mat-datepicker-toggle>
+      <mat-datepicker #applicationPicker></mat-datepicker>
+      @if (jobForm.get('applicationDate')?.invalid && jobForm.get('applicationDate')?.touched) {
+        <mat-error>
+          Application date is required
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="wide-field">
+      <mat-label>Interview Date</mat-label>
+      <input matInput [matDatepicker]="interviewPicker" formControlName="interviewDate">
+      <mat-datepicker-toggle matIconSuffix [for]="interviewPicker"></mat-datepicker-toggle>
+      <mat-datepicker #interviewPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Decision Date</mat-label>
+      <input matInput [matDatepicker]="decisionPicker" formControlName="decisionDate">
+      <mat-datepicker-toggle matIconSuffix [for]="decisionPicker"></mat-datepicker-toggle>
+      <mat-datepicker #decisionPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Decision</mat-label>
+      <mat-select formControlName="decision">
+        <mat-option value="positive">Positive</mat-option>
+        <mat-option value="negative">Negative</mat-option>
+        <mat-option value="in progress">In progress</mat-option>
+        <mat-option value="expired">Expired</mat-option>
+        <mat-option value="unknown">Unknown</mat-option>
+      </mat-select>
+      @if (showIcons) {
+        <mat-icon matSuffix>fact_check</mat-icon>
+      }
+    </mat-form-field>
+  </div>
+</form>

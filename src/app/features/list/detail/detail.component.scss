@@ -83,41 +83,6 @@
   }
 }
 
-.job-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  
-  .form-row {
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 0;
-    }
-    
-    mat-form-field {
-      flex: 1;
-      width: 100%;
-    }
-    
-    &.date-container {
-      align-items: flex-start;
-    }
-    
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-  }
-  
-  .wide-field {
-    width: 100%;
-  }
-}
-
 mat-card-actions {
   padding: 24px;
   
@@ -146,7 +111,7 @@ mat-card-actions {
 }
 
 .button-gap {
-  width: 16px; /* Adjust the width to control the gap size */
+  width: 16px;
   display: inline-block;
 }
 
