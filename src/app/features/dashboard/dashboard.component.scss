@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use 'variables' as *;
 
 .dashboard-wrapper {
   padding: 24px;
@@ -23,7 +24,7 @@
   color: #333;
   
   mat-icon {
-    color: var(--secondary-color);
+    color: $secondary-color;
   }
 }
 
@@ -48,8 +49,8 @@
   width: auto;
   padding: 16px;
   border-radius: 8px;
-  background-color: var(--background-color);
-  box-shadow: 0 2px 5px var(--shadow-color);
+  background-color: $background-color;
+  box-shadow: 0 2px 5px $shadow-color;
   transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
@@ -58,7 +59,7 @@
   
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 0 4px 8px $shadow-color;
   }
   
   strong {
@@ -68,33 +69,33 @@
   }
   
   &.positive {
-    border-left: 4px solid var(--success-color);
+    border-left: 4px solid $success-color;
   }
   
   &.in-progress {
-    border-left: 4px solid var(--info-color);
+    border-left: 4px solid $info-color;
   }
   
   &.unknown {
-    border-left: 4px solid var(--warning-color);
+    border-left: 4px solid $warning-color;
   }
   
   &.negative {
-    border-left: 4px solid var(--error-color);
+    border-left: 4px solid $error-color;
   }
 }
 
 // Container for the dashboard components
 .dashboard-container {
   padding: 16px;
-  background-color: var(--background-color);
+  background-color: $background-color;
   border-radius: 12px;
-  box-shadow: 0 3px 6px var(--shadow-color);
+  box-shadow: 0 3px 6px $shadow-color;
   margin-bottom: 24px;
   transition: all 0.3s ease;
   
   &:hover {
-    box-shadow: var(--elevation-z2);
+    box-shadow: $elevation-z2;
   }
 }
 
@@ -102,9 +103,9 @@
 .not-logged-message {
   padding: 24px;
   text-align: center;
-  background-color: var(--background-color);
+  background-color: $background-color;
   border-radius: 8px;
-  box-shadow: 0 2px 5px var(--shadow-color);
+  box-shadow: 0 2px 5px $shadow-color;
   
   mat-icon {
     display: block;
@@ -112,7 +113,7 @@
     font-size: 48px;
     height: 48px;
     width: 48px;
-    color: var(--warning-color);
+    color: $warning-color;
   }
   
   p {

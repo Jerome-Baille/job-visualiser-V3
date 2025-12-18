@@ -1,0 +1,29 @@
+/* =========================================
+   SCSS VARIABLES
+   ========================================= */
+
+/* Color Palette */
+$primary-color: #FFF0C5;
+$primary-color-rgb: 255, 240, 197;
+$secondary-color: #FCE7AA;
+$secondary-color-rgb: 252, 231, 170;
+$background-color: #fff;
+
+/* Link Colors */
+$link-color: #C70406;
+$link-accent-color: #F2190A;
+
+/* Status Colors - Softer variants that match the overall palette */
+$error-color: #e57373; /* Softer red */
+$warning-color: #ffb74d; /* Softer orange */
+$info-color: #64b5f6; /* Softer blue */
+$success-color: #81c784; /* Softer green */
+
+/* Border Colors */
+$light-border: #eee;
+$dark-border: #333;
+
+/* Shadow & Elevation */
+$shadow-color: rgba(0, 0, 0, 0.1);
+$elevation-z1: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
+$elevation-z2: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);

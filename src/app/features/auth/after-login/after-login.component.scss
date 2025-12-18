@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -5,7 +7,7 @@
   justify-content: center;
   min-height: 100vh;
   padding: 24px;
-  background-color: var(--primary-color);
+  background-color: $primary-color;
 }
 
 .auth-content {
@@ -13,8 +15,8 @@
   max-width: 480px;
   width: 100%;
   border-radius: 12px;
-  background-color: var(--background-color);
-  box-shadow: var(--elevation-z2);
+  background-color: $background-color;
+  box-shadow: $elevation-z2;
   text-align: center;
   animation: fadeIn 0.5s ease-out, slideUp 0.5s ease-out;
   position: relative;
@@ -27,7 +29,7 @@
     left: 0;
     width: 6px;
     height: 100%;
-    background-color: var(--link-color);
+    background-color: $link-color;
   }
 }
 
@@ -35,7 +37,7 @@
   margin: 0 0 16px;
   font-size: 28px;
   font-weight: 500;
-  color: var(--link-color);
+  color: $link-color;
 }
 
 .auth-subtitle {

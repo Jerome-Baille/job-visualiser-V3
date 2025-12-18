@@ -1,21 +1,23 @@
+@use 'variables' as *;
+
 :host {
   display: block;
   padding: 24px;
 }
 
 mat-card.how-to-use-card {
-  background-color: var(--background-color);
+  background-color: $background-color;
   border-radius: 10px;
-  box-shadow: var(--elevation-z2);
+  box-shadow: $elevation-z2;
   margin: 0 auto 24px;
   max-width: 900px;
   overflow: hidden;
 }
 
 .how-to-use-header {
-  background-color: var(--primary-color);
+  background-color: $primary-color;
   padding: 24px;
-  border-bottom: 1px solid var(--secondary-color);
+  border-bottom: 1px solid $secondary-color;
   
   h1 {
     margin: 0 0 12px 0;
@@ -72,7 +74,7 @@ mat-card.how-to-use-card {
         content: '•';
         position: absolute;
         left: 12px;
-        color: var(--link-color);
+        color: $link-color;
         font-size: 1.2rem;
         font-weight: bold;
       }
@@ -87,7 +89,7 @@ mat-divider {
 }
 
 .how-to-use-footer {
-  background-color: rgba(var(--primary-color-rgb), 0.3);
+  background-color: rgba($primary-color, 0.3);
   padding: 24px;
   text-align: center;
   

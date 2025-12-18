@@ -1,3 +1,4 @@
+@use 'variables' as *;
 
 .loader-overlay {
   position: fixed;
@@ -5,7 +6,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(var(--primary-color-rgb), 0.85);
+  background: rgba($primary-color, 0.85);
   backdrop-filter: blur(3px);
   z-index: 9998;
   display: flex;
@@ -21,8 +22,8 @@
   justify-content: center;
   padding: 32px;
   border-radius: 12px;
-  background-color: var(--background-color);
-  box-shadow: var(--elevation-z2);
+  background-color: $background-color;
+  box-shadow: $elevation-z2;
   min-width: 180px;
   animation: scaleIn 0.4s ease-out;
 }
@@ -31,12 +32,12 @@
   margin-top: 24px;
   font-size: 18px;
   font-weight: 500;
-  color: var(--link-color);
+  color: $link-color;
   letter-spacing: 0.5px;
 }
 
 ::ng-deep .loader-container .mat-mdc-progress-spinner {
-  --mdc-circular-progress-active-indicator-color: var(--link-color);
+  --mdc-circular-progress-active-indicator-color: $link-color;
 }
 
 @keyframes fadeIn {

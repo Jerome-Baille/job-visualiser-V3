@@ -1,5 +1,6 @@
-/* Use the variables from styles.scss without importing */
-/* The :root variables will be available globally */
+@use 'variables' as *;
+
+/* SCSS variables are now imported from _variables.scss */
 
 .breadcrumbs {
   max-width: 900px;
@@ -11,12 +12,12 @@
 }
 
 .breadcrumb-link {
-  color: var(--link-color);
+  color: $link-color;
   text-decoration: none;
   transition: color 0.2s ease;
   
   &:hover {
-    color: var(--link-accent-color);
+    color: $link-accent-color;
     text-decoration: underline;
   }
 }
@@ -58,12 +59,12 @@
 }
 
 .job-card {
-  background-color: var(--background-color);
+  background-color: $background-color;
   border-radius: 8px;
-  box-shadow: var(--elevation-z2);
+  box-shadow: $elevation-z2;
   overflow: hidden;
     mat-card-header {
-    background-color: var(--secondary-color);
+    background-color: $secondary-color;
     padding: 24px;
     
     mat-card-title {
@@ -124,37 +125,37 @@ button {
 /* Custom colors for material theme */
 ::ng-deep {
   .mat-mdc-raised-button.mat-primary {
-    background-color: var(--link-color) !important;
+    background-color: $link-color !important;
     color: white !important;
   }
   
   .mat-mdc-raised-button.mat-primary:hover {
-    background-color: var(--link-accent-color) !important;
+    background-color: $link-accent-color !important;
   }
   
   .mat-mdc-button.mat-accent {
-    color: var(--link-color) !important;
+    color: $link-color !important;
   }
   
   .mat-mdc-button.mat-accent:hover {
-    background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+    background-color: rgba($primary-color, 0.1) !important;
   }
   
   .mat-calendar-body-selected {
-    background-color: var(--link-color) !important;
+    background-color: $link-color !important;
     color: white !important;
   }
   
   .mat-calendar-body-today:not(.mat-calendar-body-selected) {
-    border-color: var(--link-color) !important;
+    border-color: $link-color !important;
   }
   
   .mat-mdc-form-field-focus-overlay {
-    background-color: rgba(var(--primary-color-rgb), 0.1) !important;
+    background-color: rgba($primary-color, 0.1) !important;
   }
   
   .mat-mdc-select-arrow {
-    color: var(--link-color) !important;
+    color: $link-color !important;
   }
 }
 
@@ -166,7 +167,7 @@ button {
     font-size: 48px;
     height: 48px;
     width: 48px;
-    color: var(--link-color);
+    color: $link-color;
     margin-bottom: 16px;
   }
   

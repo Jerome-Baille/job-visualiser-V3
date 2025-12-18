@@ -2,48 +2,14 @@
    IMPORTS
    ========================================= */
 @use '@angular/material' as mat;
+@use 'variables' as *;
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
-
-/* =========================================
-   VARIABLES
-   ========================================= */
-:root {
-    /* Color Palette */
-    --primary-color: #FFF0C5;
-    --primary-color-rgb: 255, 240, 197;
-    --secondary-color: #FCE7AA;
-    --secondary-color-rgb: 252, 231, 170;
-    --background-color: #fff;
-
-    /* Link Colors */
-    --link-color: #C70406;
-    --link-accent-color: #F2190A;
-
-    /* Status Colors - Softer variants that match the overall palette */
-    --error-color: #e57373;
-    /* Softer red */
-    --warning-color: #ffb74d;
-    /* Softer orange */
-    --info-color: #64b5f6;
-    /* Softer blue */
-    --success-color: #81c784;
-    /* Softer green */
-
-    /* Border Colors */
-    --light-border: #eee;
-    --dark-border: #333;
-
-    /* Shadow & Elevation */
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --elevation-z1: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
-    --elevation-z2: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-}
 
 /* =========================================
    GLOBAL STYLES
    ========================================= */
 body {
-    background-color: var(--primary-color);
+    background-color: $primary-color;
     margin: 0;
     box-sizing: border-box;
 }
@@ -52,17 +18,17 @@ body {
     width: 100%;
     margin: 0 auto;
     text-align: center;
-    background-color: var(--primary-color);
+    background-color: $primary-color;
     box-sizing: border-box;
 }
 
 a {
     text-decoration: none !important;
-    color: var(--link-color) !important;
+    color: $link-color !important;
 }
 
 a:hover {
-    color: var(--link-accent-color) !important;
+    color: $link-accent-color !important;
 }
 
 td:hover {
@@ -83,7 +49,7 @@ td:hover {
 }
 
 .background-container {
-    background-color: var(--secondary-color);
+    background-color: $secondary-color;
     width: 100%;
     height: 100%;
     min-height: calc(100vh - 126px);
@@ -92,7 +58,7 @@ td:hover {
 }
 
 .home-tabs {
-    background-color: var(--background-color);
+    background-color: $background-color;
     border-radius: 8px;
 }
 
@@ -100,7 +66,7 @@ td:hover {
     width: 150px;
     padding: 5px;
     border-radius: 8px;
-    background-color: var(--background-color);
+    background-color: $background-color;
 }
 
 /* =========================================
@@ -109,9 +75,9 @@ td:hover {
 /* Snackbar styles */
 .snackbar-success {
     .mdc-snackbar__surface {
-        background-color: var(--success-color) !important; // #81c784 (light green)
+        background-color: $success-color !important; // #81c784 (light green)
         color: #1e3e1e !important; // Darker green for better contrast (4.6:1)
-        box-shadow: var(--elevation-z1);
+        box-shadow: $elevation-z1;
     }
 
     .mdc-button__label {
@@ -122,9 +88,9 @@ td:hover {
 
 .snackbar-error {
     .mdc-snackbar__surface {
-        background-color: var(--error-color) !important; // #e57373 (light red)
+        background-color: $error-color !important; // #e57373 (light red)
         color: #5c0000 !important; // Darker red for better contrast (4.7:1)
-        box-shadow: var(--elevation-z1);
+        box-shadow: $elevation-z1;
     }
 
     .mdc-button__label {
@@ -135,9 +101,9 @@ td:hover {
 
 .snackbar-info {
     .mdc-snackbar__surface {
-        background-color: var(--info-color) !important; // #64b5f6 (light blue)
+        background-color: $info-color !important; // #64b5f6 (light blue)
         color: #002b4d !important; // Darker blue for better contrast (5.3:1)
-        box-shadow: var(--elevation-z1);
+        box-shadow: $elevation-z1;
     }
 
     .mdc-button__label {
@@ -156,7 +122,7 @@ td:hover {
     display: grid;
     place-content: center;
     align-items: center;
-    background-color: var(--primary-color);
+    background-color: $primary-color;
     backdrop-filter: blur(5px);
     z-index: 9999;
 }
@@ -232,17 +198,17 @@ td:hover {
 .header .chakra-menu__menu-button:active,
 .header .chakra-menu__menu-button:focus,
 .header .chakra-menu__menu-button:hover {
-    background-color: var(--secondary-color) !important;
+    background-color: $secondary-color !important;
 }
 
 .logout-button {
-    color: var(--link-color) !important;
+    color: $link-color !important;
 }
 
 .logout-button:hover {
-    color: var(--link-accent-color) !important;
+    color: $link-accent-color !important;
     outline: none !important;
-    border-color: var(--primary-color) !important;
+    border-color: $primary-color !important;
 }
 
 /* =========================================
@@ -279,7 +245,7 @@ td:hover {
 /* Sidebar & Header Links */
 .sidebar .chakra-link.active:not(.sidebar-toggler),
 .sidebar .chakra-link:hover:not(.sidebar-toggler) {
-    background-color: var(--secondary-color) !important;
+    background-color: $secondary-color !important;
     border-radius: 8px 0 0 8px;
 }
 
@@ -312,8 +278,3 @@ td:hover {
         column-gap: 0.5rem;
     }
 }
-
-/* =========================================
-   JOB BOARD STYLES
-   ========================================= */
-/* Job board styles moved to component-specific SCSS */

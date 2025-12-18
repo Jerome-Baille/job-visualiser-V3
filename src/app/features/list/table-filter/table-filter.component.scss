@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 // Style for select options with icon and text
 .option-with-icon {
   display: flex;
@@ -32,7 +34,7 @@
     mat-panel-title {
       font-size: 1rem;
       font-weight: 500;
-      color: var(--link-color);
+      color: $link-color;
       display: flex;
       align-items: center;
       
@@ -74,8 +76,8 @@
       font-weight: 500;
       font-size: 1rem;
       transition: background-color 0.3s ease, color 0.3s ease;
-      background-color: var(--background-color);
-      color: var(--error-color);
+      background-color: $background-color;
+      color: $error-color;
       border: none;
       cursor: pointer;
 
@@ -84,11 +86,11 @@
       }
 
       &.reset-btn {
-        color: var(--error-color);
+        color: $error-color;
         background-color: transparent;
 
         &:hover:not(:disabled) {
-          background-color: rgba(var(--error-color), 0.08);
+          background-color: rgba($error-color, 0.08);
           filter: brightness(0.95);
         }
 

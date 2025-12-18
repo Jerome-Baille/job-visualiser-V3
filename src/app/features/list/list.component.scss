@@ -1,5 +1,6 @@
 // Modern List Component Styles
 @use '@angular/material' as mat;
+@use 'variables' as *;
 
 // Hide scrollbars globally for tab-related elements
 :host ::ng-deep {
@@ -48,7 +49,7 @@
   .mat-mdc-tab-header {
     border-radius: 12px 12px 0 0;
     overflow: hidden;
-    background-color: rgba(var(--primary-color-rgb), 0.5);
+    background-color: rgba($primary-color, 0.5);
   }
   
   .mat-mdc-tab {
@@ -63,12 +64,12 @@
     }
     
     .mdc-tab__text-label {
-      color: var(--link-color);
+      color: $link-color;
       gap: 10px;
     }
     
     .mdc-tab-indicator__content--underline {
-      border-color: var(--link-color);
+      border-color: $link-color;
       border-width: 3px;
     }
   }
@@ -79,7 +80,7 @@
   
   .mat-mdc-tab-body-content {
     padding: 24px;
-    background-color: var(--background-color);
+    background-color: $background-color;
     border-radius: 0 0 12px 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     overflow: visible !important;
@@ -120,7 +121,7 @@
     font-weight: 500;
     font-size: 1rem;
     transition: background-color 0.3s ease, color 0.3s ease;
-    background-color: var(--link-color);
+    background-color: $link-color;
     color: #fff;
     border: none;
     box-shadow: none;
@@ -132,7 +133,7 @@
     }
 
     &:hover:not(:disabled) {
-      background-color: var(--link-accent-color);
+      background-color: $link-accent-color;
       color: #fff;
       filter: brightness(0.95);
     }
@@ -285,5 +286,5 @@ th .down {
 
 .table-main tr:hover td {
   cursor: pointer;
-  background-color: var(--secondary-color);
+  background-color: $secondary-color;
 }
