@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/job-visualiser-v3",
+            "outputPath": "dist/job-tracker",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
