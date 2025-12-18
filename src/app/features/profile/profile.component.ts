@@ -6,11 +6,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { UserData } from '../../shared/interfaces';
 import { UserService } from '../../core/services/user.service';
+import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,6 @@ import { UserService } from '../../core/services/user.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule,
     MatProgressSpinnerModule,
     MatDividerModule
 ],
@@ -31,13 +31,13 @@ import { UserService } from '../../core/services/user.service';
 export class ProfileComponent implements OnInit {
   private fb = inject(FormBuilder);
   private userService = inject(UserService);
+  private dialog = inject(MatDialog);
 
   profileForm!: FormGroup;
   profile: UserData | null = null;
   showPassword = false;
   showConfirmPassword = false;
   isSubmitting = false;
-  deleteDialogOpen = false;
 
   ngOnInit() {
     this.userService.getProfile().then(data => {
@@ -90,17 +90,21 @@ export class ProfileComponent implements OnInit {
   }
 
   openDeleteDialog() {
-    this.deleteDialogOpen = true;
-  }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Delete Account',
+        message: 'Are you sure? This action cannot be undone.',
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        confirmColor: 'warn' as const,
+        confirmIcon: 'delete_forever'
+      }
+    });
 
-  closeDeleteDialog() {
-    this.deleteDialogOpen = false;
-  }
-
-  handleDelete() {
-    if (!this.profile?.id) return;
-    this.userService.deleteAccount(this.profile.id).then(() => {
-      this.closeDeleteDialog();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && this.profile?.id) {
+        this.userService.deleteAccount(this.profile.id);
+      }
     });
   }
 }

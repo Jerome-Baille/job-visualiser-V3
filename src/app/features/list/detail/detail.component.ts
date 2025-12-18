@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { DeleteConfirmDialogComponent } from './delete-dialog.component';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { JobService } from '../../../core/services/job.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
@@ -240,7 +240,16 @@ export class DetailComponent implements OnInit {
     }
   }
   confirmDelete() {
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Deletion',
+        message: "Are you sure? You can't undo this action afterwards.",
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        confirmColor: 'warn' as const,
+        confirmIcon: 'delete'
+      }
+    });
     
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
