@@ -30,7 +30,7 @@ export class CreateComponent {
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
 
-  @ViewChild(JobFormComponent) jobFormComponent!: JobFormComponent;
+  @ViewChild(JobFormComponent) jobFormComponent?: JobFormComponent;
 
   isSubmitting = false;
   initialData: JobFormData;
@@ -74,5 +74,13 @@ export class CreateComponent {
 
   onLinkOpen(url: string) {
     window.open(url, '_blank');
+  }
+
+  get isFormValid(): boolean {
+    return this.jobFormComponent?.isValid ?? false;
+  }
+
+  submitForm(): void {
+    this.jobFormComponent?.onSubmit();
   }
 }

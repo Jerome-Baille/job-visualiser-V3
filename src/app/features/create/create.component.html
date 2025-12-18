@@ -18,7 +18,7 @@
     <mat-card-actions>
       <div class="action-buttons">
         <span class="spacer"></span>
-        <button mat-raised-button color="primary" (click)="jobFormComponent.onSubmit()" [disabled]="isSubmitting || !jobFormComponent.isValid" class="submit-button">
+        <button mat-raised-button color="primary" (click)="submitForm()" [disabled]="isSubmitting || !isFormValid" class="submit-button">
           <mat-icon>save</mat-icon>
           @if (!isSubmitting) {
             <span>Create Opportunity</span>

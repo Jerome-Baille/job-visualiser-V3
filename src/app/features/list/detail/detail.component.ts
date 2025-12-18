@@ -38,7 +38,7 @@ export class DetailComponent implements OnInit {
   private router = inject(Router);
   private dialog = inject(MatDialog);
 
-  @ViewChild(JobFormComponent) jobFormComponent!: JobFormComponent;
+  @ViewChild(JobFormComponent) jobFormComponent?: JobFormComponent;
 
   jobId: string | null = null;
   loading = true;
@@ -97,7 +97,15 @@ export class DetailComponent implements OnInit {
   }
 
   setTodayRefusal() {
-    this.jobFormComponent.setTodayRefusal();
+    this.jobFormComponent?.setTodayRefusal();
+  }
+
+  get isFormValid(): boolean {
+    return this.jobFormComponent?.isValid ?? false;
+  }
+
+  submitForm(): void {
+    this.jobFormComponent?.onSubmit();
   }
 
   confirmDelete() {

@@ -39,7 +39,7 @@
                 <mat-icon>delete</mat-icon> Delete
               </button>
               <span class="button-gap"></span>
-              <button mat-raised-button color="primary" (click)="jobFormComponent.onSubmit()" [disabled]="!jobFormComponent.isValid">
+              <button mat-raised-button color="primary" (click)="submitForm()" [disabled]="!isFormValid">
                 <mat-icon>save</mat-icon> Save
               </button>
             </div>
