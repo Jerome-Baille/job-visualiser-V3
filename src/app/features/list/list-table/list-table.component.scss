@@ -1,4 +1,4 @@
-@use 'sass:color';
+@use "sass:color";
 
 .list-table {
   animation: fadeIn 0.5s ease-in-out;
@@ -9,7 +9,6 @@
     align-items: center;
     justify-content: flex-start;
     background: rgba(var(--warning-color-rgb), 0.15);
-    border-radius: 8px;
     margin-bottom: 12px;
     padding: 8px 16px;
     font-size: 0.9rem;
@@ -17,13 +16,17 @@
     color: #7c4a00;
     gap: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    
+
     mat-icon {
       color: #f57c00;
       font-size: 18px;
       height: 18px;
       width: 18px;
     }
+  }
+
+  @media screen and (min-width: 768px) {
+    border-radius: 8px;
   }
 
   // Mobile view indicator
@@ -40,12 +43,12 @@
     color: #7c4a00;
     gap: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    
+
     svg {
       width: 16px;
       height: 16px;
     }
-    
+
     // Only show on mobile
     @media (max-width: 768px) {
       display: flex;
@@ -58,14 +61,19 @@
     box-sizing: border-box;
   }
   mat-card {
-    border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     overflow: hidden;
     transition: all 0.3s ease;
     padding: 0;
-    
+
     &:hover {
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    mat-card {
+      border-radius: 16px;
     }
   }
 
@@ -80,7 +88,7 @@
     align-items: center;
     justify-content: center;
     padding: 48px 0;
-    
+
     .loading-text {
       margin-top: 16px;
       color: rgba(0, 0, 0, 0.6);
@@ -96,7 +104,7 @@
     justify-content: center;
     padding: 48px 0;
     color: rgba(0, 0, 0, 0.6);
-    
+
     .empty-icon {
       font-size: 48px;
       height: 48px;
@@ -104,12 +112,12 @@
       margin-bottom: 16px;
       color: rgba(0, 0, 0, 0.4);
     }
-    
+
     h3 {
       font-weight: 500;
       margin-bottom: 8px;
     }
-    
+
     p {
       font-size: 0.9rem;
     }
@@ -117,7 +125,7 @@
   // Table styling
   .job-table {
     width: 100%;
-    overflow: hidden;    
+    overflow: hidden;
 
     // A real <a> that stretches across the whole row so
     // Ctrl+Click / middle-click / context menu work.
@@ -158,38 +166,37 @@
         border-radius: 4px;
       }
     }
-    
+
     .header-cell-content {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 4px 0;
       transition: transform 0.2s ease;
-      
+
       // Default desktop layout - horizontal
       flex-direction: row;
-      
+
       // Mobile layout - vertical stacking
       @media (max-width: 768px) {
-        flex-direction: column;
         gap: 5px;
         align-items: center;
         justify-content: center;
         text-align: center;
       }
-      
+
       .header-icon {
         margin-right: 0;
         font-size: 18px;
         height: 18px;
         width: 18px;
         color: var(--link-color);
-        
+
         @media (max-width: 768px) {
           margin-bottom: 3px;
         }
       }
-      
+
       .header-text {
         @media (max-width: 768px) {
           font-size: 0.9rem;
@@ -201,18 +208,20 @@
     // Mobile optimizations
     @media (max-width: 768px) {
       // Adjust column widths for mobile (when only showing name and company)
-      td.mat-column-name, th.mat-column-name {
+      td.mat-column-name,
+      th.mat-column-name {
         width: 50%;
         padding-right: 25px !important; // 50px gap divided between columns
         box-sizing: border-box;
       }
 
-      td.mat-column-company, th.mat-column-company {
+      td.mat-column-company,
+      th.mat-column-company {
         width: 50%;
         padding-left: 25px !important; // 50px gap divided between columns
         box-sizing: border-box;
       }
-      
+
       // We don't need these rules anymore since columns are removed programmatically
       // but keeping them as a fallback just in case
       .mat-column-type,
@@ -220,22 +229,28 @@
       .mat-column-decision {
         display: none !important;
       }
-      
+
       // Make the cells take more vertical space for better tap targets
       .mat-mdc-cell {
         padding: 16px 12px;
         font-size: 1rem;
       }
-      
+
       // Increase header cell padding
       .mat-mdc-header-cell {
         padding: 16px 12px;
       }
     }
-    
-    .header-colored-row, .header-colored {
-      background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-      .mat-mdc-header-cell, th.mat-header-cell {
+
+    .header-colored-row,
+    .header-colored {
+      background: linear-gradient(
+        90deg,
+        var(--primary-color) 0%,
+        var(--secondary-color) 100%
+      );
+      .mat-mdc-header-cell,
+      th.mat-header-cell {
         background: none;
         color: #7c4a00;
         font-weight: 600;
@@ -245,9 +260,9 @@
         padding: 14px 16px;
         transition: all 0.2s ease;
         position: relative;
-        
+
         &:after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: 0;
           left: 0;
@@ -256,18 +271,18 @@
           background: var(--link-color);
           transition: width 0.3s ease;
         }
-        
+
         &:hover {
           color: color.adjust(#7c4a00, $lightness: -10%);
-          
+
           &:after {
             width: 100%;
           }
         }
-        
+
         &.mat-sort-header-sorted {
           color: var(--link-color);
-          
+
           &:after {
             width: 100%;
           }
@@ -281,34 +296,35 @@
     }
 
     // Column width adjustments
-    .mat-column-applicationDate, th.mat-header-cell.mat-column-applicationDate {
+    .mat-column-applicationDate,
+    th.mat-header-cell.mat-column-applicationDate {
       min-width: 0;
       width: 1%;
       white-space: nowrap;
       text-align: center;
     }
-    
+
     .mat-mdc-row {
       position: relative;
       transition: all 0.2s ease;
-      
+
       &:hover {
         background-color: rgba(var(--primary-color-rgb), 0.1);
         transform: translateY(-2px);
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
         cursor: pointer;
-        
+
         .mat-mdc-cell {
           color: rgba(0, 0, 0, 0.87);
         }
       }
-      
+
       .mat-mdc-cell {
         padding: 16px 12px;
         color: rgba(0, 0, 0, 0.75);
       }
     }
-    
+
     // Job type tag styling
     .job-type-tag {
       display: inline-flex;
@@ -317,30 +333,30 @@
       border-radius: 16px;
       font-size: 0.85rem;
       font-weight: 500;
-      
+
       .type-icon {
         font-size: 16px;
         height: 16px;
         width: 16px;
         margin-right: 6px;
       }
-      
+
       &.type-remote {
         background-color: rgba(103, 58, 183, 0.15);
         color: #5e35b1;
       }
-      
+
       &.type-hybrid {
         background-color: rgba(0, 150, 136, 0.15);
         color: #00796b;
       }
-      
+
       &.type-on-site {
         background-color: rgba(255, 152, 0, 0.15);
         color: #ef6c00;
       }
     }
-    
+
     // Decision indicator styling
     .decision-indicator {
       display: inline-flex;
@@ -349,35 +365,35 @@
       border-radius: 16px;
       font-size: 0.85rem;
       font-weight: 500;
-      
+
       .decision-icon {
         font-size: 16px;
         height: 16px;
         width: 16px;
         margin-right: 6px;
       }
-      
+
       &.decision-positive {
         background-color: rgba(76, 175, 80, 0.15);
         color: #2e7d32;
       }
-      
+
       &.decision-negative {
         background-color: rgba(244, 67, 54, 0.15);
         color: #c62828;
       }
-      
+
       &.decision-in-progress {
         background-color: rgba(33, 150, 243, 0.15);
         color: #1565c0;
       }
-      
+
       &.decision-expired {
         background-color: rgba(158, 158, 158, 0.15);
         color: #616161;
       }
     }
-      // Date cell styling
+    // Date cell styling
     .date-cell {
       padding: 4px 8px;
       display: inline-block;
@@ -386,97 +402,99 @@
       min-width: 80px;
       text-align: center;
     }
-    
+
     // Mobile responsive styles
     @media (max-width: 768px) {
-      .mat-mdc-header-cell, th.mat-header-cell {
+      .mat-mdc-header-cell,
+      th.mat-header-cell {
         padding: 12px 8px;
         font-size: 0.9rem;
       }
-      
+
       .mat-mdc-row .mat-mdc-cell {
         padding: 12px 8px;
       }
-      
-      .mat-column-applicationDate, th.mat-header-cell.mat-column-applicationDate {
+
+      .mat-column-applicationDate,
+      th.mat-header-cell.mat-column-applicationDate {
         width: auto;
         min-width: 80px;
       }
-        .date-cell {
+      .date-cell {
         min-width: 70px;
         font-size: 0.9rem;
         padding: 3px 6px;
       }
-      
+
       .decision-select {
         width: 100%;
-        
+
         ::ng-deep .mat-mdc-select {
           font-size: 0.9rem;
         }
       }
     }
   }
-  
+
   // Row status colors
   .status-positive {
     background-color: #4caf5026; // Hex with alpha for Positive background
     color: #2e7d32; // Darker green for Positive text
   }
-  
+
   .status-negative {
     background-color: #f4433626; // Hex with alpha for Negative background
     color: #c62828; // Darker red for Negative text
   }
-  
+
   .status-in-progress {
     background-color: #2196f326; // Hex with alpha for In Progress background
     color: #1565c0; // Darker blue for In Progress text
   }
-  
+
   .status-expired {
     background-color: #9e9e9e26; // Hex with alpha for Expired background
     color: #424242; // Darker gray for Expired text
   }
-  
+
   // No styling for unknown or other statuses as per requirements
 
   // Paginator styling
   mat-paginator {
     background: none;
     color: #7c4a00;
-    
+
     ::ng-deep {
       .mat-mdc-paginator-container {
         min-height: 56px;
       }
-      
+
       .mat-mdc-paginator-range-label {
         margin: 0 24px 0 0;
         color: #7c4a00;
       }
-      
+
       .mat-mdc-paginator-navigation-first,
       .mat-mdc-paginator-navigation-previous,
       .mat-mdc-paginator-navigation-next,
       .mat-mdc-paginator-navigation-last {
         color: var(--link-color);
       }
-      
+
       .mat-mdc-icon-button.mat-mdc-button-base {
         width: 36px;
         height: 36px;
         padding: 6px;
-        
+
         &:hover {
           background-color: rgba(var(--secondary-color-rgb), 0.5);
         }
       }
-      
+
       .mat-mdc-select-value {
         color: #7c4a00;
       }
-      
+
       .mat-mdc-form-field-subscript-wrapper {
         display: none;
       }
@@ -488,22 +506,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(
+      90deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 100%
+    );
     border-radius: 0 0 12px 12px;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     padding: 0 16px 0 0;
     min-height: 56px;
     margin-top: 0;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    
+
     @media (max-width: 768px) {
       flex-direction: column;
       padding: 8px;
-      
+
       mat-paginator {
         width: 100%;
       }
-      
+
       .pagination-info {
         margin-top: 8px;
         width: 100%;
@@ -527,90 +549,90 @@
     font-weight: 500;
     border-radius: 20px;
     transition: all 0.2s ease;
-    
+
     @media (max-width: 768px) {
       font-size: 0.85rem;
     }
-    
+
     b {
       font-weight: 600;
       color: var(--link-color);
     }
-    
+
     .footer-icon {
       color: var(--link-color);
       font-size: 18px;
       margin-right: 6px;
     }
-    
+
     &:hover {
       background-color: rgba(var(--secondary-color-rgb), 0.6);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
   }
-    // Enhanced decision dropdown styling
+  // Enhanced decision dropdown styling
   .decision-select {
     width: 100%;
     position: relative;
     z-index: 3;
     margin-bottom: -1.25em; // Remove extra space at bottom of form field
     font-size: 0.95rem;
-    
+
     ::ng-deep {
       // Container styling
       .mat-mdc-form-field-flex {
         background: transparent !important;
         padding: 0 !important;
       }
-      
+
       // Remove underline and form field appearance
       .mat-mdc-form-field-underline,
       .mat-mdc-form-field-bottom-align {
         display: none !important;
       }
-      
+
       .mat-mdc-text-field-wrapper {
         background: transparent !important;
         padding: 0 !important;
         border-radius: 20px !important;
       }
-      
+
       .mat-mdc-form-field-infix {
         padding: 8px 0 !important;
         min-height: 36px !important;
       }
-      
+
       // Arrow styling
       .mat-select-arrow-wrapper {
         transform: translateY(0);
       }
-      
+
       .mat-select-arrow {
         color: inherit;
         opacity: 0.7;
       }
-      
-      // Trigger styling 
+
+      // Trigger styling
       .mat-select-trigger {
         height: 36px;
         padding: 0 10px;
         border-radius: 18px;
         transition: all 0.2s ease;
-        
+
         &:hover {
           background-color: rgba(0, 0, 0, 0.05);
         }
       }
-      
+
       // Select text styling
       .mat-mdc-select-value {
         padding-left: 8px !important;
         font-weight: 500 !important;
         display: flex !important;
         align-items: center !important;
-        
+
         &::before {
-          content: '';
+          content: "";
           display: inline-block;
           width: 8px;
           height: 8px;
@@ -620,101 +642,101 @@
           opacity: 0.7;
         }
       }
-      
+
       // Panel styling (dropdown)
       .mat-mdc-select-panel {
         border-radius: 12px !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
-        
+
         .mat-mdc-option {
           height: 42px !important;
           font-weight: 500 !important;
-          
+
           &.mat-mdc-option-active {
             background: rgba(var(--primary-color-rgb), 0.1) !important;
           }
         }
       }
     }
-    
+
     // Status-specific styling for the select component
     &.positive-select {
       ::ng-deep {
         .mat-mdc-select-value {
           color: #2e7d32 !important; // Darker green for Positive text
-          
+
           &::before {
             background-color: #2e7d32;
           }
         }
-        
+
         .mat-select-trigger:hover {
           background-color: rgba(76, 175, 80, 0.1);
         }
       }
     }
-    
+
     &.negative-select {
       ::ng-deep {
         .mat-mdc-select-value {
           color: #c62828 !important; // Darker red for Negative text
-          
+
           &::before {
             background-color: #c62828;
           }
         }
-        
+
         .mat-select-trigger:hover {
           background-color: rgba(244, 67, 54, 0.1);
         }
       }
     }
-    
+
     &.in-progress-select {
       ::ng-deep {
         .mat-mdc-select-value {
           color: #1565c0 !important; // Darker blue for In Progress text
-          
+
           &::before {
             background-color: #1565c0;
           }
         }
-        
+
         .mat-select-trigger:hover {
           background-color: rgba(33, 150, 243, 0.1);
         }
       }
     }
-    
+
     &.expired-select {
       ::ng-deep {
         .mat-mdc-select-value {
           color: #424242 !important; // Darker gray for Expired text
-          
+
           &::before {
             background-color: #424242;
           }
         }
-        
+
         .mat-select-trigger:hover {
           background-color: rgba(158, 158, 158, 0.1);
         }
       }
     }
-    
+
     // Mobile optimizations for select
     @media (max-width: 768px) {
       font-size: 0.85rem;
-      
+
       ::ng-deep {
         .mat-mdc-form-field-infix {
           min-height: 32px !important;
         }
-        
+
         .mat-select-trigger {
           height: 32px;
         }
-        
+
         .mat-mdc-select-value::before {
           width: 6px;
           height: 6px;
@@ -726,6 +748,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

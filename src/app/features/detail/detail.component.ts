@@ -7,12 +7,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { JobService } from '../../../core/services/job.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { SnackbarService } from '../../../core/services/snackbar.service';
-import { JobFormComponent, JobFormData } from '../../../shared/components/job-form/job-form.component';
-import { JobData } from '../../../shared/interfaces';
+import { JobFormComponent, JobFormData } from '../../shared/components/job-form/job-form.component';
+import { JobService } from '../../core/services/job.service';
+import { AuthService } from '../../core/services/auth.service';
+import { SnackbarService } from '../../core/services/snackbar.service';
+import { JobData } from '../../shared/interfaces';
+import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({  
   selector: 'app-detail',

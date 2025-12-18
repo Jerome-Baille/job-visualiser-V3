@@ -51,7 +51,7 @@ export const routes: Routes = [
   {
     path: 'job/:id',
     loadComponent: () =>
-      import('./features/list/detail/detail.component').then(
+      import('./features/detail/detail.component').then(
         (m) => m.DetailComponent
       ),
   },
