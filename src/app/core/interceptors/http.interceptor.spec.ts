@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpInterceptorFn, HttpErrorResponse, HttpRequest, HttpContext } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 import { authInterceptor, BYPASS_AUTH, tokenRefreshCounter } from './http.interceptor';
 import { AuthService } from '../services/auth.service';

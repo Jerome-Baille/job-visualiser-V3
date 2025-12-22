@@ -27,11 +27,13 @@ export class AuthService {
   readonly isAuthenticated = this.authState.asReadonly();
   
   // New signal to track if verification is complete
-  private verificationCompleted = signal<boolean>(false);
+  private _verificationCompleted = signal<boolean>(false);
+  // Expose verification completion for components/templates
+  readonly verificationCompleted = this._verificationCompleted.asReadonly();
 
   // Create observables from the signals
   readonly authState$ = toObservable(this.isAuthenticated);
-  readonly verificationCompleted$ = toObservable(this.verificationCompleted.asReadonly());
+  readonly verificationCompleted$ = toObservable(this.verificationCompleted);
 
   constructor() {
     this.verifyAuthState();
@@ -42,11 +44,35 @@ export class AuthService {
       .subscribe({
         next: (response) => {
           this.authState.set(response.status === 'success');
-          this.verificationCompleted.set(true);
+          this._verificationCompleted.set(true);
         },
-        error: () => {
-          this.authState.set(false);
-          this.verificationCompleted.set(true);
+        error: (error) => {
+          // If verify fails due to expired token, try to refresh and verify again
+          if (error.error?.shouldRefresh) {
+            this.refreshToken().subscribe({
+              next: () => {
+                // Retry verification after successful refresh
+                this.http.get<VerifyResponse>(`${this.authURL}/verify`, { withCredentials: true })
+                  .subscribe({
+                    next: (response) => {
+                      this.authState.set(response.status === 'success');
+                      this._verificationCompleted.set(true);
+                    },
+                    error: () => {
+                      this.authState.set(false);
+                      this._verificationCompleted.set(true);
+                    }
+                  });
+              },
+              error: () => {
+                this.authState.set(false);
+                this._verificationCompleted.set(true);
+              }
+            });
+          } else {
+            this.authState.set(false);
+            this._verificationCompleted.set(true);
+          }
         }
       });
   }

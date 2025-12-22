@@ -1,4 +1,4 @@
-@if (!loading && isAuthenticated()) {
+@if (!loading && verificationCompleted() && isAuthenticated()) {
   <nav aria-label="breadcrumb">
     <div class="breadcrumbs">
       <a class="breadcrumb-link" routerLink="/list">Job List</a>
@@ -18,7 +18,12 @@
 
   @if (!loading) {
     <div>
-      @if (isAuthenticated()) {
+      @if (!verificationCompleted()) {
+        <div class="loading-container">
+          <mat-spinner diameter="50" color="accent"></mat-spinner>
+          <span>Verifying authentication...</span>
+        </div>
+      } @else if (isAuthenticated()) {
         <mat-card class="job-card">
           <mat-card-content>
             <app-job-form 

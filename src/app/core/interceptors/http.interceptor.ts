@@ -189,8 +189,8 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
     return next(req);
   }
 
-  // Bypass refresh token and logout endpoints
-  if (req.url.includes('/refresh') || req.url.includes('/logout')) {
+  // Bypass refresh token, logout, and verify endpoints
+  if (req.url.includes('/refresh') || req.url.includes('/logout') || req.url.includes('/verify')) {
     return next(req);
   }
 

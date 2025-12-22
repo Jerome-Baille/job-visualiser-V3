@@ -43,10 +43,12 @@ export class DetailComponent implements OnInit {
   jobId: string | null = null;
   loading = true;
   readonly isAuthenticated: () => boolean;
+  readonly verificationCompleted: () => boolean;
   jobData: JobFormData | null = null;
 
   constructor() {
     this.isAuthenticated = this.authService.isAuthenticated;
+    this.verificationCompleted = this.authService.verificationCompleted;
   }  
 
   ngOnInit(): void {
