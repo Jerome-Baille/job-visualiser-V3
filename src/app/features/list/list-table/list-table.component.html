@@ -1,5 +1,14 @@
 <div class="list-table">
-  <app-table-filter (filterChange)="onFilterChange($event)"></app-table-filter>
+  <app-table-filter
+    [type]="filterType()"
+    [status]="filterStatus()"
+    [search]="filterSearch()"
+    [dateModeInput]="filterDateMode()"
+    [selectedYearInput]="filterSelectedYear()"
+    [startDateInput]="filterStartDate()"
+    [endDateInput]="filterEndDate()"
+    (filterChange)="onFilterChange($event)"
+  ></app-table-filter>
 
   <!-- Status notification message when filtering both unknown and expired -->
   @if (includeExpired() && filterStatus() === 'unknown') {

@@ -8,6 +8,49 @@
     </mat-expansion-panel-header>
 
     <div class="filter-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Date filter</mat-label>
+        <mat-select [(value)]="dateMode" (selectionChange)="onDateModeChange()">
+          <mat-option value="all">All dates</mat-option>
+          <mat-option value="year">Year</mat-option>
+          <mat-option value="single">Single date</mat-option>
+          <mat-option value="range">Date range</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      @if (dateMode === 'year') {
+        <mat-form-field appearance="outline">
+          <mat-label>Year</mat-label>
+          <mat-select [(value)]="selectedYear" (selectionChange)="filterJobs()">
+            <mat-option value="">Select a year</mat-option>
+            @for (year of years; track year) {
+              <mat-option [value]="year === 'All Years' ? '0000' : year">{{ year }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+
+      @if (dateMode === 'single') {
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="singlePicker" [(ngModel)]="singleDate" (dateChange)="filterJobs()" placeholder="Choose a date" />
+          <mat-datepicker-toggle matIconSuffix [for]="singlePicker"></mat-datepicker-toggle>
+          <mat-datepicker #singlePicker></mat-datepicker>
+        </mat-form-field>
+      }
+
+      @if (dateMode === 'range') {
+        <mat-form-field appearance="outline" class="date-range-field">
+          <mat-label>Date range</mat-label>
+          <mat-date-range-input [rangePicker]="rangePicker">
+            <input matStartDate placeholder="Start date" [(ngModel)]="rangeStart" (dateChange)="filterJobs()" />
+            <input matEndDate placeholder="End date" [(ngModel)]="rangeEnd" (dateChange)="filterJobs()" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+          <mat-date-range-picker #rangePicker></mat-date-range-picker>
+        </mat-form-field>
+      }
+
       <mat-form-field appearance="outline" class="search-field">
         <mat-label>Search Jobs</mat-label>
         <input matInput placeholder="Search by job title, company, etc."

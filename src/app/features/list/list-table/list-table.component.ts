@@ -23,6 +23,7 @@ import { JobService } from '../../../core/services/job.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { JobData, PaginationInfo } from '../../../shared/interfaces';
 import { tokenRefreshCounter } from '../../../core/interceptors/http.interceptor';
+import type { DateFilterMode, OpportunitiesFilter } from '../table-filter/table-filter.component';
 
 @Component({
   selector: 'app-list-table',
@@ -68,6 +69,10 @@ export class ListTableComponent implements OnDestroy {
   readonly filterType = signal('all');
   readonly filterStatus = signal('all');
   readonly filterSearch = signal('');
+  readonly filterDateMode = signal<DateFilterMode>('all');
+  readonly filterSelectedYear = signal('');
+  readonly filterStartDate = signal('');
+  readonly filterEndDate = signal('');
   readonly includeExpired = signal(false);
   readonly displayedColumns = signal<string[]>([
     'name',
@@ -104,6 +109,10 @@ export class ListTableComponent implements OnDestroy {
       const statusParam = params.get('status');
       const searchParam = params.get('search');
       const includeExpiredParam = params.get('includeExpired');
+      const dateModeParam = (params.get('dateMode') as DateFilterMode | null);
+      const selectedYearParam = params.get('selectedYear');
+      const startDateParam = params.get('startDate');
+      const endDateParam = params.get('endDate');
 
       // Handle page
       if (pageParam) {
@@ -129,6 +138,11 @@ export class ListTableComponent implements OnDestroy {
       this.filterStatus.set(statusParam || 'all');
       this.filterSearch.set(searchParam || '');
       this.includeExpired.set(includeExpiredParam === 'true');
+
+      this.filterDateMode.set(dateModeParam || 'all');
+      this.filterSelectedYear.set(selectedYearParam || '');
+      this.filterStartDate.set(startDateParam || '');
+      this.filterEndDate.set(endDateParam || '');
 
       this.loadJobs(this.currentPage(), this.pageSize());
       setTimeout(() => this.syncPaginatorWithCurrentState(), 0);
@@ -222,7 +236,10 @@ export class ListTableComponent implements OnDestroy {
         page * pageSize,
         this.filterType(),
         status,
-        this.filterSearch()
+        this.filterSearch(),
+        this.filterSelectedYear(),
+        this.filterStartDate(),
+        this.filterEndDate()
       );
       this.paginationInfo.set(response.pagination);
       this.totalItems.set(response.pagination.total);
@@ -238,7 +255,10 @@ export class ListTableComponent implements OnDestroy {
           page * pageSize,
           this.filterType(),
           'expired',
-          this.filterSearch()
+          this.filterSearch(),
+          this.filterSelectedYear(),
+          this.filterStartDate(),
+          this.filterEndDate()
         );
         const expiredJobs = expiredResponse.data.map((job: JobData) => ({
           ...job,
@@ -278,14 +298,14 @@ export class ListTableComponent implements OnDestroy {
       });
   }
 
-  onFilterChange(filter: {
-    type: string;
-    status: string;
-    search: string;
-  }): void {
+  onFilterChange(filter: OpportunitiesFilter): void {
     this.filterType.set(filter.type);
     this.filterStatus.set(filter.status);
     this.filterSearch.set(filter.search);
+    this.filterDateMode.set(filter.dateMode);
+    this.filterSelectedYear.set(filter.selectedYear || '');
+    this.filterStartDate.set(filter.startDate || '');
+    this.filterEndDate.set(filter.endDate || '');
     this.currentPage.set(0);
     if (this.paginator) {
       this.paginator.firstPage();
@@ -299,6 +319,10 @@ export class ListTableComponent implements OnDestroy {
           status: filter.status !== 'all' ? filter.status : null,
           search: filter.search ? filter.search : null,
           includeExpired: this.includeExpired() ? 'true' : null,
+          dateMode: filter.dateMode !== 'all' ? filter.dateMode : null,
+          selectedYear: filter.selectedYear ? filter.selectedYear : null,
+          startDate: filter.startDate ? filter.startDate : null,
+          endDate: filter.endDate ? filter.endDate : null,
         },
         queryParamsHandling: 'merge',
       })

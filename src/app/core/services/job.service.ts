@@ -14,7 +14,16 @@ export class JobService {
       this.http.get<OpportunitiesStats>(`${environment.jobURL}/stats`, { withCredentials: true })
     );
   }
-  async getOpportunities(limit?: number, offset?: number, type?: string, status?: string, search?: string): Promise<PaginatedResponse<JobData>> {
+  async getOpportunities(
+    limit?: number,
+    offset?: number,
+    type?: string,
+    status?: string,
+    search?: string,
+    selectedYear?: string,
+    startDate?: string,
+    endDate?: string
+  ): Promise<PaginatedResponse<JobData>> {
     let url = `${environment.jobURL}?`;
     const params: string[] = [];
     
@@ -23,6 +32,10 @@ export class JobService {
     if (type && type !== 'all') params.push(`type=${encodeURIComponent(type)}`);
     if (status && status !== 'all') params.push(`status=${encodeURIComponent(status)}`);
     if (search && search.trim()) params.push(`search=${encodeURIComponent(search.trim())}`);
+
+    if (selectedYear != null && selectedYear !== '') params.push(`selectedYear=${encodeURIComponent(selectedYear)}`);
+    if (startDate) params.push(`startDate=${encodeURIComponent(startDate)}`);
+    if (endDate) params.push(`endDate=${encodeURIComponent(endDate)}`);
     
     url += params.join('&');
     
@@ -55,8 +68,17 @@ export class JobService {
     );
   }
 
-  async exportOpportunities(selectedYear: string, selectedFormat: string): Promise<void> {
-    const url = `${environment.jobURL}/export/${selectedYear}/${selectedFormat}`;
+  async exportOpportunities(
+    selectedYear: string,
+    selectedFormat: string,
+    startDate?: string,
+    endDate?: string
+  ): Promise<void> {
+    const params: string[] = [];
+    if (startDate) params.push(`startDate=${encodeURIComponent(startDate)}`);
+    if (endDate) params.push(`endDate=${encodeURIComponent(endDate)}`);
+    const query = params.length ? `?${params.join('&')}` : '';
+    const url = `${environment.jobURL}/export/${selectedYear}/${selectedFormat}${query}`;
     try {
       const responseBlob = await firstValueFrom(
         this.http.get(url, { responseType: 'blob', withCredentials: true })
