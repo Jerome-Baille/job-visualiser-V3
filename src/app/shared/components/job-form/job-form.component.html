@@ -110,4 +110,41 @@
       }
     </mat-form-field>
   </div>
+
+  <!-- Notes Section -->
+  <div class="notes-section">
+    <div class="notes-header">
+      <mat-icon>notes</mat-icon>
+      <span>Notes</span>
+    </div>
+
+    @if (notesArray.length > 0) {
+      <div class="notes-list">
+        @for (note of notesArray.controls; track $index; let i = $index) {
+          <div class="note-item" [class.note-even]="i % 2 === 0" [class.note-odd]="i % 2 !== 0">
+            <span class="note-index">{{ i + 1 }}</span>
+            <textarea class="note-text-input" cdkTextareaAutosize #autosize="cdkTextareaAutosize" [formControl]="$any(note)" placeholder="Edit note..." rows="1" (input)="autosize.resizeToFitContent(true)"></textarea>
+            <button mat-icon-button type="button" (click)="removeNote(i)" class="note-remove-btn" aria-label="Remove note">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="note-input-row">
+      <mat-form-field appearance="outline" class="wide-field">
+        <mat-label>Add a note</mat-label>
+        <textarea matInput cdkTextareaAutosize #addAutosize="cdkTextareaAutosize" [(ngModel)]="newNoteText" [ngModelOptions]="{standalone: true}"
+               placeholder="Type a note and press Add"
+               (keydown.enter)="$any($event).ctrlKey && addNote()"
+               (input)="addAutosize.resizeToFitContent(true)"
+               rows="2"></textarea>
+        <mat-icon matSuffix>edit_note</mat-icon>
+      </mat-form-field>
+      <button mat-mini-fab color="primary" type="button" (click)="addNote()" [disabled]="!newNoteText.trim()" class="add-note-btn" aria-label="Add note">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
 </form>

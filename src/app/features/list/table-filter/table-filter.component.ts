@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 
 export type DateFilterMode = 'all' | 'year' | 'single' | 'range';
-export type OpportunitiesFilter = {
+export interface OpportunitiesFilter {
   type: string;
   status: string;
   search: string;
@@ -19,7 +19,7 @@ export type OpportunitiesFilter = {
   selectedYear?: string;
   startDate?: string;
   endDate?: string;
-};
+}
 
 @Component({
   selector: 'app-table-filter',

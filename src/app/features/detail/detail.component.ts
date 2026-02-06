@@ -65,7 +65,8 @@ export class DetailComponent implements OnInit {
           interviewDate: job['interviewDate'] as string,
           decisionDate: job['decisionDate'] as string,
           decision: job['decision'] as string || 'unknown',
-          id: job['id'] as string
+          id: job['id'] as string,
+          notes: (job['notes'] as string[]) || []
         };
         this.loading = false;
       }).catch(() => {
