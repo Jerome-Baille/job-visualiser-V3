@@ -439,26 +439,24 @@
 
   // Row status colors
   .status-positive {
-    background-color: #4caf5026; // Hex with alpha for Positive background
+    background-color: #4caf5026 !important; // Hex with alpha for Positive background
     color: #2e7d32; // Darker green for Positive text
   }
 
   .status-negative {
-    background-color: #f4433626; // Hex with alpha for Negative background
+    background-color: #f4433626 !important; // Hex with alpha for Negative background
     color: #c62828; // Darker red for Negative text
   }
 
   .status-in-progress {
-    background-color: #2196f326; // Hex with alpha for In Progress background
+    background-color: #2196f326 !important; // Hex with alpha for In Progress background
     color: #1565c0; // Darker blue for In Progress text
   }
 
   .status-expired {
-    background-color: #9e9e9e26; // Hex with alpha for Expired background
+    background-color: #9e9e9e26 !important; // Hex with alpha for Expired background
     color: #424242; // Darker gray for Expired text
   }
-
-  // No styling for unknown or other statuses as per requirements
 
   // Paginator styling
   mat-paginator {
