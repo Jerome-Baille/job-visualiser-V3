@@ -206,11 +206,11 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
 
   return next(modifiedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Only attempt refresh if backend indicates token should be refreshed
-      if (error.error?.shouldRefresh) {
+      // Attempt refresh if backend indicates token should be refreshed OR if access token is missing/expired
+      const shouldRefresh = error.error?.shouldRefresh || error.status === 401 || error.status === 403;
+      if (shouldRefresh) {
         return handleTokenRefresh(req, next, authService, error);
       }
-      
       // For other errors, just pass them through
       return throwError(() => error);
     }),
