@@ -160,6 +160,32 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>Tag</mat-label>
+          <mat-select [(value)]="tagFilter" (selectionChange)="filterJobs()">
+            <mat-select-trigger>
+              @if (tagFilter !== 'all') {
+                <span class="option-with-icon">
+                  <mat-icon>label</mat-icon>
+                  <span>{{ tagFilter }}</span>
+                </span>
+              }
+              @if (tagFilter === 'all') {
+                <span>All Tags</span>
+              }
+            </mat-select-trigger>
+            <mat-option value="all">All Tags</mat-option>
+            @for (tag of suggestedTags; track tag) {
+              <mat-option [value]="tag">
+                <span class="option-with-icon">
+                  <mat-icon>label</mat-icon>
+                  {{ tag }}
+                </span>
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
         <div class="actions">
           <button mat-button color="warn" class="reset-btn" (click)="handleReset()">
             <mat-icon>refresh</mat-icon>

@@ -56,6 +56,7 @@ export interface JobData {
     decisionDate?: string;
     favorite?: boolean;
     notes?: string[];
+    tag?: string;
 }
 
 interface Update {

@@ -73,6 +73,7 @@ export class ListTableComponent implements OnDestroy {
   readonly filterSelectedYear = signal('');
   readonly filterStartDate = signal('');
   readonly filterEndDate = signal('');
+  readonly filterTag = signal('all');
   readonly includeExpired = signal(false);
   readonly displayedColumns = signal<string[]>([
     'name',
@@ -113,6 +114,7 @@ export class ListTableComponent implements OnDestroy {
       const selectedYearParam = params.get('selectedYear');
       const startDateParam = params.get('startDate');
       const endDateParam = params.get('endDate');
+      const tagParam = params.get('tag');
 
       // Handle page
       if (pageParam) {
@@ -143,6 +145,7 @@ export class ListTableComponent implements OnDestroy {
       this.filterSelectedYear.set(selectedYearParam || '');
       this.filterStartDate.set(startDateParam || '');
       this.filterEndDate.set(endDateParam || '');
+      this.filterTag.set(tagParam || 'all');
 
       this.loadJobs(this.currentPage(), this.pageSize());
       setTimeout(() => this.syncPaginatorWithCurrentState(), 0);
@@ -239,7 +242,8 @@ export class ListTableComponent implements OnDestroy {
         this.filterSearch(),
         this.filterSelectedYear(),
         this.filterStartDate(),
-        this.filterEndDate()
+        this.filterEndDate(),
+        this.filterTag()
       );
       this.paginationInfo.set(response.pagination);
       this.totalItems.set(response.pagination.total);
@@ -258,7 +262,8 @@ export class ListTableComponent implements OnDestroy {
           this.filterSearch(),
           this.filterSelectedYear(),
           this.filterStartDate(),
-          this.filterEndDate()
+          this.filterEndDate(),
+          this.filterTag()
         );
         const expiredJobs = expiredResponse.data.map((job: JobData) => ({
           ...job,
@@ -302,6 +307,7 @@ export class ListTableComponent implements OnDestroy {
     this.filterType.set(filter.type);
     this.filterStatus.set(filter.status);
     this.filterSearch.set(filter.search);
+    this.filterTag.set(filter.tag);
     this.filterDateMode.set(filter.dateMode);
     this.filterSelectedYear.set(filter.selectedYear || '');
     this.filterStartDate.set(filter.startDate || '');
@@ -318,6 +324,7 @@ export class ListTableComponent implements OnDestroy {
           type: filter.type !== 'all' ? filter.type : null,
           status: filter.status !== 'all' ? filter.status : null,
           search: filter.search ? filter.search : null,
+          tag: filter.tag !== 'all' ? filter.tag : null,
           includeExpired: this.includeExpired() ? 'true' : null,
           dateMode: filter.dateMode !== 'all' ? filter.dateMode : null,
           selectedYear: filter.selectedYear ? filter.selectedYear : null,

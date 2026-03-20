@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 export type DateFilterMode = 'all' | 'year' | 'single' | 'range';
@@ -15,6 +16,7 @@ export interface OpportunitiesFilter {
   type: string;
   status: string;
   search: string;
+  tag: string;
   dateMode: DateFilterMode;
   selectedYear?: string;
   startDate?: string;
@@ -32,7 +34,8 @@ export interface OpportunitiesFilter {
     MatIconModule,
     MatInputModule,
     MatDatepickerModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule
 ],
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss'],
@@ -58,6 +61,12 @@ export class TableFilterComponent {
   @Input() set search(value: string | null | undefined) {
     this.isSyncingFromInputs = true;
     this.searchValueJobs = value || '';
+    this.isSyncingFromInputs = false;
+  }
+
+  @Input() set tag(value: string | null | undefined) {
+    this.isSyncingFromInputs = true;
+    this.tagFilter = value || 'all';
     this.isSyncingFromInputs = false;
   }
 
@@ -97,6 +106,8 @@ export class TableFilterComponent {
   searchValueJobs = '';
   typeFilter = 'all';
   decisionFilter = 'all';
+  tagFilter = 'all';
+  readonly suggestedTags = ['dev', 'it-support'];
 
   dateMode: DateFilterMode = 'all';
   selectedYear = '';
@@ -138,6 +149,7 @@ export class TableFilterComponent {
       type: this.typeFilter,
       status: this.decisionFilter,
       search: this.searchValueJobs,
+      tag: this.tagFilter,
       dateMode: this.dateMode,
     };
 
@@ -172,6 +184,7 @@ export class TableFilterComponent {
     this.typeFilter = 'all';
     this.decisionFilter = 'all';
     this.searchValueJobs = '';
+    this.tagFilter = 'all';
     this.dateMode = 'all';
     this.selectedYear = '';
     this.singleDate = null;

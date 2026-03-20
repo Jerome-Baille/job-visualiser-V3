@@ -67,6 +67,21 @@
 
   <div class="form-row">
     <mat-form-field appearance="outline" class="wide-field">
+      <mat-label>Tag</mat-label>
+      <input matInput formControlName="tag" placeholder="e.g. dev, it-support" [matAutocomplete]="tagAuto">
+      @if (showIcons) {
+        <mat-icon matSuffix>label</mat-icon>
+      }
+      <mat-autocomplete #tagAuto="matAutocomplete">
+        @for (tag of suggestedTags; track tag) {
+          <mat-option [value]="tag">{{ tag }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="wide-field">
       <mat-label>Application Date</mat-label>
       <input matInput [matDatepicker]="applicationPicker" formControlName="applicationDate">
       <mat-datepicker-toggle matIconSuffix [for]="applicationPicker"></mat-datepicker-toggle>

@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DateUtilityService, CustomDateAdapter, MY_DATE_FORMATS } from '../../services/date-utility.service';
 
 export interface JobFormData {
@@ -25,6 +26,7 @@ export interface JobFormData {
   decision: string;
   id?: string;
   notes?: string[];
+  tag?: string;
   [key: string]: unknown;
 }
 
@@ -44,7 +46,8 @@ export interface JobFormData {
     MatCardModule,
     MatDividerModule,
     MatChipsModule,
-    TextFieldModule
+    TextFieldModule,
+    MatAutocompleteModule
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -69,6 +72,7 @@ export class JobFormComponent implements OnInit, AfterViewInit {
 
   jobForm!: FormGroup;
   newNoteText = '';
+  readonly suggestedTags = ['dev', 'it-support'];
 
   @ViewChildren(CdkTextareaAutosize) autosizes?: QueryList<CdkTextareaAutosize>;
 
@@ -95,7 +99,8 @@ export class JobFormComponent implements OnInit, AfterViewInit {
       decisionDate: [null],
       decision: ['unknown', Validators.required],
       id: [''],
-      notes: this.fb.array([])
+      notes: this.fb.array([]),
+      tag: ['dev']
     });
   }
 
@@ -153,6 +158,11 @@ export class JobFormComponent implements OnInit, AfterViewInit {
     
     // Convert notes FormArray to plain array
     formData.notes = this.notesArray.controls.map(c => c.value);
+
+    // Normalize tag to lowercase
+    if (formData.tag) {
+      formData.tag = formData.tag.trim().toLowerCase();
+    }
 
     // Format dates for submission
     if (formData.applicationDate instanceof Date) {

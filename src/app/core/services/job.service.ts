@@ -22,7 +22,8 @@ export class JobService {
     search?: string,
     selectedYear?: string,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    tag?: string
   ): Promise<PaginatedResponse<JobData>> {
     let url = `${environment.jobURL}?`;
     const params: string[] = [];
@@ -36,6 +37,7 @@ export class JobService {
     if (selectedYear != null && selectedYear !== '') params.push(`selectedYear=${encodeURIComponent(selectedYear)}`);
     if (startDate) params.push(`startDate=${encodeURIComponent(startDate)}`);
     if (endDate) params.push(`endDate=${encodeURIComponent(endDate)}`);
+    if (tag && tag !== 'all') params.push(`tag=${encodeURIComponent(tag)}`);
     
     url += params.join('&');
     
@@ -72,11 +74,13 @@ export class JobService {
     selectedYear: string,
     selectedFormat: string,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    tag?: string
   ): Promise<void> {
     const params: string[] = [];
     if (startDate) params.push(`startDate=${encodeURIComponent(startDate)}`);
     if (endDate) params.push(`endDate=${encodeURIComponent(endDate)}`);
+    if (tag && tag !== 'all') params.push(`tag=${encodeURIComponent(tag)}`);
     const query = params.length ? `?${params.join('&')}` : '';
     const url = `${environment.jobURL}/export/${selectedYear}/${selectedFormat}${query}`;
     try {

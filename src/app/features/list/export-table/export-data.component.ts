@@ -45,7 +45,10 @@ export class ExportDataComponent {
       end: new FormControl<Date | null>(null),
     }),
     format: new FormControl<ExportFormat>('', { nonNullable: true }),
+    tag: new FormControl<string>('all', { nonNullable: true }),
   });
+
+  readonly suggestedTags = ['dev', 'it-support'];
   
   formatOptions = [
     { value: 'excel', icon: 'table_chart', label: 'Excel' },
@@ -113,7 +116,7 @@ export class ExportDataComponent {
         if (end) endDate = this.formatDateYYYYMMDD(end);
       }
 
-      await this.jobService.exportOpportunities(selectedYear, format, startDate, endDate);
+      await this.jobService.exportOpportunities(selectedYear, format, startDate, endDate, this.form.controls.tag.value);
       this.snackbar.success('Your data has been exported successfully!');
     } catch {
       this.snackbar.error('An error occurred while exporting your data. Please try again later.');

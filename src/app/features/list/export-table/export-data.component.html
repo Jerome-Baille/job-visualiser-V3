@@ -44,6 +44,32 @@
   }
 
   <mat-form-field appearance="outline">
+    <mat-label>Tag</mat-label>
+    <mat-select [formControl]="form.controls.tag">
+      <mat-select-trigger>
+        @if (form.controls.tag.value !== 'all') {
+          <div class="option-with-icon">
+            <mat-icon>label</mat-icon>
+            <span>{{ form.controls.tag.value }}</span>
+          </div>
+        }
+        @if (form.controls.tag.value === 'all') {
+          <span>All Tags</span>
+        }
+      </mat-select-trigger>
+      <mat-option value="all">All Tags</mat-option>
+      @for (tag of suggestedTags; track tag) {
+        <mat-option [value]="tag">
+          <div class="option-with-icon">
+            <mat-icon>label</mat-icon>
+            <span>{{ tag }}</span>
+          </div>
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
     <mat-label>Format</mat-label>
     <mat-select [formControl]="form.controls.format">
       @if (form.controls.format.value) {

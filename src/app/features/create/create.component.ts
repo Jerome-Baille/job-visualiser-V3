@@ -47,7 +47,8 @@ export class CreateComponent {
       interviewDate: null,
       decisionDate: null,
       decision: 'unknown',
-      notes: []
+      notes: [],
+      tag: 'dev'
     };
   }
 
